@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output / caches
+dist/
+build/
+coverage/
+.cache/
+.vite/
+.turbo/
+.next/
+*.tsbuildinfo
+
+# Local environment / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Logs / temp
+*.log
+logs/
+.tmp/
+tmp/
+temp/
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Source archives are verification inputs, not repository source
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+
+# Never commit generated deployment artifacts from another repository/project
+_site/
+.wrangler/
