@@ -1,0 +1,87 @@
+{
+  "project": "OmSaravanaBhava Hi-Tech",
+  "schemaVersion": "1.0.0",
+  "purpose": "Define source-aware relationships across Murugan names, works, verses, temples, places and sources without turning inferred or generated links into facts.",
+  "nodeTypes": [
+    "MURUGAN_NAME_OR_EPITHET",
+    "DEITY_FORM",
+    "WORK",
+    "VERSE_OR_SONG_RECORD",
+    "MANTRA_OR_PRAYER_RECORD",
+    "TEMPLE",
+    "ARUPADAI_VEEDU",
+    "PLACE",
+    "AUTHOR_OR_SAINT",
+    "SOURCE",
+    "EDITION",
+    "AUDIO_RECORD",
+    "LEARNING_PATH"
+  ],
+  "edgeTypes": [
+    "HAS_NAME",
+    "HAS_FORM",
+    "AUTHORED_BY",
+    "PART_OF_WORK",
+    "ASSOCIATED_WITH_TEMPLE",
+    "ASSOCIATED_WITH_PLACE",
+    "IDENTIFIED_AS_ARUPADAI_VEEDU",
+    "SUPPORTED_BY_SOURCE",
+    "USES_EDITION",
+    "HAS_TEXTUAL_VARIANT",
+    "HAS_AUDIO",
+    "RELATED_BY_VERIFIED_SOURCE",
+    "INCLUDED_IN_LEARNING_PATH"
+  ],
+  "edgeContract": {
+    "requiredFields": [
+      "edgeId",
+      "fromId",
+      "toId",
+      "edgeType",
+      "verificationState",
+      "sourceIds"
+    ],
+    "verificationStates": [
+      "SOURCE_VERIFIED",
+      "SOURCE_LINKED_PENDING_REVIEW",
+      "EDITORIAL_RELATION_REVIEWED",
+      "TRADITIONAL_ASSOCIATION_SOURCE_LINKED",
+      "UNVERIFIED_NOT_PUBLIC"
+    ],
+    "optionalFields": [
+      "note",
+      "validFrom",
+      "validTo",
+      "lastVerifiedAt",
+      "confidence"
+    ]
+  },
+  "rules": {
+    "generatedRelationshipCannotBePublishedAsFact": true,
+    "inferredRelationshipRequiresExplicitState": true,
+    "traditionalAssociationMustNotMasqueradeAsHistoricalFact": true,
+    "canonicalTextMustNotBeModifiedToCreateGraphLinks": true,
+    "sourceIdsRequiredForFactualEdges": true,
+    "quarantinedNodesExcludedFromPublicGraph": true,
+    "rightsRestrictedBodyTextMayStillExposeMetadataRelationshipWhenAllowed": true
+  },
+  "publicUseCases": [
+    "related temples for a governed work",
+    "works associated with a temple when source-backed",
+    "names/forms linked to source records",
+    "source and edition lineage",
+    "guided learning paths",
+    "source-aware discovery trails"
+  ],
+  "forbiddenUseCases": [
+    "inventing a temple association because names look similar",
+    "linking a verse to a temple without source evidence",
+    "presenting model-generated semantic similarity as canonical relationship",
+    "converting devotional tradition into independently proven history without classification"
+  ],
+  "releaseGate": {
+    "id": "KNOWLEDGE_GRAPH_TRUTH_GATE",
+    "blocking": false,
+    "passCondition": "Any public graph relationship is source-backed or explicitly classified as reviewed editorial/traditional association; generated or unverified relations remain non-public."
+  }
+}
