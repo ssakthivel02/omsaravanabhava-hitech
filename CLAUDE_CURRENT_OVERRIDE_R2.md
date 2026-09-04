@@ -29,13 +29,22 @@ Do not start production cutover.
 3. `release/R2_QUALITY_GATES.json`
 4. `docs/R2_CONTENT_PUBLICATION_CONTRACT.md`
 5. `release/CONTENT_PUBLICATION_POLICY.json`
-6. `docs/SACRED_TECH_DESIGN_SYSTEM_V1.md`
-7. `release/PERFORMANCE_MOTION_BUDGET_V1.json`
-8. `docs/FLAGSHIP_JOURNEY_BLUEPRINT_V1.md`
-9. `docs/R2_PREMIUM_EXPERIENCE_REVIEW.md`
-10. `docs/R2_VISUAL_ACCEPTANCE_MATRIX.csv`
-11. `docs/VERIFIED_SOURCE_ACQUISITION_ROADMAP.md`
-12. `docs/ARUPADAI_VEEDU_OFFICIAL_SOURCE_REGISTRY.csv`
+6. `release/CONTENT_STATE_MODEL_V1.json`
+7. `release/CONTENT_INGESTION_SCHEMA_V1.json`
+8. `docs/SACRED_TECH_DESIGN_SYSTEM_V1.md`
+9. `release/PERFORMANCE_MOTION_BUDGET_V1.json`
+10. `docs/FLAGSHIP_JOURNEY_BLUEPRINT_V1.md`
+11. `docs/R2_PREMIUM_EXPERIENCE_REVIEW.md`
+12. `docs/R2_VISUAL_ACCEPTANCE_MATRIX.csv`
+13. `docs/SEARCH_DISCOVERY_ARCHITECTURE_V1.md`
+14. `docs/I18N_TAMIL_TYPOGRAPHY_ACCESSIBILITY_CONTRACT_V1.md`
+15. `docs/SEO_STRUCTURED_DATA_CONTRACT_V1.md`
+16. `docs/SECURITY_PRIVACY_OBSERVABILITY_CONTRACT_V1.md`
+17. `release/SECURITY_HEADERS_POLICY_V1.json`
+18. `docs/RELEASE_CUTOVER_ROLLBACK_RUNBOOK_V1.md`
+19. `docs/VERIFIED_SOURCE_ACQUISITION_ROADMAP.md`
+20. `docs/ARUPADAI_VEEDU_OFFICIAL_SOURCE_REGISTRY.csv`
+21. `docs/WORLD_CLASS_CULTURAL_KNOWLEDGE_BENCHMARK_2026-09-04.md`
 
 These documents are design/source/QA authority, not permission to fabricate content or copy legacy application code.
 
@@ -74,7 +83,12 @@ Preserve or implement:
 - Playwright + axe + responsive QA;
 - anti-reversion source/runtime checks;
 - PWA installability only after new governed icons + browser qualification;
-- no fabricated Thiruppugazh/temple/audio/Namavali data.
+- no fabricated Thiruppugazh/temple/audio/Namavali data;
+- preview CSP/report-only and security headers per `release/SECURITY_HEADERS_POLICY_V1.json`;
+- privacy-first observability with no devotional practice/search telemetry by default;
+- sitemap/indexability driven by publication state, not route count;
+- search ranking/results grounded only in governed records;
+- Tamil-first locale/typography semantics before bilingual support claims.
 
 ## Product quality target
 
@@ -112,6 +126,7 @@ Before an R2 handoff is considered complete, run and report on the exact candida
 - axe plus manual/automated keyboard/focus/touch-target/reduced-motion checks;
 - service-worker install/update/offline/legacy-cache migration;
 - preview SEO/noindex behavior;
+- security headers/CSP report-only behavior;
 - release identity;
 - performance budgets where environment allows.
 
