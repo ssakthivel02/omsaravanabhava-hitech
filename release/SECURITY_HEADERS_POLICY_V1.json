@@ -1,0 +1,65 @@
+{
+  "project": "OmSaravanaBhava Hi-Tech",
+  "policyVersion": "1.0.0",
+  "environmentPolicies": {
+    "preview": {
+      "robots": "noindex,nofollow,noarchive",
+      "hsts": false,
+      "cspMode": "REPORT_ONLY_THEN_ENFORCE_WHEN_GREEN",
+      "requiredHeaders": {
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "X-Frame-Options": "DENY",
+        "X-Robots-Tag": "noindex, nofollow, noarchive"
+      }
+    },
+    "production": {
+      "robots": "indexability_by_content_policy",
+      "hsts": "ENABLE_ONLY_AFTER_CUSTOM_DOMAIN_HTTPS_AND_ROLLBACK_REVIEW",
+      "cspMode": "ENFORCED_AFTER_PREVIEW_REPORT_ONLY_PASS",
+      "requiredHeaders": {
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "X-Frame-Options": "DENY"
+      }
+    }
+  },
+  "cspMinimumDirectives": {
+    "default-src": ["'self'"],
+    "object-src": ["'none'"],
+    "base-uri": ["'none'"],
+    "frame-ancestors": ["'none'"],
+    "form-action": ["'self'"],
+    "script-src": ["'self'"],
+    "style-src": ["'self'"],
+    "img-src": ["'self'", "data:", "blob:"],
+    "font-src": ["'self'"],
+    "connect-src": ["'self'"],
+    "worker-src": ["'self'", "blob:"],
+    "manifest-src": ["'self'"],
+    "media-src": ["'self'", "blob:"]
+  },
+  "rules": {
+    "unsafeEvalForbidden": true,
+    "unsafeInlineScriptForbidden": true,
+    "thirdPartyOriginsRequireReview": true,
+    "htmlImmutableCachingForbidden": true,
+    "fingerprintedAssetsMayUseLongImmutableCache": true,
+    "previewMustBeNoindex": true,
+    "workerGeneratedResponsesNeedWorkerHeaders": true,
+    "wildcardCorsRequiresExplicitJustification": true
+  },
+  "privacyRules": {
+    "sessionReplayForbiddenByDefault": true,
+    "advertisingTrackersForbidden": true,
+    "practiceDataRemoteTelemetryForbiddenByDefault": true,
+    "savedDevotionalItemsLocalFirst": true,
+    "searchQueryTelemetryForbiddenByDefault": true,
+    "freeFormContentTelemetryForbiddenByDefault": true
+  },
+  "releaseGate": {
+    "id": "SECURITY_PRIVACY_GATE",
+    "blocking": true,
+    "passCondition": "Preview/production headers, CSP mode, dependency origins, privacy behaviour and exact release identity match this policy and contain no unreviewed third-party runtime or sensitive telemetry."
+  }
+}
