@@ -1,0 +1,165 @@
+{
+  "project": "OmSaravanaBhava Hi-Tech",
+  "gateVersion": "1.0.0",
+  "effectiveDate": "2026-09-04",
+  "candidateStage": "R2",
+  "productionAuthorized": false,
+  "authorities": [
+    "CURRENT_PROJECT_AUTHORITY.md",
+    "CLAUDE_CURRENT_OVERRIDE_R2.md",
+    "docs/R2_STATIC_CODE_REVIEW_2026-09-04.md",
+    "docs/R2_CONTENT_PUBLICATION_CONTRACT.md",
+    "release/CONTENT_PUBLICATION_POLICY.json",
+    "docs/SACRED_TECH_DESIGN_SYSTEM_V1.md",
+    "release/PERFORMANCE_MOTION_BUDGET_V1.json",
+    "docs/FLAGSHIP_JOURNEY_BLUEPRINT_V1.md",
+    "docs/R2_VISUAL_ACCEPTANCE_MATRIX.csv"
+  ],
+  "hardBlocks": {
+    "legacyApplicationShellPresent": true,
+    "crossProjectRuntimeContamination": true,
+    "fabricatedCanonicalOrTempleFacts": true,
+    "materialPublicTruthOverclaim": true,
+    "previewIndexable": true,
+    "releaseIdentityNotExactGitSha": true,
+    "mandatoryBrowserEvidenceMissing": true,
+    "productionDnsMutationBeforeExplicitApproval": true
+  },
+  "requiredGates": [
+    {
+      "id": "SOURCE_AUTHORITY",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "New application source is only ssakthivel02/omsaravanabhava-hitech; R6 remains governed-data/provenance evidence only; no legacy runtime is imported."
+    },
+    {
+      "id": "DEPENDENCY_CONSISTENCY",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Frozen pnpm install succeeds, lockfile matches package metadata, exact package-manager version is asserted, and no known incompatible unused test dependency remains."
+    },
+    {
+      "id": "TYPECHECK_LINT_UNIT",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Strict TypeScript, lint and unit/integration tests pass on exact candidate without weakened compiler or lint rules."
+    },
+    {
+      "id": "PRODUCTION_BUILD",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "pnpm run build succeeds and the artifact contains real clean React/Vite chunks and no legacy static-shell signatures."
+    },
+    {
+      "id": "ANTI_REVERSION",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Source, build, service-worker and fresh/private-browser checks prove no app.js/rc*/phase2*/legacy HTML corpus/old cache shell or other-project runtime can be served."
+    },
+    {
+      "id": "CONTENT_TRUTH",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Public wording, badges, metrics, search, completeness, sitemap and structured data do not imply broader verification/completeness/rights/audio availability than governed data supports."
+    },
+    {
+      "id": "STATE_DIMENSIONS",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Temple/content UI separates identity/source, coordinates, visitor information, image, rights, audio and completeness dimensions rather than using one pending state as global verification."
+    },
+    {
+      "id": "SEARCH_TRUTH_AND_DISCOVERY",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Search uses governed/source-tracked language, shows actual state, discloses/result-limits appropriately, and zero-result behavior does not fabricate devotional answers."
+    },
+    {
+      "id": "CONTACT_CORRECTION",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Correction/contact route has an owner-approved real destination or explicitly states that submission is not yet available."
+    },
+    {
+      "id": "SERVICE_WORKER",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Only omsaravanabhava-hitech-v1-* cache namespace is used; successful HTML only becomes offline shell; known legacy cache cleanup is scoped and tested before activation; update/offline/fresh-session tests pass."
+    },
+    {
+      "id": "PREVIEW_SEO_SAFETY",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Preview is noindex/nofollow/noarchive where supported, does not expose production sitemap/canonical collisions, and release marker identifies exact preview SHA."
+    },
+    {
+      "id": "PRODUCTION_SEO",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Production titles/descriptions/canonical/OpenGraph/sitemap are route-specific, truthful and generated according to publication/indexability policy; thin identities are not bulk-indexed by default."
+    },
+    {
+      "id": "PWA_INSTALLABILITY",
+      "blocking": false,
+      "status": "NOT_YET_QUALIFIED",
+      "passCondition": "New governed 192/512/maskable icons, manifest, service worker and browser installability pass. Until then no installable-PWA claim is made."
+    },
+    {
+      "id": "PLAYWRIGHT_BROWSER_MATRIX",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "GitHub-hosted Playwright passes 320, 390, 768, 1440, landscape/deep-refresh/404/search/Tamil/mobile-menu/fresh-browser scenarios on exact SHA."
+    },
+    {
+      "id": "ACCESSIBILITY",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Automated axe plus manual/Playwright keyboard, focus, skip-link, touch-target, zoom/reflow and reduced-motion checks pass; public accessibility claims match evidence."
+    },
+    {
+      "id": "PERFORMANCE_MOTION",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Exact candidate meets PERFORMANCE_MOTION_BUDGET_V1 on agreed critical routes without gaming scores or introducing unjustified heavy visual dependencies."
+    },
+    {
+      "id": "VISUAL_FLAGSHIP",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "P0 cases in R2_VISUAL_ACCEPTANCE_MATRIX pass and the experience meets the Sacred-Tech design system/flagship blueprint without becoming a generic SaaS/card dashboard."
+    },
+    {
+      "id": "LOCALE_TRUTH",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "Tamil is complete primary UI; English is claimed only after real route parity, persistence and metadata QA; other languages remain unclaimed until end-to-end qualification."
+    },
+    {
+      "id": "RELEASE_IDENTITY",
+      "blocking": true,
+      "status": "PENDING_R2",
+      "passCondition": "/release.json records repository ssakthivel02/omsaravanabhava-hitech, exact GitHub SHA, environment, build time/version and R6 role as governed-data/provenance only."
+    },
+    {
+      "id": "OWNER_PRODUCTION_APPROVAL",
+      "blocking": true,
+      "status": "NO_GO",
+      "passCondition": "All required exact-head gates pass and the owner explicitly approves production cutover; root omsaravanabhava.org is untouched before this condition."
+    }
+  ],
+  "staticReviewP0": [
+    "R2-CODE-001",
+    "R2-CODE-002",
+    "R2-CODE-003",
+    "R2-CODE-004",
+    "R2-CODE-005",
+    "R2-CODE-006",
+    "R2-CODE-007",
+    "R2-CODE-008",
+    "R2-CODE-009",
+    "R2-CODE-010",
+    "R2-CODE-011",
+    "R2-CODE-012"
+  ],
+  "releaseStatus": "NO_GO"
+}
