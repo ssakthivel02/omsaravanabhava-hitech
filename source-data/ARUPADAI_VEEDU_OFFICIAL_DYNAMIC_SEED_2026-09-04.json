@@ -1,0 +1,144 @@
+{
+  "project": "OmSaravanaBhava Hi-Tech",
+  "dataset": "Arupadai Veedu official dynamic source seed",
+  "datasetVersion": "2026-09-04.1",
+  "sourceAuthority": "Tamil Nadu Hindu Religious and Charitable Endowments Department (HR&CE)",
+  "retrievedAt": "2026-09-04T17:29:00+01:00",
+  "publicationRule": "DYNAMIC_SOURCE_EVIDENCE_REVERIFY_BEFORE_TRAVEL_OR_PAYMENT",
+  "travelNotice": "Temple opening hours, festival schedules, contacts and services can change. Confirm current information with the linked official HR&CE temple source before travel, booking or payment.",
+  "records": [
+    {
+      "ordinal": 1,
+      "hrceId": "TM031985",
+      "identityTamil": "அருள்மிகு சுப்பிரமணியசுவாமி திருக்கோயில், திருப்பரங்குன்றம் - 625005, மதுரை மாவட்டம்.",
+      "identityEnglish": "Arulmigu Subramaniyaswamy Temple, Thirupparankundram - 625005, Madurai District",
+      "officialBaseUrl": "https://thiruparankundrammurugan.hrce.tn.gov.in/hrcehome/index_temple.php?tid=31985",
+      "contactSourceUrl": "https://thiruparankundrammurugan.hrce.tn.gov.in/hrcehome/index_temple.php?action=contact_us&tid=31985",
+      "timingSourceUrl": "https://thiruparankundrammurugan.hrce.tn.gov.in/hrcehome/index_temple.php?tid=31985",
+      "contact": {
+        "phone": "04522482249",
+        "email": "dcmreomdu_31985.hrce@tn.gov.in",
+        "addressSummary": "302, Bigcar Street, Thirupparankundram, Madurai - 625005"
+      },
+      "publishedOpeningWindows": [
+        {"from": "05:30", "to": "13:00", "timezone": "Asia/Kolkata"},
+        {"from": "16:00", "to": "21:00", "timezone": "Asia/Kolkata"}
+      ],
+      "publishedScheduleNote": "Morning 05:30 to 13:00; evening 16:00 to 21:00.",
+      "dynamic": true,
+      "lastVerifiedAt": "2026-09-04T17:29:00+01:00",
+      "state": "VERIFIED_CURRENT_OFFICIAL_SOURCE"
+    },
+    {
+      "ordinal": 2,
+      "hrceId": "TM038271",
+      "identityTamil": "அருள்மிகு சுப்பிரமணியசுவாமி திருக்கோயில், திருச்செந்தூர் - 628215, தூத்துக்குடி மாவட்டம்.",
+      "identityEnglish": "Arulmigu Subramania Swamy Temple, Tiruchendur - 628215, Thoothukudi District",
+      "officialBaseUrl": "https://tiruchendurmurugan.hrce.tn.gov.in/",
+      "contactSourceUrl": "https://tiruchendurmurugan.hrce.tn.gov.in/hrcehome/index_temple.php?action=contact_us&tid=38271",
+      "timingSourceUrl": "https://tiruchendurmurugan.hrce.tn.gov.in/hrcehome/index_temple.php?action=pooja_info%2F1000&tid=38271",
+      "contact": {
+        "phone": "04639242221",
+        "email": "jceotnv_38271.hrce@tn.gov.in",
+        "addressSummary": "Arulmigu Subramaniyaswamy Temple, Tiruchendur - 628215"
+      },
+      "publishedOpeningWindows": [
+        {"from": "04:00", "to": "21:00", "timezone": "Asia/Kolkata", "continuous": true}
+      ],
+      "publishedScheduleNote": "Official page states normal continuous opening from 04:00 to 21:00; festival-period opening times vary and are separately described by HR&CE.",
+      "festivalVariation": true,
+      "dynamic": true,
+      "lastVerifiedAt": "2026-09-04T17:29:00+01:00",
+      "state": "VERIFIED_CURRENT_OFFICIAL_SOURCE"
+    },
+    {
+      "ordinal": 3,
+      "hrceId": "TM032203",
+      "identityTamil": "அருள்மிகு தண்டாயுதபாணி சுவாமி திருக்கோயில், பழனி - 624601, திண்டுக்கல் மாவட்டம்.",
+      "identityEnglish": "Arulmigu Dhandayuthapaniswamy Temple, Palani - 624601, Dindigul District",
+      "officialBaseUrl": "https://palanimurugan.hrce.tn.gov.in/hrcehome/index_temple.php?tid=32203",
+      "contactSourceUrl": "https://palanimurugan.hrce.tn.gov.in/hrcehome/index_temple.php?action=contact_us&tid=32203",
+      "timingSourceUrl": "https://palanimurugan.hrce.tn.gov.in/hrcehome/index_temple.php?tid=32203",
+      "contact": {
+        "phone": "04545241293",
+        "email": "Jceomdu_32203.hrce@tn.gov.in",
+        "addressSummary": "315 Head Office, North Giri Street, Palani - 624601"
+      },
+      "publishedOpeningWindows": [
+        {"from": "05:45", "to": "20:00", "timezone": "Asia/Kolkata", "continuous": true}
+      ],
+      "publishedScheduleNote": "Official display spans 05:45 to 13:00 and 13:00 to 20:00, indicating continuous normal opening; major festival and special days may open from 04:00 and close after 21:00 depending on devotee flow.",
+      "festivalVariation": true,
+      "dynamic": true,
+      "lastVerifiedAt": "2026-09-04T17:29:00+01:00",
+      "state": "VERIFIED_CURRENT_OFFICIAL_SOURCE"
+    },
+    {
+      "ordinal": 4,
+      "hrceId": "TM018002",
+      "identityTamil": "அருள்மிகு சுவாமிநாத சுவாமி திருக்கோயில், சுவாமிமலை, கும்பகோணம் - 612302, தஞ்சாவூர் மாவட்டம்.",
+      "identityEnglish": "Arulmigu Swaminatha Swamy Temple, Swamimalai, Kumbakonam - 612302, Thanjavur District",
+      "officialBaseUrl": "https://swamimalaiswaminathar.hrce.tn.gov.in/hrcehome/index_temple.php?tid=18002",
+      "contactSourceUrl": "https://swamimalaiswaminathar.hrce.tn.gov.in/hrcehome/index_temple.php?action=contact_us&tid=18002",
+      "timingSourceUrl": "https://swamimalaiswaminathar.hrce.tn.gov.in/hrcehome/index_temple.php?action=pooja_info&tid=18002",
+      "contact": {
+        "phone": "04352454421",
+        "email": "swamimalaiswaminathaswamy@gmail.com",
+        "addressSummary": "Thirumanjana Veethi, Swamimalai, Kumbakonam - 612302"
+      },
+      "publishedOpeningWindows": [
+        {"from": "06:00", "to": "13:00", "timezone": "Asia/Kolkata"},
+        {"from": "16:00", "to": "21:00", "timezone": "Asia/Kolkata"}
+      ],
+      "publishedScheduleNote": "Official page states 06:00-13:00 and 16:00-21:00; monthly Krittikai and other important festival days may remain open continuously until the night Arthajama pooja.",
+      "festivalVariation": true,
+      "dynamic": true,
+      "lastVerifiedAt": "2026-09-04T17:29:00+01:00",
+      "state": "VERIFIED_CURRENT_OFFICIAL_SOURCE"
+    },
+    {
+      "ordinal": 5,
+      "hrceId": "TM001506",
+      "identityTamil": "அருள்மிகு சுப்பிரமணியசுவாமி திருக்கோயில், திருத்தணி, மலைக்கோயில், திருத்தணி - 631209, திருவள்ளூர் மாவட்டம்.",
+      "identityEnglish": "Arulmigu Subramanyaswamy Temple, Malaikoil, Tiruttani - 631209, Tiruvallur District",
+      "officialBaseUrl": "https://tiruttanimurugan.hrce.tn.gov.in/hrcehome/index_temple.php?tid=1506",
+      "contactSourceUrl": "https://tiruttanimurugan.hrce.tn.gov.in/hrcehome/index_temple.php?action=contact_us&tid=1506",
+      "timingSourceUrl": "https://tiruttanimurugan.hrce.tn.gov.in/hrcehome/index_temple.php?action=contact_us%2F1000&tid=1506",
+      "contact": {
+        "phone": "044-27885247",
+        "email": "tiruttanigaimurugan@gmail.com",
+        "addressSummary": "Malaikoil, Tiruttani, Tiruvallur - 631209"
+      },
+      "publishedOpeningWindows": [
+        {"from": "06:00", "to": "20:45", "timezone": "Asia/Kolkata", "continuous": true}
+      ],
+      "publishedScheduleNote": "Official page states the temple is open continuously for darshan from 06:00 to 20:45; festival timings are subject to change.",
+      "festivalVariation": true,
+      "dynamic": true,
+      "lastVerifiedAt": "2026-09-04T17:29:00+01:00",
+      "state": "VERIFIED_CURRENT_OFFICIAL_SOURCE"
+    },
+    {
+      "ordinal": 6,
+      "hrceId": "TM032124",
+      "identityTamil": "அருள்மிகு முருகன் திருக்கோயில், சோலைமலை மண்டபம், அழகர்கோவில் - 625301, மதுரை மாவட்டம்.",
+      "identityEnglish": "Arulmigu Murugan Temple, Solaimalai Mandapam, Alagarkovil - 625301, Madurai District",
+      "officialBaseUrl": "https://solaimalaimurugan.hrce.tn.gov.in/hrcehome/index_temple.php?tid=32124",
+      "contactSourceUrl": "https://solaimalaimurugan.hrce.tn.gov.in/hrcehome/index_temple.php?action=contact_us&tid=32124",
+      "timingSourceUrl": "https://solaimalaimurugan.hrce.tn.gov.in/hrcehome/index_temple.php?action=pooja_info&tid=32124",
+      "contact": {
+        "phone": "04526915061",
+        "email": "solaimalaimurugan@gmail.com",
+        "addressSummary": "Solaimalai Mandapam, Alagarkovil - 625301, Madurai District"
+      },
+      "publishedOpeningWindows": [
+        {"from": "06:00", "to": "19:30", "timezone": "Asia/Kolkata", "continuous": true}
+      ],
+      "publishedScheduleNote": "The HR&CE table has malformed interval formatting, but the accompanying Tamil prose explicitly states opening at 06:00 and closing around 19:30. Preserve this source-quality note and reverify before publication.",
+      "sourceDisplayQuality": "OFFICIAL_SOURCE_FORMATTING_ANOMALY_NORMALIZED_FROM_ACCOMPANYING_PROSE",
+      "dynamic": true,
+      "lastVerifiedAt": "2026-09-04T17:29:00+01:00",
+      "state": "OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED"
+    }
+  ]
+}
