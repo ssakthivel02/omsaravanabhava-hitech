@@ -1,0 +1,85 @@
+{
+  "project": "OmSaravanaBhava Hi-Tech",
+  "schemaVersion": "1.0.0",
+  "effectiveDate": "2026-09-04",
+  "purpose": "Prevent one pending field such as coordinates or image state from being misrepresented as the verification state of an entire devotional/temple record.",
+  "principle": "Verification, provenance, completeness, rights, dynamic freshness, media availability and indexability are independent dimensions.",
+  "recordStateDimensions": {
+    "governance": {
+      "required": true,
+      "values": ["GOVERNED", "REVIEW_QUEUE", "QUARANTINED", "RETIRED"]
+    },
+    "identityVerification": {
+      "required": true,
+      "values": ["IDENTITY_VERIFIED", "IDENTITY_SOURCE_LINKED_PENDING_REVIEW", "IDENTITY_UNVERIFIED", "NOT_APPLICABLE"]
+    },
+    "sourceVerification": {
+      "required": true,
+      "values": ["SOURCE_VERIFIED", "SOURCE_LINKED_PENDING_REVIEW", "VARIANT_REVIEW_REQUIRED", "SOURCE_UNAVAILABLE", "NOT_APPLICABLE"]
+    },
+    "rights": {
+      "required": true,
+      "values": ["PUBLISHABLE", "METADATA_ONLY", "PERMISSION_PENDING", "RESTRICTED", "OWNER_SUPPLIED_RIGHTS_CONFIRMED", "PUBLIC_DOMAIN_WORK_EDITION_REVIEW_REQUIRED", "NOT_APPLICABLE"]
+    },
+    "completeness": {
+      "required": true,
+      "values": ["COMPLETE_FOR_CURRENT_SCOPE", "PARTIAL", "IDENTITY_ONLY", "BODY_TEXT_PENDING", "VISITOR_INFORMATION_PENDING", "AUDIO_PENDING", "NOT_APPLICABLE"]
+    },
+    "indexability": {
+      "required": true,
+      "values": ["INDEXABLE_PUBLIC", "PUBLIC_DIRECTORY_ONLY", "PUBLIC_NOINDEX", "WITHHELD"]
+    }
+  },
+  "templeFieldStates": {
+    "coordinates": ["VERIFIED", "SOURCE_LINKED_PENDING_REVIEW", "PENDING_VERIFICATION", "ABSENT"],
+    "visitorInformation": ["VERIFIED_CURRENT", "SOURCE_LINKED_REVERIFY_REQUIRED", "PENDING_VERIFICATION", "ABSENT"],
+    "documentedHistory": ["SOURCE_VERIFIED", "SOURCE_LINKED_PENDING_REVIEW", "ABSENT"],
+    "templePublishedTradition": ["SOURCE_VERIFIED_AS_TEMPLE_PUBLISHED_TRADITION", "SOURCE_LINKED_PENDING_REVIEW", "ABSENT"],
+    "architecture": ["SOURCE_VERIFIED", "SOURCE_LINKED_PENDING_REVIEW", "ABSENT"],
+    "image": ["DOCUMENTARY_VERIFIED", "DEVOTIONAL_ILLUSTRATION", "RIGHTS_PENDING", "ABSENT"],
+    "officialChannel": ["OFFICIAL_VERIFIED", "SOURCE_LINKED_PENDING_REVIEW", "ABSENT"]
+  },
+  "textFieldStates": {
+    "canonicalBody": ["VERIFIED_PUBLISHABLE", "VERIFIED_PERMISSION_PENDING", "SOURCE_IDENTITY_VERIFIED_TEXT_WITHHELD", "VARIANT_REVIEW_REQUIRED", "ABSENT"],
+    "easyTamil": ["EDITORIALLY_REVIEWED", "DRAFT_REVIEW_PENDING", "ABSENT"],
+    "transliteration": ["REVIEWED", "DRAFT_REVIEW_PENDING", "ABSENT"],
+    "meaning": ["SOURCE_OR_EDITORIAL_REVIEWED", "DRAFT_REVIEW_PENDING", "ABSENT"]
+  },
+  "audioFieldStates": {
+    "recordedAudio": ["OWNED_OR_LICENSED", "RIGHTS_PENDING", "RESTRICTED", "ABSENT"],
+    "deviceReadAloud": ["SUPPORTED_QUALIFIED", "SUPPORTED_UNQUALIFIED", "NOT_SUPPORTED"]
+  },
+  "dynamicFactContract": {
+    "fields": ["sourceUrl", "sourceAuthority", "retrievedAt", "lastVerifiedAt", "dynamic"],
+    "dynamicMustBeTrueFor": ["openingHours", "poojaSchedule", "ticketOrServiceAvailability", "executiveOfficer", "contactDetails", "serviceAmounts", "festivalOperationalTimes"],
+    "uiRule": "Dynamic facts must expose freshness/source context and advise confirmation with the official source when used for travel/payment decisions."
+  },
+  "sourceReferenceContract": {
+    "canonicalFieldNames": ["sourceId", "sourceUrl", "sourceAuthority", "sourceClass", "sourceConfidence", "retrievedAt", "lastVerifiedAt"],
+    "legacyAliasesToNormalize": {
+      "source_confidence": "sourceConfidence",
+      "confidence": "sourceConfidence"
+    },
+    "rule": "Normalize aliases at ingestion boundaries; application components should consume canonical field names only."
+  },
+  "uiRules": {
+    "stateBadgeMustNameDimensionWhenAmbiguous": true,
+    "coordinatePendingMustNotImplyIdentityPending": true,
+    "imagePendingMustNotImplyRecordUnverified": true,
+    "rightsMetadataOnlyMustNotLookLikeBrokenContent": true,
+    "rawInternalStateKeysNotForPrimaryDevoteeUi": true,
+    "devoteeFriendlyLabelBeforeTechnicalState": true,
+    "colorAloneCannotCommunicateState": true
+  },
+  "searchContract": {
+    "publicPromise": "governed/source-tracked records",
+    "showActualState": true,
+    "zeroResultMayFabricateAnswer": false,
+    "canonicalStoredTextMayBeMutatedForNormalization": false
+  },
+  "releaseGate": {
+    "id": "INDEPENDENT_STATE_DIMENSIONS_GATE",
+    "blocking": true,
+    "passCondition": "The exact candidate stores and renders independent state dimensions so no field-level pending state can be mistaken for global record verification/completeness/rights status."
+  }
+}
