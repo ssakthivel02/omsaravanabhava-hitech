@@ -1,0 +1,104 @@
+{
+  "project": "OmSaravanaBhava Hi-Tech",
+  "budgetVersion": "1.0.0",
+  "effectiveDate": "2026-09-04",
+  "status": "R2_PLUS_ACCEPTANCE_INPUT",
+  "fieldTargets": {
+    "lcpMsP75Max": 2500,
+    "inpMsP75Max": 200,
+    "clsP75Max": 0.1,
+    "segmentation": ["mobile", "desktop"]
+  },
+  "labTargets": {
+    "mobileLighthousePerformanceMin": 90,
+    "desktopLighthousePerformanceMin": 95,
+    "accessibilityMin": 95,
+    "bestPracticesMin": 95,
+    "seoMin": 95,
+    "tbtMsTargetMax": 200
+  },
+  "transferBudgets": {
+    "homeInitialTransferKbMax": 450,
+    "homeInitialJsGzipKbMax": 110,
+    "homeInitialCssGzipKbMax": 45,
+    "initialFontWoff2KbMax": 180,
+    "singleHeroRasterKbMax": 250,
+    "singleNonMediaRouteInitialTransferKbMax": 800,
+    "autoplayHeroVideoAllowed": false,
+    "fullTempleCorpusAllowedInHomeInitialChunk": false
+  },
+  "imageRules": {
+    "responsiveSrcsetRequiredForLargeRasters": true,
+    "widthHeightOrAspectRatioRequired": true,
+    "belowFoldLazyLoadDefault": true,
+    "lcpImageMustNotBeLazyLoaded": true,
+    "modernFormatsPreferred": ["avif", "webp"],
+    "documentaryVsIllustrativeProvenanceRequired": true
+  },
+  "fontRules": {
+    "tamilPrimary": true,
+    "unnecessaryWeightsForbidden": true,
+    "fontDisplayMustBeExplicit": true,
+    "rightsSafeHostingRequired": true,
+    "measureTamilFontPayload": true
+  },
+  "motion": {
+    "microFeedbackMs": {"min": 120, "max": 180},
+    "stateDisclosureMs": {"min": 180, "max": 260},
+    "routeTransitionMs": {"min": 220, "max": 320},
+    "oneTimeHeroRevealMs": {"min": 500, "max": 800},
+    "continuousDecorativeParticlesAllowed": false,
+    "scrollJackingAllowed": false,
+    "canonicalTextDecorativeAnimationAllowed": false,
+    "autoplaySoundAllowed": false,
+    "viewTransitionApi": "PROGRESSIVE_ENHANCEMENT_ONLY",
+    "reducedMotionMustRetainAllMeaningAndFunction": true
+  },
+  "interaction": {
+    "wcag22MinimumTargetCssPx": 24,
+    "projectPreferredPrimaryTargetCssPx": 44,
+    "visibleFocusRequired": true,
+    "stickyUiMayObscureFocus": false,
+    "skipLinkMustTransferFocus": true
+  },
+  "routeSpecificRules": {
+    "home": {
+      "heroVideoDefault": "FORBIDDEN",
+      "preferSvgGeometry": true,
+      "templeCorpusEagerLoad": false
+    },
+    "templeDirectory": {
+      "measureBeforeVirtualization": true,
+      "contentVisibilityMayBeUsedOnlyAfterMeasurement": true
+    },
+    "thiruppugazhReader": {
+      "canonicalTextStabilityPriority": "MAXIMUM",
+      "decorativeMotionOnText": false,
+      "readerControlsMustNotCauseLayoutJumps": true
+    },
+    "audio": {
+      "lazyLoadMedia": true,
+      "preloadAllAudio": false,
+      "autoplayWithSound": false
+    }
+  },
+  "measurementRules": {
+    "lighthouseIsRegressionEvidenceNotFieldSubstitute": true,
+    "fieldTargetsUseP75": true,
+    "compareMobileAndDesktopSeparately": true,
+    "recordExactGitShaWithPerformanceEvidence": true,
+    "doNotGameScoresByRemovingRealFunctionality": true
+  },
+  "releaseGate": {
+    "id": "PERFORMANCE_MOTION_GATE",
+    "blocking": true,
+    "passCondition": "The exact candidate meets agreed lab budgets on critical routes, has no known material Core Web Vitals regression, preserves full reduced-motion functionality, and introduces no unjustified heavy visual dependency or initial-route payload regression."
+  },
+  "references": [
+    "https://web.dev/articles/vitals",
+    "https://web.dev/articles/defining-core-web-vitals-thresholds",
+    "https://www.w3.org/TR/WCAG22/",
+    "https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API",
+    "https://web.dev/learn/design/responsive-images"
+  ]
+}
