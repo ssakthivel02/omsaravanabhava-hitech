@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": "OmSaravanaBhava Hi-Tech",
+  "purpose": "Normalize future verified source imports without collapsing provenance, rights, completeness or editorial layers.",
+  "requiredCommonFields": [
+    "id",
+    "recordType",
+    "canonicalTitleTa",
+    "governanceState",
+    "sourceVerificationState",
+    "rightsState",
+    "completenessState",
+    "seoPublicationState",
+    "sources"
+  ],
+  "commonRecord": {
+    "id": "stable_project_identifier",
+    "recordType": "temple|thiruppugazh|devotional_work|sacred_name|audio|festival|other",
+    "canonicalTitleTa": "string",
+    "titleEn": "string|null",
+    "aliases": [],
+    "governanceState": "GOVERNED|REVIEW_QUEUE|QUARANTINED|RETIRED",
+    "sourceVerificationState": "SOURCE_VERIFIED|SOURCE_LINKED_PENDING_REVIEW|VARIANT_REVIEW_REQUIRED|SOURCE_UNAVAILABLE|NOT_APPLICABLE",
+    "rightsState": "PUBLISHABLE|METADATA_ONLY|PERMISSION_PENDING|RESTRICTED|OWNER_SUPPLIED_RIGHTS_CONFIRMED|PUBLIC_DOMAIN_WORK_EDITION_REVIEW_REQUIRED|NOT_APPLICABLE",
+    "completenessState": "COMPLETE_FOR_CURRENT_SCOPE|PARTIAL|IDENTITY_ONLY|BODY_TEXT_PENDING|VISITOR_INFORMATION_PENDING|AUDIO_PENDING|NOT_APPLICABLE",
+    "seoPublicationState": "INDEXABLE_PUBLIC|PUBLIC_DIRECTORY_ONLY|PUBLIC_NOINDEX|WITHHELD",
+    "sources": [
+      {
+        "sourceId": "stable_source_id",
+        "sourceClass": "OFFICIAL_GOVERNMENT_FACT_SOURCE|OFFICIAL_TEMPLE_FACT_SOURCE|LITERARY_REFERENCE_SOURCE|PUBLIC_DOMAIN_WORK_EDITION_RIGHTS_REVIEW|REFERENCE_ONLY_PERMISSION_PENDING|OWNER_SUPPLIED_VERIFIED_SOURCE",
+        "sourceTitle": "string",
+        "sourceUrl": "string|null",
+        "sourceAuthority": "string",
+        "retrievedAt": "ISO-8601|null",
+        "lastVerifiedAt": "ISO-8601|null",
+        "editionOrVersion": "string|null",
+        "notes": "string|null"
+      }
+    ],
+    "editorialNotes": [],
+    "variantNotes": [],
+    "updatedAt": "ISO-8601"
+  },
+  "textLayers": {
+    "canonicalTamil": {
+      "value": "string|null",
+      "sourceId": "string|null",
+      "verificationState": "SOURCE_VERIFIED|SOURCE_LINKED_PENDING_REVIEW|VARIANT_REVIEW_REQUIRED|SOURCE_UNAVAILABLE",
+      "rightsState": "PUBLISHABLE|METADATA_ONLY|PERMISSION_PENDING|RESTRICTED|OWNER_SUPPLIED_RIGHTS_CONFIRMED|PUBLIC_DOMAIN_WORK_EDITION_REVIEW_REQUIRED",
+      "mustNeverBeGenerated": true
+    },
+    "easyTamil": {
+      "value": "string|null",
+      "sourceOrEditor": "string|null",
+      "separateFromCanonical": true
+    },
+    "transliteration": {
+      "value": "string|null",
+      "scheme": "string|null",
+      "sourceOrGenerator": "string|null",
+      "separateFromCanonical": true
+    },
+    "meaning": {
+      "value": "string|null",
+      "language": "ta|en|other|null",
+      "authorOrSource": "string|null",
+      "separateFromCanonical": true
+    },
+    "generatedReflection": {
+      "value": "string|null",
+      "generated": true,
+      "mustBeLabelled": true,
+      "mustNeverMasqueradeAsCanonical": true
+    }
+  },
+  "templeFieldGroups": {
+    "identity": {
+      "fields": ["officialNameTa", "officialNameEn", "district", "administrativeId"],
+      "verificationIndependent": true
+    },
+    "location": {
+      "fields": ["address", "latitude", "longitude"],
+      "verificationIndependent": true,
+      "coordinateConfidenceRequired": true
+    },
+    "visitorInformation": {
+      "fields": ["openingTimes", "poojaSchedule", "facilities", "transport", "contact"],
+      "dynamic": true,
+      "lastVerifiedAtRequiredWhenPublished": true
+    },
+    "history": {
+      "fields": ["documentedHistory", "templePublishedTradition", "literaryTradition", "architectureEvidence"],
+      "narrativeClassesMustRemainSeparate": true
+    },
+    "support": {
+      "fields": ["officialExternalDonationUrl", "officialServiceUrl"],
+      "platformMustNotIntermediateFunds": true
+    }
+  },
+  "audioFields": {
+    "audioType": "RECORDED_DEVOTIONAL_AUDIO|DEVICE_READ_ALOUD|TTS|OTHER",
+    "rightsStateRequired": true,
+    "recordedAndReadAloudMustNeverBeConflated": true,
+    "autoplayWithSoundForbidden": true
+  },
+  "importValidationRules": {
+    "canonicalTamilCannotBeAIRewritten": true,
+    "sourceUrlRequiredForDynamicTempleFacts": true,
+    "lastVerifiedAtRequiredForPublishedDynamicTempleFacts": true,
+    "rightsStateRequiredBeforeBodyPublication": true,
+    "seoIndexabilityIndependentFromPublicVisibility": true,
+    "identityVerificationIndependentFromCoordinates": true,
+    "generatedReflectionSeparateFromCanonical": true,
+    "unknownFieldsFailOrQuarantine": true,
+    "crossProjectSourceImportForbidden": true
+  },
+  "importOutcomeStates": [
+    "IMPORT_ACCEPTED",
+    "IMPORT_ACCEPTED_METADATA_ONLY",
+    "IMPORT_REVIEW_REQUIRED",
+    "IMPORT_QUARANTINED",
+    "IMPORT_REJECTED_RIGHTS",
+    "IMPORT_REJECTED_PROVENANCE",
+    "IMPORT_REJECTED_SCHEMA"
+  ]
+}
