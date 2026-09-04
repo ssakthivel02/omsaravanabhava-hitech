@@ -4,6 +4,26 @@ Read this after `CLAUDE_CURRENT_OVERRIDE_R2.md`.
 
 This addendum does not change application authority or authorize production. It adds durable quality controls prepared while Claude was rate-limited.
 
+## Repository landing zone now ready
+
+The real application branch now exists:
+
+`build/native-r6-flagship`
+
+Use it for the R2 clean application candidate when GitHub write access is available.
+
+Do not develop application features directly on `main`.
+
+Repository governance now also includes:
+
+- `.github/CODEOWNERS`
+- `.github/pull_request_template.md`
+- `SECURITY.md`
+- `CONTRIBUTING.md`
+- `docs/R2_SOURCE_IMPORT_CHECKLIST.md`
+
+Do not overwrite these with stale candidate copies.
+
 ## Additional authorities
 
 Read and preserve the stronger/equivalent implementation of:
@@ -27,6 +47,16 @@ Read and preserve the stronger/equivalent implementation of:
 17. `docs/HOME_ARUPADAI_INTERACTION_STORYBOARD_V1.md`
 18. `docs/MEDIA_AUDIO_IMAGE_PIPELINE_V1.md`
 19. `docs/SOURCE_AWARE_AI_GUIDE_TRUST_CONTRACT_V1.md`
+20. `source-data/README.md`
+21. `source-data/ARUPADAI_VEEDU_OFFICIAL_DYNAMIC_SEED_2026-09-04.json`
+
+## Current official Arupadai source seed
+
+A first-party HR&CE dynamic-data seed for all six Arupadai Veedu is now staged under `source-data/` with official identities, source URLs, published opening windows/contact details, `retrievedAt`, `lastVerifiedAt`, and explicit travel re-verification warnings.
+
+Treat it as governed source evidence, not timeless hard-coded truth.
+
+Dynamic timing/contact/service information must be reverified when stale and before travel/payment-sensitive publication. Preserve the Solaimalai source-formatting anomaly note instead of pretending the official table was clean.
 
 ## R2 expectations added
 
