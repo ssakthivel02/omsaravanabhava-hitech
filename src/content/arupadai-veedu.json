@@ -1,0 +1,248 @@
+[
+  {
+    "id": "ctm-tirupparankundram",
+    "nameTa": "திருப்பரங்குன்றம்",
+    "nameEn": "Tirupparankundram",
+    "transliteration": "Tirupparankundram",
+    "alternateNames": [],
+    "deity": "Murugan",
+    "muruganForm": null,
+    "classification": [
+      "அறுபடை வீடு",
+      "படைவீடு"
+    ],
+    "isArupadaiVeedu": true,
+    "district": null,
+    "state": null,
+    "latitude": null,
+    "longitude": null,
+    "coordinateConfidence": "COORDINATES_PENDING_VERIFICATION",
+    "history": null,
+    "architecture": null,
+    "sthalaPurana": null,
+    "visitorInformation": null,
+    "officialAuthority": null,
+    "officialWebsite": null,
+    "officialDirectSupportLink": null,
+    "imageStatus": "ILLUSTRATIVE_NOT_DOCUMENTARY",
+    "literaryRelationships": [
+      {
+        "relation_id": "tr-p2h-tirumurukarruppatai-tirupparankundram",
+        "work_id": "tirumurukarruppatai",
+        "assertion_status": "LITERARY_PLACE_CONTEXT_NOT_MODERN_VISITOR_PROOF"
+      }
+    ],
+    "sources": [
+      {
+        "reference": "Government HR&CE / Sacred Temple Guide",
+        "source_confidence": "HIGH"
+      }
+    ],
+    "pilgrimageOrder": 1
+  },
+  {
+    "id": "ctm-tiruchendur",
+    "nameTa": "திருச்செந்தூர்",
+    "nameEn": "Tiruchendur",
+    "transliteration": "Tiruchendur",
+    "alternateNames": [],
+    "deity": "Murugan",
+    "muruganForm": null,
+    "classification": [
+      "அறுபடை வீடு",
+      "படைவீடு"
+    ],
+    "isArupadaiVeedu": true,
+    "district": null,
+    "state": null,
+    "latitude": null,
+    "longitude": null,
+    "coordinateConfidence": "COORDINATES_PENDING_VERIFICATION",
+    "history": null,
+    "architecture": null,
+    "sthalaPurana": null,
+    "visitorInformation": null,
+    "officialAuthority": null,
+    "officialWebsite": null,
+    "officialDirectSupportLink": null,
+    "imageStatus": "ILLUSTRATIVE_NOT_DOCUMENTARY",
+    "literaryRelationships": [
+      {
+        "relation_id": "tr-p2h-tirumurukarruppatai-tiruchendur",
+        "work_id": "tirumurukarruppatai",
+        "assertion_status": "LITERARY_PLACE_CONTEXT_NOT_MODERN_VISITOR_PROOF"
+      }
+    ],
+    "sources": [
+      {
+        "reference": "Government HR&CE / Sacred Temple Guide",
+        "source_confidence": "HIGH"
+      }
+    ],
+    "pilgrimageOrder": 2
+  },
+  {
+    "id": "ctm-palani",
+    "nameTa": "பழனி",
+    "nameEn": "Palani",
+    "transliteration": "Palani",
+    "alternateNames": [],
+    "deity": "Murugan",
+    "muruganForm": null,
+    "classification": [
+      "அறுபடை வீடு",
+      "படைவீடு"
+    ],
+    "isArupadaiVeedu": true,
+    "district": null,
+    "state": null,
+    "latitude": null,
+    "longitude": null,
+    "coordinateConfidence": "COORDINATES_PENDING_VERIFICATION",
+    "history": null,
+    "architecture": null,
+    "sthalaPurana": null,
+    "visitorInformation": null,
+    "officialAuthority": null,
+    "officialWebsite": null,
+    "officialDirectSupportLink": null,
+    "imageStatus": "ILLUSTRATIVE_NOT_DOCUMENTARY",
+    "literaryRelationships": [
+      {
+        "relation_id": "tr-p2h-tirumurukarruppatai-palani",
+        "work_id": "tirumurukarruppatai",
+        "assertion_status": "LITERARY_PLACE_CONTEXT_NOT_MODERN_VISITOR_PROOF"
+      }
+    ],
+    "sources": [
+      {
+        "reference": "Government HR&CE / Sacred Temple Guide",
+        "source_confidence": "HIGH"
+      }
+    ],
+    "pilgrimageOrder": 3
+  },
+  {
+    "id": "ctm-swamimalai",
+    "nameTa": "சுவாமிமலை",
+    "nameEn": "Swamimalai",
+    "transliteration": "Swamimalai",
+    "alternateNames": [],
+    "deity": "Murugan",
+    "muruganForm": null,
+    "classification": [
+      "அறுபடை வீடு",
+      "படைவீடு"
+    ],
+    "isArupadaiVeedu": true,
+    "district": null,
+    "state": null,
+    "latitude": null,
+    "longitude": null,
+    "coordinateConfidence": "COORDINATES_PENDING_VERIFICATION",
+    "history": null,
+    "architecture": null,
+    "sthalaPurana": null,
+    "visitorInformation": null,
+    "officialAuthority": null,
+    "officialWebsite": null,
+    "officialDirectSupportLink": null,
+    "imageStatus": "ILLUSTRATIVE_NOT_DOCUMENTARY",
+    "literaryRelationships": [
+      {
+        "relation_id": "tr-p2h-tirumurukarruppatai-swamimalai",
+        "work_id": "tirumurukarruppatai",
+        "assertion_status": "LITERARY_PLACE_CONTEXT_NOT_MODERN_VISITOR_PROOF"
+      }
+    ],
+    "sources": [
+      {
+        "reference": "Government HR&CE / Sacred Temple Guide",
+        "source_confidence": "HIGH"
+      }
+    ],
+    "pilgrimageOrder": 4
+  },
+  {
+    "id": "ctm-tiruthani",
+    "nameTa": "திருத்தணி",
+    "nameEn": "Tiruttani",
+    "transliteration": "Tiruttani",
+    "alternateNames": [],
+    "deity": "Murugan",
+    "muruganForm": null,
+    "classification": [
+      "அறுபடை வீடு",
+      "படைவீடு"
+    ],
+    "isArupadaiVeedu": true,
+    "district": null,
+    "state": null,
+    "latitude": null,
+    "longitude": null,
+    "coordinateConfidence": "COORDINATES_PENDING_VERIFICATION",
+    "history": null,
+    "architecture": null,
+    "sthalaPurana": null,
+    "visitorInformation": null,
+    "officialAuthority": null,
+    "officialWebsite": null,
+    "officialDirectSupportLink": null,
+    "imageStatus": "ILLUSTRATIVE_NOT_DOCUMENTARY",
+    "literaryRelationships": [
+      {
+        "relation_id": "tr-p2h-tirumurukarruppatai-tiruthani",
+        "work_id": "tirumurukarruppatai",
+        "assertion_status": "LITERARY_PLACE_CONTEXT_NOT_MODERN_VISITOR_PROOF"
+      }
+    ],
+    "sources": [
+      {
+        "reference": "Government HR&CE / Sacred Temple Guide",
+        "source_confidence": "HIGH"
+      }
+    ],
+    "pilgrimageOrder": 5
+  },
+  {
+    "id": "ctm-pazhamudircholai",
+    "nameTa": "பழமுதிர்சோலை",
+    "nameEn": "Pazhamudircholai",
+    "transliteration": "Pazhamudircholai",
+    "alternateNames": [],
+    "deity": "Murugan",
+    "muruganForm": null,
+    "classification": [
+      "அறுபடை வீடு",
+      "படைவீடு"
+    ],
+    "isArupadaiVeedu": true,
+    "district": null,
+    "state": null,
+    "latitude": null,
+    "longitude": null,
+    "coordinateConfidence": "COORDINATES_PENDING_VERIFICATION",
+    "history": null,
+    "architecture": null,
+    "sthalaPurana": null,
+    "visitorInformation": null,
+    "officialAuthority": null,
+    "officialWebsite": null,
+    "officialDirectSupportLink": null,
+    "imageStatus": "ILLUSTRATIVE_NOT_DOCUMENTARY",
+    "literaryRelationships": [
+      {
+        "relation_id": "tr-p2h-tirumurukarruppatai-pazhamudircholai",
+        "work_id": "tirumurukarruppatai",
+        "assertion_status": "LITERARY_PLACE_CONTEXT_NOT_MODERN_VISITOR_PROOF"
+      }
+    ],
+    "sources": [
+      {
+        "reference": "Government HR&CE / Sacred Temple Guide",
+        "source_confidence": "HIGH"
+      }
+    ],
+    "pilgrimageOrder": 6
+  }
+]

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ta">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#14100D" />
+    <title>ஓம் சரவணபவ — முருகன் பக்தி அறிவுத் தளம்</title>
+    <meta
+      name="description"
+      content="ஓம் சரவணபவ — அறுபடை வீடு, திருப்புகழ், முருகன் கோயில்கள் மற்றும் மூல ஆதாரம் சார்ந்த தமிழ் பக்தி அறிவுத் தளம்."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ஓம் சரவணபவ — முருகன் பக்தி அறிவுத் தளம்" />
+    <meta property="og:description" content="அறுபடை வீடு, திருப்புகழ், முருகன் கோயில்கள் மற்றும் மூலநிலை குறிக்கப்பட்ட தமிழ் பக்தி அறிவுத் தளம்." />
+    <meta property="og:url" content="" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <!--
+      R2Q-003: no runtime dependency on any third-party font CDN. A premium
+      self-hosted Tamil font set is PENDING a redistribution-licence check
+      (see src/styles/tokens.css); until then the app renders on the honest
+      system-font fallback declared there, never a network font load.
+    -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <!--
+      The module entry below is the entire application.
+      The recovered R6 archive shipped no module entry here and mounted a
+      legacy vanilla bundle instead, which is what caused every prior migration
+      to revert. Do not add any classic script tags to this file; see
+      tests/anti-reversion-build.test.ts.
+    -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "ஓம் சரவணபவ — Om Saravana Bhava",
+  "short_name": "OmSaravanaBhava",
+  "lang": "ta",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#14100D",
+  "theme_color": "#14100D",
+  "description": "Murugan devotional knowledge platform — Arupadai Veedu, Thiruppugazh, temples and sources.",
+  "icons": [],
+  "id": "/"
+}

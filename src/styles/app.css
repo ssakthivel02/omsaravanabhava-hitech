@@ -1,0 +1,600 @@
+/* ------------------------------------------------------------------ shell */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--sanctum) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--sanctum-edge);
+}
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem var(--gutter);
+  max-width: 78rem;
+  margin: 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  margin-inline-end: auto;
+}
+.brand-text b {
+  display: block;
+  font-family: var(--font-tamil-serif);
+  font-size: var(--t-md);
+  color: var(--gold-soft);
+  line-height: 1.1;
+}
+.brand-text small {
+  display: block;
+  font-size: var(--t-xs);
+  color: var(--ink-faint);
+  letter-spacing: 0.01em;
+}
+
+.desktop-nav {
+  display: none;
+  gap: 1.5rem;
+}
+.nav-link {
+  text-decoration: none;
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+  padding: 0.4rem 0;
+  border-bottom: 1px solid transparent;
+}
+.nav-link:hover,
+.nav-link[aria-current='page'] {
+  color: var(--gold-soft);
+  border-bottom-color: var(--gold);
+}
+
+.menu-toggle {
+  background: none;
+  border: 1px solid var(--sanctum-edge);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.9rem;
+  font: inherit;
+  font-size: var(--t-sm);
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.mobile-nav {
+  display: grid;
+  padding: 0.5rem var(--gutter) 1rem;
+  border-top: 1px solid var(--sanctum-edge);
+}
+.mobile-nav .nav-link {
+  padding: 0.85rem 0;
+  min-height: 44px;
+  border-bottom: 1px solid var(--sanctum-edge);
+}
+
+@media (min-width: 62rem) {
+  .desktop-nav {
+    display: flex;
+  }
+  .menu-toggle,
+  .mobile-nav {
+    display: none;
+  }
+}
+
+/* -------------------------------------------------------------------- hero */
+
+.hero {
+  position: relative;
+  display: grid;
+  gap: 2rem;
+  padding: clamp(3rem, 8vw, 6rem) var(--gutter) var(--band);
+  max-width: 78rem;
+  margin: 0 auto;
+}
+
+.vel-axis {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: clamp(1rem, 8vw, 7rem);
+  width: clamp(90px, 14vw, 120px);
+  height: 100%;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.vel-axis svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-copy {
+  position: relative;
+  max-width: 34ch;
+}
+.hero h1 {
+  font-size: var(--t-3xl);
+  color: var(--gold-soft);
+  letter-spacing: -0.01em;
+}
+.hero-lead {
+  margin-top: 1.25rem;
+  font-size: var(--t-md);
+  font-family: var(--font-tamil-serif);
+  color: var(--ink);
+  max-width: var(--measure-tamil);
+}
+.hero-sub {
+  margin-top: 0.75rem;
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+  max-width: 46ch;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-size: var(--t-sm);
+  font: inherit;
+  border: 1px solid transparent;
+  /* .btn is applied to real <button> elements (Practice's reset control) as
+     well as <Link> anchors. Without an explicit background, a <button>
+     falls back to the browser's native control skin (Chromium: ~#efefef),
+     which axe caught as a 1.07:1 contrast failure against --ink text —
+     the button was never actually meant to have a light background. */
+  background: transparent;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--gold);
+  color: var(--sanctum);
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background: var(--gold-soft);
+}
+.btn-quiet {
+  border-color: var(--sanctum-edge);
+  color: var(--ink);
+}
+.btn-quiet:hover {
+  border-color: var(--gold);
+  color: var(--gold-soft);
+}
+
+/* ------------------------------------------------------------------- bands */
+
+.band {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: var(--band) var(--gutter);
+  border-top: 1px solid var(--sanctum-edge);
+}
+.band-head h2 {
+  font-size: var(--t-2xl);
+  color: var(--gold-soft);
+}
+.band-head p {
+  margin-top: 0.75rem;
+  color: var(--ink-muted);
+  max-width: var(--measure-tamil);
+}
+.band-split {
+  display: grid;
+  gap: 2.5rem;
+}
+@media (min-width: 52rem) {
+  .band-split {
+    grid-template-columns: 1fr auto;
+    align-items: start;
+  }
+}
+.band-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+.band-links a {
+  color: var(--gold);
+}
+
+.counts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 2.5rem;
+  margin: 0;
+}
+.count dt {
+  font-size: var(--t-xs);
+  color: var(--ink-faint);
+}
+.count dd {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-tamil-serif);
+  font-size: var(--t-xl);
+  color: var(--vel-bright);
+}
+
+.trust-band {
+  display: grid;
+  gap: 0.75rem;
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+}
+.trust-band a {
+  display: inline-block;
+  padding: 0.4rem 0;
+  color: var(--gold);
+  justify-self: start;
+}
+
+/* ------------------------------------------------------- arupadai sequence */
+
+.abode-list {
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--sanctum-edge);
+  border-block: 1px solid var(--sanctum-edge);
+}
+.abode {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  padding: 1.15rem 0.25rem;
+  background: var(--sanctum);
+  text-decoration: none;
+  min-height: 44px;
+}
+.abode:hover {
+  background: var(--sanctum-raised);
+}
+.abode-num {
+  font-family: var(--font-tamil-serif);
+  font-size: var(--t-sm);
+  color: var(--vel);
+  min-width: 2.25rem;
+}
+.abode-body b {
+  font-family: var(--font-tamil-serif);
+  font-size: var(--t-md);
+  color: var(--gold-soft);
+  display: block;
+}
+.abode-body small {
+  color: var(--ink-faint);
+  font-size: var(--t-xs);
+}
+
+/* -------------------------------------------------------------------- page */
+
+.page {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) var(--gutter) var(--band);
+}
+.page-head h1 {
+  font-size: var(--t-2xl);
+  color: var(--gold-soft);
+}
+.page-head p {
+  margin-top: 0.85rem;
+  color: var(--ink-muted);
+  max-width: var(--measure-tamil);
+}
+.latin-name {
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+}
+
+.filter {
+  margin: 2rem 0 1rem;
+  display: grid;
+  gap: 0.5rem;
+  max-width: 30rem;
+}
+.filter label {
+  font-size: var(--t-sm);
+  color: var(--ink-muted);
+}
+.filter input {
+  background: var(--sanctum-raised);
+  border: 1px solid var(--sanctum-edge);
+  color: var(--ink);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.9rem;
+  font: inherit;
+  min-height: 46px;
+}
+.filter input:focus-visible {
+  border-color: var(--gold);
+}
+
+.result-count {
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+  margin-bottom: 1rem;
+}
+
+.temple-list,
+.song-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--sanctum-edge);
+  border-block: 1px solid var(--sanctum-edge);
+}
+.temple-row,
+.song-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 1rem 0.25rem;
+  background: var(--sanctum);
+  text-decoration: none;
+  min-height: 44px;
+}
+.temple-row:hover,
+.song-row:hover {
+  background: var(--sanctum-raised);
+}
+.temple-row b,
+.song-row b {
+  font-family: var(--font-tamil-serif);
+  font-size: var(--t-base);
+  color: var(--ink);
+}
+.temple-row small,
+.song-row small {
+  color: var(--ink-faint);
+  font-size: var(--t-xs);
+}
+
+.tag {
+  font-style: normal;
+  font-size: var(--t-xs);
+  color: var(--vel);
+  border: 1px solid var(--sanctum-edge);
+  border-radius: var(--radius-sm);
+  padding: 0.1rem 0.5rem;
+}
+
+/* ----------------------------------------------------------- fields, state */
+
+.fields {
+  margin: 2rem 0 0;
+  display: grid;
+  gap: 1px;
+  background: var(--sanctum-edge);
+  border-block: 1px solid var(--sanctum-edge);
+}
+.field {
+  background: var(--sanctum);
+  padding: 0.9rem 0.25rem;
+  display: grid;
+  gap: 0.25rem;
+}
+@media (min-width: 40rem) {
+  .field {
+    grid-template-columns: 12rem 1fr;
+    gap: 1.5rem;
+  }
+}
+.field dt {
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+}
+.field dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+.state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--t-xs);
+  color: var(--ink-muted);
+}
+.state-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+}
+.state-verified .state-dot {
+  background: var(--verified);
+}
+.state-pending .state-dot {
+  background: var(--pending);
+}
+.state-absent .state-dot {
+  background: var(--absent);
+}
+.state-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+}
+.state-dimension {
+  color: var(--ink-faint);
+  font-weight: 600;
+}
+
+.empty {
+  margin: 2rem 0;
+  padding: 1.25rem;
+  border-inline-start: 2px solid var(--pending);
+  background: var(--sanctum-raised);
+  color: var(--ink-muted);
+  max-width: var(--measure-tamil);
+}
+
+.note {
+  margin-top: 1.5rem;
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+  word-break: break-word;
+}
+
+.band-note {
+  margin: -2.5rem 0 0;
+  padding: 0 var(--gutter) 2rem;
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+  max-width: var(--measure);
+}
+
+.provenance,
+.official,
+.layers {
+  margin-top: var(--band);
+}
+.provenance h2,
+.official h2,
+.layers h2 {
+  font-size: var(--t-lg);
+  color: var(--gold-soft);
+}
+.official a,
+.source-list a,
+.prose-list a {
+  color: var(--gold);
+}
+
+.source-list,
+.prose-list {
+  margin: 1rem 0 0;
+  padding-inline-start: 1.15rem;
+  color: var(--ink-muted);
+  display: grid;
+  gap: 0.6rem;
+  max-width: var(--measure);
+}
+.source-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+.source-confidence {
+  font-size: var(--t-xs);
+}
+
+.table-scroll {
+  overflow-x: auto;
+  margin-top: 2rem;
+}
+.matrix {
+  width: 100%;
+  min-width: 40rem;
+  border-collapse: collapse;
+  font-size: var(--t-sm);
+}
+.matrix th,
+.matrix td {
+  text-align: start;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid var(--sanctum-edge);
+}
+.matrix thead th {
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.matrix tbody th {
+  font-weight: 600;
+  color: var(--ink);
+}
+.matrix td {
+  color: var(--vel-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ footer */
+
+.site-footer {
+  border-top: 1px solid var(--sanctum-edge);
+  padding: var(--band) var(--gutter) 2.5rem;
+}
+.footer-inner {
+  max-width: 78rem;
+  margin: 0 auto;
+  display: grid;
+  gap: 2rem;
+}
+@media (min-width: 52rem) {
+  .footer-inner {
+    grid-template-columns: 1fr auto;
+  }
+  /* Two-column trust nav only once there is room; at 320-390px a forced
+     two-column grid of nine Tamil links became cramped (R2-CODE-020). */
+  .site-footer nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem 2rem;
+  }
+}
+.footer-note {
+  margin-top: 0.75rem;
+  color: var(--ink-faint);
+  font-size: var(--t-sm);
+  max-width: var(--measure-tamil);
+}
+.site-footer nav {
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+}
+.footer-link {
+  display: inline-block;
+  color: var(--ink-muted);
+  text-decoration: none;
+  font-size: var(--t-sm);
+  /* WCAG 2.2 AA (2.5.8) target-size floor is 24x24 CSS px; a dense trust nav
+     of nine text links is a reasonable case for the floor rather than the
+     44px project preference reserved for primary/mobile controls, but the
+     unpadded link measured just under even that floor. */
+  padding: 0.3rem 0;
+}
+.footer-link:hover {
+  color: var(--gold-soft);
+}
+.footer-legal {
+  max-width: 78rem;
+  margin: 2.5rem auto 0;
+  color: var(--ink-faint);
+  font-size: var(--t-xs);
+}
+
+/* ----------------------------------------------------------- practice count */
+
+.counter {
+  margin: 1.5rem 0 0;
+}
+.counter-value {
+  font-family: var(--font-tamil-serif);
+  font-size: var(--t-3xl);
+  color: var(--vel-bright);
+  font-variant-numeric: tabular-nums;
+}
