@@ -1,0 +1,19 @@
+# OmSaravanaBhava Hi-Tech ownership
+
+# Default owner
+* @ssakthivel02
+
+# High-risk release and runtime surfaces
+.github/workflows/ @ssakthivel02
+wrangler.toml @ssakthivel02
+wrangler.json @ssakthivel02
+wrangler.jsonc @ssakthivel02
+public/sw.js @ssakthivel02
+src/**/service-worker* @ssakthivel02
+release/ @ssakthivel02
+
+# Canonical/source governance
+src/content/ @ssakthivel02
+src/data/ @ssakthivel02
+docs/VERIFIED_SOURCE_ACQUISITION_ROADMAP.md @ssakthivel02
+docs/ARUPADAI_VEEDU_OFFICIAL_SOURCE_REGISTRY.csv @ssakthivel02
