@@ -1,0 +1,78 @@
+{
+  "project": "OmSaravanaBhava Hi-Tech",
+  "policyVersion": "1.0.0",
+  "effectiveDate": "2026-09-04",
+  "recordGovernanceStates": [
+    "GOVERNED",
+    "REVIEW_QUEUE",
+    "QUARANTINED",
+    "RETIRED"
+  ],
+  "sourceVerificationStates": [
+    "SOURCE_VERIFIED",
+    "SOURCE_LINKED_PENDING_REVIEW",
+    "VARIANT_REVIEW_REQUIRED",
+    "SOURCE_UNAVAILABLE",
+    "NOT_APPLICABLE"
+  ],
+  "rightsStates": [
+    "PUBLISHABLE",
+    "METADATA_ONLY",
+    "PERMISSION_PENDING",
+    "RESTRICTED",
+    "OWNER_SUPPLIED_RIGHTS_CONFIRMED",
+    "PUBLIC_DOMAIN_WORK_EDITION_REVIEW_REQUIRED",
+    "NOT_APPLICABLE"
+  ],
+  "completenessStates": [
+    "COMPLETE_FOR_CURRENT_SCOPE",
+    "PARTIAL",
+    "IDENTITY_ONLY",
+    "BODY_TEXT_PENDING",
+    "VISITOR_INFORMATION_PENDING",
+    "AUDIO_PENDING",
+    "NOT_APPLICABLE"
+  ],
+  "seoPublicationStates": [
+    "INDEXABLE_PUBLIC",
+    "PUBLIC_DIRECTORY_ONLY",
+    "PUBLIC_NOINDEX",
+    "WITHHELD"
+  ],
+  "rules": {
+    "governedDoesNotMeanComplete": true,
+    "sourceStateIndependentFromRightsState": true,
+    "sourceStateIndependentFromCompletenessState": true,
+    "rightsStateIndependentFromCompletenessState": true,
+    "thinRecordsMayBePublicButNonIndexable": true,
+    "rawCountsRequireCompletenessContextWhenAmbiguous": true,
+    "dynamicTempleFactsRequireLastVerifiedAt": true,
+    "generatedReflectionSeparateFromCanonicalResults": true,
+    "deviceReadAloudMustNotBeLabelledRecordedAudio": true,
+    "canonicalEasyTamilTransliterationMeaningAreSeparateLayers": true,
+    "materialOverclaimBlocksProduction": true
+  },
+  "currentBaseline": {
+    "templeRecords": 376,
+    "arupadaiVeeduRecords": 6,
+    "thiruppugazhRecords": 12,
+    "thiruppugazhCanonicalBodiesImported": 0,
+    "templeCoordinatesImported": 0,
+    "templeHistoryBodiesImported": 0,
+    "templeArchitectureBodiesImported": 0,
+    "templeVisitorInformationBodiesImported": 0,
+    "audioRecords": 0,
+    "namavaliPublishableCollections": 0
+  },
+  "currentRecommendedSeoDefaults": {
+    "templeIdentityOnly": "PUBLIC_DIRECTORY_ONLY",
+    "thiruppugazhMetadataWithoutCanonicalBody": "PUBLIC_DIRECTORY_ONLY",
+    "trustAndLegalRoutes": "INDEXABLE_PUBLIC",
+    "previewEnvironment": "PUBLIC_NOINDEX"
+  },
+  "releaseGate": {
+    "id": "CONTENT_TRUTH_GATE",
+    "blocking": true,
+    "passCondition": "No material public claim, metric, badge, sitemap entry, structured-data field or generated result may imply a broader verification, completeness, official status, canonical status, rights status or audio availability than the governed data supports."
+  }
+}
