@@ -1,0 +1,85 @@
+{
+  "project": "OmSaravanaBhava Hi-Tech",
+  "version": "1.0.0",
+  "effectiveDate": "2026-09-04",
+  "purpose": "Make every material devotional/content change traceable without silently rewriting canonical or source-derived records.",
+  "recordVersionContract": {
+    "requiredFields": [
+      "recordId",
+      "schemaVersion",
+      "contentVersion",
+      "governanceState",
+      "sourceVerificationState",
+      "rightsState",
+      "completenessState",
+      "updatedAt",
+      "changeReason"
+    ],
+    "recommendedFields": [
+      "sourceIds",
+      "editionId",
+      "textualVariantId",
+      "reviewerDecisionRef",
+      "supersedesVersion",
+      "effectiveReleaseSha"
+    ]
+  },
+  "canonicalTextRules": {
+    "silentMutationAllowed": false,
+    "sourceEvidenceRequiredForChange": true,
+    "variantMustBePreservedWhenUnresolved": true,
+    "easyTamilSeparate": true,
+    "transliterationSeparate": true,
+    "meaningSeparate": true,
+    "generatedReflectionSeparate": true
+  },
+  "dynamicTempleFactRules": {
+    "fieldsRequireFreshness": [
+      "openingHours",
+      "poojaSchedule",
+      "contactDetails",
+      "executiveOfficer",
+      "ticketOrServiceAvailability",
+      "serviceAmounts",
+      "festivalOperationalTimes"
+    ],
+    "requiredProvenanceFields": [
+      "sourceUrl",
+      "sourceAuthority",
+      "retrievedAt",
+      "lastVerifiedAt"
+    ],
+    "historicPreviousValueMayBeRetained": true
+  },
+  "changeClasses": [
+    "CANONICAL_TEXT_CORRECTION",
+    "TEXTUAL_VARIANT_ADDED",
+    "SOURCE_REFERENCE_CORRECTION",
+    "RIGHTS_STATE_CHANGE",
+    "COMPLETENESS_CHANGE",
+    "TEMPLE_DYNAMIC_FACT_REFRESH",
+    "TEMPLE_IDENTITY_CORRECTION",
+    "TRANSLITERATION_CORRECTION",
+    "MEANING_EDITORIAL_CHANGE",
+    "MEDIA_RIGHTS_CHANGE",
+    "SEO_PUBLICATION_STATE_CHANGE",
+    "TECHNICAL_METADATA_ONLY"
+  ],
+  "releaseRules": {
+    "materialContentChangeMustTieToGitOrContentRelease": true,
+    "exactReleaseShaPreferred": true,
+    "previousPublishedVersionRecoverable": true,
+    "contentMigrationMustProduceReport": true,
+    "bulkImportWithoutProvenance": false
+  },
+  "publicChangeHistory": {
+    "requiredForEveryRecord": false,
+    "recommendedForCanonicalCorrections": true,
+    "mustNotExposePrivateReviewerOrSubmitterData": true
+  },
+  "releaseGate": {
+    "id": "CONTENT_VERSION_PROVENANCE_GATE",
+    "blocking": true,
+    "passCondition": "Material canonical/source/rights/dynamic-fact changes are traceable to a source-backed version and release; no canonical content can be silently overwritten without retaining provenance."
+  }
+}
