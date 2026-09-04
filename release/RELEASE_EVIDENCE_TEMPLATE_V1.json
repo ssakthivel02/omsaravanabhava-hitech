@@ -1,0 +1,111 @@
+{
+  "project": "OmSaravanaBhava Hi-Tech",
+  "templateVersion": "1.0.0",
+  "productionAuthorized": false,
+  "candidate": {
+    "repository": "ssakthivel02/omsaravanabhava-hitech",
+    "branch": null,
+    "gitSha": null,
+    "version": null,
+    "buildTimestamp": null,
+    "environment": null,
+    "previewUrl": null,
+    "cloudflareDeploymentId": null
+  },
+  "sourceAuthority": {
+    "applicationAuthority": "clean-room React/TypeScript/Vite application in new repository",
+    "r6Role": "GOVERNED_DATA_PROVENANCE_ONLY",
+    "r6SourceSha256": "3477dd375e9545bd51482f9cacabe851adc6a841cdf111ffd5eb408f76c26585",
+    "legacyApplicationShellAllowed": false
+  },
+  "engineeringEvidence": {
+    "frozenInstall": "PENDING",
+    "exactPnpmVersion": "PENDING",
+    "typecheck": "PENDING",
+    "lint": "PENDING",
+    "unitIntegrationTests": "PENDING",
+    "build": "PENDING",
+    "verifyBuild": "PENDING",
+    "secretScan": "PENDING",
+    "crossProjectContamination": "PENDING",
+    "antiReversion": "PENDING"
+  },
+  "browserEvidence": {
+    "playwright320": "PENDING",
+    "playwright390": "PENDING",
+    "playwright768": "PENDING",
+    "playwright1440": "PENDING",
+    "playwright1920SpotCheck": "PENDING",
+    "landscapePhone": "PENDING",
+    "deepRefresh": "PENDING",
+    "unknownRoute": "PENDING",
+    "privateFreshBrowser": "PENDING"
+  },
+  "accessibilityEvidence": {
+    "axe": "PENDING",
+    "keyboardOnly": "PENDING",
+    "focusVisibility": "PENDING",
+    "skipLinkFocusTransfer": "PENDING",
+    "touchTargets": "PENDING",
+    "zoomReflow200": "PENDING",
+    "reducedMotion": "PENDING",
+    "tamilLanguageSemantics": "PENDING"
+  },
+  "pwaEvidence": {
+    "manifest": "PENDING",
+    "icons": "PENDING",
+    "installability": "NOT_YET_QUALIFIED",
+    "serviceWorkerRegistration": "PENDING",
+    "offlineAfterOnlineVisit": "PENDING",
+    "versionUpdate": "PENDING",
+    "legacyCacheEviction": "PENDING",
+    "staleShellRecovery": "PENDING"
+  },
+  "contentTruthEvidence": {
+    "canonicalTextNoFabrication": "PENDING",
+    "templeFactsNoFabrication": "PENDING",
+    "stateDimensionsIndependent": "PENDING",
+    "searchTruth": "PENDING",
+    "homeMetricsCompletenessContext": "PENDING",
+    "rightsPublicationGate": "PENDING",
+    "dynamicFactFreshness": "PENDING",
+    "correctionWorkflow": "PENDING"
+  },
+  "seoSecurityEvidence": {
+    "previewNoindex": "PENDING",
+    "productionCanonicalLogic": "PENDING",
+    "sitemapPublicationPolicy": "PENDING",
+    "structuredDataTruth": "PENDING",
+    "securityHeaders": "PENDING",
+    "cspPreviewReportOnly": "PENDING",
+    "privacyTelemetryReview": "PENDING"
+  },
+  "performanceEvidence": {
+    "mobileLighthouse": null,
+    "desktopLighthouse": null,
+    "lcp": null,
+    "inp": null,
+    "cls": null,
+    "homeInitialTransferKb": null,
+    "homeInitialJsGzipKb": null,
+    "templeCorpusAbsentFromHomeInitialChunk": "PENDING"
+  },
+  "visualEvidence": {
+    "p0VisualMatrix": "PENDING",
+    "homeSacredTech": "PENDING",
+    "arupadaiJourney": "PENDING",
+    "templeDirectory": "PENDING",
+    "templeDetailIncompleteState": "PENDING",
+    "thiruppugazhReaderShell": "PENDING",
+    "search": "PENDING",
+    "tamilPrimary": "PENDING"
+  },
+  "releaseControl": {
+    "rollbackTargetRecorded": false,
+    "ownerVisualContentApproval": false,
+    "ownerProductionApproval": false,
+    "rootDomainChanged": false,
+    "finalStatus": "NO_GO"
+  },
+  "rule": "No PENDING mandatory field may be silently converted to PASS without exact-candidate evidence tied to gitSha. Production approval remains a separate owner action."
+}
