@@ -13,7 +13,11 @@ export default defineConfig({
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: { baseURL: 'http://127.0.0.1:4173', trace: 'on-first-retry' },
   webServer: {
-    command: 'pnpm run preview --port 4173 --strictPort',
+    // Bind explicitly to IPv4. Vite's localhost binding can resolve to ::1 on
+    // hosted Linux runners while Playwright probes 127.0.0.1, which makes the
+    // server appear unavailable until the webServer timeout even though the
+    // build itself is healthy.
+    command: 'pnpm exec vite preview --host 127.0.0.1 --port 4173 --strictPort',
     url: 'http://127.0.0.1:4173',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
