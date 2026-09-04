@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 2,
+  "repository": "ssakthivel02/omsaravanabhava-hitech",
+  "commit": "aa8300f94028f3b584f866a90ecdb3b34f6660e4",
+  "branch": "build/native-r6-flagship",
+  "version": "1.0.0",
+  "buildTimestamp": "2026-09-04T20:13:47.225Z",
+  "environment": "development",
+  "sourceAuthority": {
+    "archive": "OmSaravanaBhava_R6_FINAL_MANUS_MASTER_SOURCE.zip",
+    "sha256": "3477dd375e9545bd51482f9cacabe851adc6a841cdf111ffd5eb408f76c26585",
+    "verified": true,
+    "role": "governed-data-and-provenance-only",
+    "legacyApplicationShellAuthorized": false
+  },
+  "application": "omsaravanabhava-hitech",
+  "cacheNamespace": "omsaravanabhava-hitech-v1",
+  "pwaInstallability": "NOT_YET_QUALIFIED",
+  "antiReversion": {
+    "legacyRuntimeAuthorized": false,
+    "exactRepositoryRequired": true
+  }
+}

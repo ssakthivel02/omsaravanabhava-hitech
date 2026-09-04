@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-09-04T12:25:36.808Z",
+  "sourceArchiveSha256": "3477dd375e9545bd51482f9cacabe851adc6a841cdf111ffd5eb408f76c26585",
+  "note": "Counts are computed directly from the hash-verified R6 governed registries. Published state reflects what is actually present, never what is aspirational.",
+  "domains": [
+    {
+      "key": "temples",
+      "labelTa": "கோயில்கள்",
+      "labelEn": "Temples",
+      "records": 376,
+      "withCoordinates": 0,
+      "withHistory": 0,
+      "withVisitorInfo": 0
+    },
+    {
+      "key": "arupadai",
+      "labelTa": "அறுபடை வீடு",
+      "labelEn": "Arupadai Veedu",
+      "records": 6,
+      "withCoordinates": 0,
+      "withHistory": 0,
+      "withVisitorInfo": 0
+    },
+    {
+      "key": "thiruppugazh",
+      "labelTa": "திருப்புகழ்",
+      "labelEn": "Thiruppugazh",
+      "records": 12,
+      "withCanonicalText": 0,
+      "withMeaning": 0,
+      "withAudio": 0
+    },
+    {
+      "key": "works",
+      "labelTa": "நூல்கள்",
+      "labelEn": "Works",
+      "records": 10
+    },
+    {
+      "key": "names",
+      "labelTa": "திருநாமங்கள்",
+      "labelEn": "Sacred names",
+      "records": 7
+    },
+    {
+      "key": "prayers",
+      "labelTa": "மந்திரம் · துதி",
+      "labelEn": "Mantras & prayers",
+      "records": 12,
+      "withCanonicalText": 0,
+      "withMeaning": 0,
+      "withAudio": 0
+    },
+    {
+      "key": "namavali",
+      "labelTa": "நாமாவளி",
+      "labelEn": "Namavali",
+      "records": 0,
+      "withCanonicalText": 0
+    },
+    {
+      "key": "audio",
+      "labelTa": "ஒலி",
+      "labelEn": "Audio",
+      "records": 0
+    },
+    {
+      "key": "festivals",
+      "labelTa": "திருவிழாக்கள்",
+      "labelEn": "Festivals",
+      "records": 2
+    }
+  ]
+}
