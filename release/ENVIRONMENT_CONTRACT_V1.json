@@ -1,0 +1,60 @@
+{
+  "project": "OmSaravanaBhava Hi-Tech",
+  "version": "1.0.0",
+  "environments": {
+    "development": {
+      "productionDomain": false,
+      "indexable": false,
+      "releaseShaRequired": false,
+      "cloudflareProject": null,
+      "analyticsDefault": "OFF",
+      "canonicalPolicy": "NONE"
+    },
+    "preview": {
+      "productionDomain": false,
+      "indexable": false,
+      "robots": "DISALLOW_ALL",
+      "xRobotsTag": "noindex, nofollow, noarchive",
+      "canonicalPolicy": "NO_PRODUCTION_CANONICAL_COLLISION",
+      "releaseShaRequired": true,
+      "repositoryMustEqual": "ssakthivel02/omsaravanabhava-hitech",
+      "cloudflareProject": "omsaravanabhava-hitech-preview",
+      "preferredInitialHost": "workers.dev",
+      "cspMode": "REPORT_ONLY_FIRST",
+      "analyticsDefault": "OFF",
+      "serviceWorkerNamespacePrefix": "omsaravanabhava-hitech-v1-",
+      "productionSitemapAllowed": false,
+      "rootDnsMutationAllowed": false
+    },
+    "production": {
+      "productionDomain": true,
+      "origin": "https://omsaravanabhava.org",
+      "indexable": true,
+      "robots": "PUBLICATION_POLICY_DRIVEN",
+      "canonicalPolicy": "SELF_CANONICAL_ON_INDEXABLE_PUBLIC_ROUTES",
+      "releaseShaRequired": true,
+      "repositoryMustEqual": "ssakthivel02/omsaravanabhava-hitech",
+      "cloudflareProject": "omsaravanabhava-hitech",
+      "cspMode": "ENFORCED_AFTER_PREVIEW_VALIDATION",
+      "analyticsDefault": "PRIVACY_REVIEW_REQUIRED",
+      "serviceWorkerNamespacePrefix": "omsaravanabhava-hitech-v1-",
+      "productionSitemapAllowed": true,
+      "rootDnsMutationAllowed": "OWNER_APPROVAL_ONLY"
+    }
+  },
+  "invariants": {
+    "legacyRepositoryBuildAllowed": false,
+    "legacyWorkerReuseAllowed": false,
+    "legacyCacheNamespaceReuseAllowed": false,
+    "crossProjectRuntimeAllowed": false,
+    "previewMayAdvertiseProductionSitemap": false,
+    "previewMayBeIndexable": false,
+    "productionMayDeployLocalPlaceholderSha": false,
+    "productionRequiresOwnerApproval": true
+  },
+  "releaseGate": {
+    "id": "ENVIRONMENT_SEPARATION_GATE",
+    "blocking": true,
+    "passCondition": "Preview and production are generated from explicit environment policy; preview cannot become indexable/production-routed and production cannot deploy without exact SHA and owner-approved root-domain cutover."
+  }
+}
