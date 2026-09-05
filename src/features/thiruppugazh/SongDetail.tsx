@@ -48,32 +48,17 @@ export default function SongDetail() {
         <h2 id="layers-h" lang="ta">
           அடுக்குகள்
         </h2>
-        <dl className="fields">
-          <div className="field">
-            <dt lang="ta">மூல உரை</dt>
-            <dd>
-              <StateBadge state={song.canonicalTextStatus} />
-            </dd>
-          </div>
-          <div className="field">
-            <dt lang="ta">பொருள்</dt>
-            <dd>
-              <StateBadge state={song.meaningState} />
-            </dd>
-          </div>
-          <div className="field">
-            <dt lang="ta">ஒலிபெயர்ப்பு</dt>
-            <dd>
-              <StateBadge state={song.transliterationState} />
-            </dd>
-          </div>
-          <div className="field">
-            <dt lang="ta">ஒலி</dt>
-            <dd>
-              <StateBadge state={song.audioState} />
-            </dd>
-          </div>
-        </dl>
+        <p className="note" lang="ta">
+          மூல உரை, பொருள், ஒலிபெயர்ப்பு, ஒலி — ஒவ்வொன்றும் தனித்தனி வெளியீட்டு
+          நிலை; ஒன்று கிடைத்துவிட்டால் மற்றொன்றும் கிடைத்துவிட்டதாகக்
+          கருதப்படாது.
+        </p>
+        <p className="state-row">
+          <StateBadge state={song.canonicalTextStatus} dimension="மூல உரை" />
+          <StateBadge state={song.meaningState} dimension="பொருள்" />
+          <StateBadge state={song.transliterationState} dimension="ஒலிபெயர்ப்பு" />
+          <StateBadge state={song.audioState} dimension="ஒலி" />
+        </p>
       </section>
 
       <section className="provenance">
@@ -89,7 +74,7 @@ export default function SongDetail() {
           </div>
           <div className="field">
             <dt lang="ta">உரிமை நிலை</dt>
-            <dd>{song.rightsStatus ?? '—'}</dd>
+            <dd>{song.rightsStatus ? <StateBadge state={song.rightsStatus} /> : '—'}</dd>
           </div>
         </dl>
       </section>

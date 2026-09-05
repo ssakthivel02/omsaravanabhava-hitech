@@ -143,8 +143,15 @@ describe('truthful content states', () => {
 
   it('states plainly when a temple has no history or visitor info from source yet', async () => {
     renderAt('/temples/ctm-tirupparankundram');
+    // R2.2B replaced the old single all-or-nothing paragraph with a
+    // per-field "still pending" list, so the truthful-gap check now looks
+    // for that section and the specific missing fields rather than one
+    // fixed sentence.
+    expect(await screen.findByText('இன்னும் நிலுவையில்')).toBeInTheDocument();
+    expect(screen.getByText('வரலாறு')).toBeInTheDocument();
+    expect(screen.getByText('பயணத் தகவல்')).toBeInTheDocument();
     expect(
-      await screen.findByText(/இன்னும்\s*மூலத்திலிருந்து\s*கிடைக்கவில்லை/),
+      screen.getByText(/சரிபார்க்கப்படாத தகவலை இத்தளம் வெளியிடாது/),
     ).toBeInTheDocument();
   });
 

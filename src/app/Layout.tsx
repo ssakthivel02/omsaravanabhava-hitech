@@ -7,10 +7,18 @@ const NAV = [
   { href: '/arupadai-veedu', ta: 'அறுபடை வீடு', en: 'Six abodes' },
   { href: '/temples', ta: 'கோயில்கள்', en: 'Temples' },
   { href: '/thiruppugazh', ta: 'திருப்புகழ்', en: 'Thiruppugazh' },
+  { href: '/works', ta: 'நூல்கள்', en: 'Sacred works' },
   { href: '/prayers', ta: 'மந்திரம்', en: 'Prayers' },
   { href: '/practice', ta: 'வழிபாடு', en: 'Practice' },
   { href: '/search', ta: 'தேடல்', en: 'Search' },
 ];
+
+// A route's nav item stays highlighted across its own detail pages (e.g.
+// /temples/:id, /thiruppugazh/:id) so the header reflects which section the
+// visitor is actually in, not only an exact top-level match.
+function isNavActive(location: string, href: string) {
+  return location === href || location.startsWith(`${href}/`);
+}
 
 const TRUST = [
   { href: '/sources', ta: 'மூலங்கள்' },
@@ -51,11 +59,14 @@ export default function Layout({ children }: { children: ReactNode }) {
                 key={n.href}
                 href={n.href}
                 className="nav-link"
-                aria-current={location === n.href ? 'page' : undefined}
+                aria-current={isNavActive(location, n.href) ? 'page' : undefined}
               >
                 <span lang="ta">{n.ta}</span>
               </Link>
             ))}
+            <Link href="/sources" className="nav-link nav-link-trust">
+              <span lang="ta">மூலங்கள்</span>
+            </Link>
           </nav>
 
           <button
@@ -65,23 +76,58 @@ export default function Layout({ children }: { children: ReactNode }) {
             aria-controls="mobile-nav"
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? 'மூடு' : 'பட்டி'}
+            <svg
+              className="menu-toggle-icon"
+              viewBox="0 0 20 20"
+              width="18"
+              height="18"
+              aria-hidden="true"
+            >
+              {open ? (
+                <path
+                  d="M4 4 L16 16 M16 4 L4 16"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+              ) : (
+                <path
+                  d="M3 5.5 H17 M3 10 H17 M3 14.5 H17"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+              )}
+            </svg>
+            <span lang="ta">{open ? 'மூடு' : 'பட்டி'}</span>
           </button>
         </div>
 
         {open && (
           <nav id="mobile-nav" className="mobile-nav" aria-label="முதன்மை வழிசெலுத்தல்">
-            {[...NAV, ...TRUST.map((t) => ({ ...t, en: '' }))].map((n) => (
+            {[...NAV, { href: '/sources', ta: 'மூலங்கள்', en: '' }].map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
                 className="nav-link"
-                aria-current={location === n.href ? 'page' : undefined}
+                aria-current={isNavActive(location, n.href) ? 'page' : undefined}
                 onClick={() => setOpen(false)}
               >
                 <span lang="ta">{n.ta}</span>
               </Link>
             ))}
+            <div className="mobile-nav-trust">
+              {TRUST.filter((t) => t.href !== '/sources' && t.href !== '/works').map((t) => (
+                <Link
+                  key={t.href}
+                  href={t.href}
+                  className="mobile-nav-trust-link"
+                  onClick={() => setOpen(false)}
+                >
+                  <span lang="ta">{t.ta}</span>
+                </Link>
+              ))}
+            </div>
           </nav>
         )}
       </header>

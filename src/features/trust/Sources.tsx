@@ -39,11 +39,11 @@ export default function Sources() {
         </ul>
       </section>
 
-      <section aria-labelledby="ledger-h">
+      <section className="layers" aria-labelledby="ledger-h">
         <h2 id="ledger-h" lang="ta">
           மூல ஏடு
         </h2>
-        <ul className="prose-list">
+        <ul className="ledger-list">
           {sourceLedger.map((s, i) => (
             <li key={i}>
               {s.url ? (

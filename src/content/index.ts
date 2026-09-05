@@ -216,6 +216,10 @@ export function describeState(state: string): { label: string; tone: StateTone }
   const s = state.toUpperCase();
   if (s.includes('NO_APPROVED_AUDIO'))
     return { label: 'அங்கீகரிக்கப்பட்ட ஒலி இல்லை', tone: 'absent' };
+  if (s.includes('NO_IMAGE_AVAILABLE')) return { label: 'படம் இல்லை', tone: 'absent' };
+  if (s.includes('IMAGE_PENDING')) return { label: 'படம் நிலுவையில்', tone: 'pending' };
+  if (s === 'UNKNOWN')
+    return { label: 'சரிபார்ப்பு நிலை பதிவு செய்யப்படவில்லை', tone: 'pending' };
   if (s.includes('NOT_REIMPORTED'))
     return { label: 'மூலம் இணைக்கப்பட்டது · உரை இன்னும் ஏற்றப்படவில்லை', tone: 'pending' };
   if (s.includes('ZERO_PUBLISHABLE'))
@@ -226,12 +230,25 @@ export function describeState(state: string): { label: string; tone: StateTone }
     return { label: 'விவரங்கள் மட்டும் · உரை இல்லை', tone: 'pending' };
   if (s.includes('NOT_REPUBLISHED'))
     return { label: 'மறுவெளியீடு செய்யப்படவில்லை', tone: 'absent' };
+  if (s.includes('HEADER_PRESERVATION'))
+    return {
+      label: 'மூல பதிப்பாளர் தலைப்பு/பண்புரிமைக் குறிப்புடன் மட்டுமே மறுவெளியீடு',
+      tone: 'pending',
+    };
   if (s.includes('SOURCE_REQUIRED'))
     return { label: 'மூலம் தேவை', tone: 'pending' };
-  if (s.includes('NOT_PUBLISHED'))
-    return { label: 'இன்னும் வெளியிடப்படவில்லை', tone: 'absent' };
+  // Checked before the bare NOT_PUBLISHED case below: the temple registry's
+  // coordinateConfidence uses two differently-worded values for the exact
+  // same real state (zero coordinates published for any of the 376
+  // temples) — "COORDINATES_PENDING_VERIFICATION" on 16 records and
+  // "not_published_pending_verification" on the other 360. Checking
+  // NOT_PUBLISHED first was making the identical ground truth show two
+  // different labels/tones depending only on which wording a record
+  // happened to use; both now read as pending verification.
   if (s.includes('PENDING_VERIFICATION'))
     return { label: 'சரிபார்ப்பு நிலுவையில்', tone: 'pending' };
+  if (s.includes('NOT_PUBLISHED'))
+    return { label: 'இன்னும் வெளியிடப்படவில்லை', tone: 'absent' };
   if (s.includes('INHERITED_VERIFIED') || s.includes('VERIFIED'))
     return { label: 'மூலத்துடன் சரிபார்க்கப்பட்டது', tone: 'verified' };
   if (s.includes('ILLUSTRATIVE'))

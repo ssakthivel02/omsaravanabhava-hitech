@@ -44,3 +44,7 @@ _site/
 playwright-report/
 test-results/
 *.local
+# Session status docs and visual-evidence handoff bundles are packaged for
+# delivery to the owner's local folder / chat, not committed as app source.
+CURRENT_OMSARAVANABHAVA_MANUS_FIRST_VISUAL_STATUS.md
+*_VISUAL_EVIDENCE/

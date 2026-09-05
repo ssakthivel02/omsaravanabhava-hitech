@@ -1,4 +1,31 @@
-import { describeState } from '@/content';
+import { describeState, type StateTone } from '@/content';
+
+/**
+ * Renders an already-resolved {label, tone} pair (e.g. from
+ * `describeSourceConfidence`, which — unlike `describeState` — describes
+ * source/identity confidence rather than publication state). Exported so a
+ * caller that already has the resolved pair doesn't have to reconstruct this
+ * markup by hand.
+ */
+export function StateBadgeResolved({
+  label,
+  tone,
+  dimension,
+}: {
+  label: string;
+  tone: StateTone;
+  dimension?: string | undefined;
+}) {
+  return (
+    <span className={`state state-${tone}`}>
+      <span className="state-dot" aria-hidden="true" />
+      <span lang="ta">
+        {dimension ? <span className="state-dimension">{dimension}: </span> : null}
+        {label}
+      </span>
+    </span>
+  );
+}
 
 /**
  * Renders a governed record's real verification state. This component is the
@@ -18,13 +45,5 @@ export default function StateBadge({
   dimension?: string;
 }) {
   const { label, tone } = describeState(state);
-  return (
-    <span className={`state state-${tone}`}>
-      <span className="state-dot" aria-hidden="true" />
-      <span lang="ta">
-        {dimension ? <span className="state-dimension">{dimension}: </span> : null}
-        {label}
-      </span>
-    </span>
-  );
+  return <StateBadgeResolved label={label} tone={tone} dimension={dimension} />;
 }

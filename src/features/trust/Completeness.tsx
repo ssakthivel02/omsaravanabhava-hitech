@@ -1,5 +1,6 @@
 import { completeness, namavali } from '@/content';
 import type { CompletenessDomain } from '@/content';
+import StateBadge, { StateBadgeResolved } from '@/components/StateBadge';
 
 /**
  * Every column below is one independent dimension. R2-CODE-004: the previous
@@ -10,8 +11,14 @@ import type { CompletenessDomain } from '@/content';
  * yet) are rendered differently on purpose — collapsing them was the bug.
  */
 function Cell({ value }: { value: number | undefined }) {
-  if (value === undefined) return <td lang="ta">பொருந்தாது</td>;
-  return <td>{value}</td>;
+  if (value === undefined) {
+    return (
+      <td className="matrix-na" lang="ta">
+        பொருந்தாது
+      </td>
+    );
+  }
+  return <td className={value === 0 ? 'matrix-zero' : undefined}>{value}</td>;
 }
 
 const COLUMNS: Array<{ key: keyof CompletenessDomain; labelTa: string }> = [
@@ -23,7 +30,28 @@ const COLUMNS: Array<{ key: keyof CompletenessDomain; labelTa: string }> = [
   { key: 'withAudio', labelTa: 'ஒலி' },
 ];
 
+/**
+ * `namavali.researchState` carries raw internal research-tracking codes
+ * (e.g. "RESEARCH_REQUIRED_IDENTIFIABLE_EDITION_AND_RIGHTS") that were
+ * previously rendered verbatim inside a <dd> — a raw-enum leak on the one
+ * page whose entire purpose is plain-language provenance. `policy` is
+ * already a plain sentence rather than a state code, so it is shown
+ * separately instead of being forced into the same key/value list.
+ */
+const RESEARCH_ITEM_LABELS: Record<string, string> = {
+  kumarastavam_44: 'குமரஸ்தவம் (44 விளி)',
+  ashtottara_108: 'அஷ்டோத்தர சத நாமாவளி (108)',
+};
+const RESEARCH_STATE_LABELS: Record<string, string> = {
+  NOT_TREATED_AS_SYNTHETIC_NAMAVALI:
+    'இயற்றப்பட்ட/இணைக்கப்பட்ட நாமாவளியாகக் கருதப்படவில்லை',
+  RESEARCH_REQUIRED_IDENTIFIABLE_EDITION_AND_RIGHTS:
+    'அடையாளம் தெரிந்த பதிப்பும் உரிமை நிலையும் தேவை',
+};
+
 export default function Completeness() {
+  const { policy, ...researchItems } = namavali.researchState;
+
   return (
     <article className="page">
       <header className="page-head">
@@ -72,25 +100,37 @@ export default function Completeness() {
         </table>
       </div>
 
-      <section aria-labelledby="namavali-h">
+      <section className="layers" aria-labelledby="namavali-h">
         <h2 id="namavali-h" lang="ta">
-          நாமாவளி — ஆய்வு நிலை (மேம்பட்ட)
+          நாமாவளி — ஆய்வு நிலை
         </h2>
         <p className="note" lang="ta">
-          தொகுப்பு நிலை: {namavali.datasetStatus}
+          தொகுப்பு நிலை: <StateBadge state={namavali.datasetStatus} />
         </p>
         <dl className="fields">
-          {Object.entries(namavali.researchState).map(([k, v]) => (
+          {Object.entries(researchItems).map(([k, v]) => (
             <div className="field" key={k}>
-              <dt><code>{k}</code></dt>
-              <dd>{v}</dd>
+              <dt lang="ta">{RESEARCH_ITEM_LABELS[k] ?? k}</dt>
+              <dd>
+                <StateBadgeResolved
+                  label={RESEARCH_STATE_LABELS[v] ?? v}
+                  tone="pending"
+                />
+              </dd>
             </div>
           ))}
         </dl>
+        {typeof policy === 'string' && (
+          <p className="note" lang="en">
+            {policy}
+          </p>
+        )}
       </section>
 
-      <p className="note">{completeness.note}</p>
-      <p className="note">
+      <p className="note" lang="en">
+        {completeness.note}
+      </p>
+      <p className="note" lang="en">
         Source archive SHA-256: <code>{completeness.sourceArchiveSha256}</code>
       </p>
     </article>

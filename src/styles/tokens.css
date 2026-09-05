@@ -86,6 +86,13 @@ body {
   font-size: var(--t-base);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  /* Tamil place/deity names are frequently one long, unspaced compound
+     word (திருப்பரங்குன்றம்) with no natural break opportunity. At narrow
+     viewports that single word can be wider than its column and push the
+     whole page into horizontal overflow. `overflow-wrap` inherits, so this
+     one rule protects every heading and label site-wide without changing
+     how normal multi-word text wraps. */
+  overflow-wrap: break-word;
 }
 
 h1,

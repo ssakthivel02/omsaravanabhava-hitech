@@ -1,6 +1,19 @@
 import { works, devotionalWorks } from '@/content';
 import StateBadge from '@/components/StateBadge';
 
+// `works` and `devotionalWorks` are two separate registry chunks that
+// overlap on several ids (e.g. "kandar-anubhuti") — `devotionalWorks` is the
+// newer, more governed record (author, sources, per-layer publication
+// state) for the same work. Rendering both verbatim showed the same title
+// twice with two different badges, which reads as either a data error or a
+// contradiction rather than two honest states. `devotionalWorks` wins on a
+// shared id; `works` only contributes ids it alone still holds.
+const devotionalIds = new Set(devotionalWorks.map((w) => w.id));
+const catalogue = [
+  ...devotionalWorks,
+  ...works.filter((w) => !w.id || !devotionalIds.has(w.id)),
+];
+
 /** Devotional works / song corpus. Metadata and rights state only. */
 export default function Works() {
   return (
@@ -14,8 +27,8 @@ export default function Works() {
       </header>
 
       <ul className="temple-list">
-        {[...works, ...devotionalWorks].map((w, i) => (
-          <li key={(w.id ?? '') + i}>
+        {catalogue.map((w) => (
+          <li key={w.id}>
             <div className="temple-row">
               <b lang="ta">{w.titleTa ?? w.titleEn}</b>
               <small>{w.titleEn}</small>
