@@ -3,12 +3,15 @@ import { useEffect } from 'react';
 const SITE = 'ஓம் சரவணபவ';
 const PRODUCTION_ORIGIN = 'https://omsaravanabhava.org';
 
-type Meta = { title: string; description: string };
+type Meta = { title: string; description: string; indexable?: boolean };
 
 const META: Array<[RegExp, Meta]> = [
   [/^\/$/, { title: `${SITE} — முருகன் பக்தி அறிவுத் தளம்`, description: 'அறுபடை வீடு, திருப்புகழ், முருகன் கோயில்கள் மற்றும் மூலநிலை குறிக்கப்பட்ட தமிழ் பக்தி அறிவுத் தளம்.' }],
   [/^\/knowledge\/?$/, { title: `முருகன் அறிவுக் களம் — ${SITE}`, description: 'இந்த வெளியீட்டில் உள்ள ஆளுகை/மூலம்-குறிக்கப்பட்ட முருகன் பெயர்கள், அறுபடை வீடுகள், நூல்கள் மற்றும் திருப்புகழ் பதிவுகளின் அறிவுக் களம்.' }],
-  [/^\/library\/?$/, { title: `என் சேமிப்புகள் — ${SITE}`, description: 'இந்த உலாவியில் மட்டும் சேமிக்கப்பட்ட மற்றும் சமீபத்தில் பார்த்த OmSaravanaBhava பதிவுகள்.' }],
+  // Browser-local utility, not a public content landing page. Keeping this
+  // noindex also prevents a crawler from indexing an empty generic shell that
+  // can never contain the visitor's device-local saved state.
+  [/^\/library\/?$/, { title: `என் சேமிப்புகள் — ${SITE}`, description: 'இந்த உலாவியில் மட்டும் சேமிக்கப்பட்ட மற்றும் சமீபத்தில் பார்த்த OmSaravanaBhava பதிவுகள்.', indexable: false }],
   [/^\/arupadai-veedu\/?$/, { title: `அறுபடை வீடு — ${SITE}`, description: 'முருகனின் ஆறு படைவீடுகளை பாரம்பரிய யாத்திரை வரிசையிலும் மூல நிலையுடனும் அறிக.' }],
   [/^\/temples\/?$/, { title: `முருகன் கோயில்கள் — ${SITE}`, description: 'மூல மற்றும் சரிபார்ப்பு நிலையுடன் தொகுக்கப்பட்ட முருகன் கோயில் அடைவு.' }],
   [/^\/temples\//, { title: `கோயில் பதிவு — ${SITE}`, description: 'மூல ஆதாரம் மற்றும் உள்ளடக்க நிலை தெளிவாகக் காட்டப்படும் முருகன் கோயில் பதிவு.' }],
@@ -32,12 +35,21 @@ const resolveMeta = (path: string): Meta =>
   META.find(([pattern]) => pattern.test(path))?.[1] ?? {
     title: `பக்கம் காணப்படவில்லை — ${SITE}`,
     description: 'கோரப்பட்ட OmSaravanaBhava பக்கம் கிடைக்கவில்லை.',
+    indexable: false,
   };
 
 const setMeta = (selector: string, attr: 'content' | 'href', value: string) => {
   const node = document.querySelector(selector) as HTMLMetaElement | HTMLLinkElement | null;
   if (node) node.setAttribute(attr, value);
 };
+
+function setRobots(value: string) {
+  const existing = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
+  const node = existing ?? document.createElement('meta');
+  node.name = 'robots';
+  node.content = value;
+  if (!existing) document.head.appendChild(node);
+}
 
 function applyMeta(path: string, meta: Meta) {
   document.title = meta.title;
@@ -46,8 +58,11 @@ function applyMeta(path: string, meta: Meta) {
   setMeta('meta[property="og:description"]', 'content', meta.description);
 
   const production = window.location.origin === PRODUCTION_ORIGIN;
+  const indexable = meta.indexable !== false;
+  setRobots(production && indexable ? 'index,follow' : 'noindex,nofollow,noarchive');
+
   const canonical = document.querySelector('link[rel="canonical"]');
-  if (production) {
+  if (production && indexable) {
     const link = (canonical ?? document.createElement('link')) as HTMLLinkElement;
     link.rel = 'canonical';
     link.href = `${PRODUCTION_ORIGIN}${path === '/' ? '/' : path.replace(/\/$/, '')}`;
@@ -55,6 +70,7 @@ function applyMeta(path: string, meta: Meta) {
     setMeta('meta[property="og:url"]', 'content', link.href);
   } else {
     canonical?.remove();
+    setMeta('meta[property="og:url"]', 'content', '');
   }
 }
 
@@ -68,6 +84,10 @@ export function useEntityMeta(path: string, title: string | null, description?: 
   useEffect(() => {
     if (!title) return;
     const fallback = resolveMeta(path);
-    applyMeta(path, { title, description: description ?? fallback.description });
+    applyMeta(path, {
+      title,
+      description: description ?? fallback.description,
+      indexable: fallback.indexable,
+    });
   }, [path, title, description]);
 }
