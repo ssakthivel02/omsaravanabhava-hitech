@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 const SITE = 'ஓம் சரவணபவ';
 const PRODUCTION_ORIGIN = 'https://omsaravanabhava.org';
 
-type Meta = { title: string; description: string; indexable?: boolean };
+type Meta = { title: string; description: string; indexable?: boolean | undefined };
 
 const META: Array<[RegExp, Meta]> = [
   [/^\/$/, { title: `${SITE} — முருகன் பக்தி அறிவுத் தளம்`, description: 'அறுபடை வீடு, திருப்புகழ், முருகன் கோயில்கள் மற்றும் மூலநிலை குறிக்கப்பட்ட தமிழ் பக்தி அறிவுத் தளம்.' }],
