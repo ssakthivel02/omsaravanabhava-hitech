@@ -10,12 +10,14 @@ import {
 export default function SaveControl({ item }: { item: LibraryRef }) {
   const [saved, setSaved] = useState(() => isSaved(item));
   const [message, setMessage] = useState('');
+  const itemType = item.type;
+  const itemId = item.id;
 
   useEffect(() => {
-    const sync = () => setSaved(isSaved(item));
+    const sync = () => setSaved(isSaved({ type: itemType, id: itemId }));
     sync();
     return subscribeLibrary(sync);
-  }, [item.id, item.type]);
+  }, [itemId, itemType]);
 
   const toggle = () => {
     const ok = saved ? unsaveItem(item) : saveItem(item);
