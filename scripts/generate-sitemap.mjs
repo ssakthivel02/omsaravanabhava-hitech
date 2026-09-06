@@ -3,6 +3,9 @@
  * Sitemap only includes routes with enough publishable substance to deserve
  * indexing. Directory records can remain publicly browsable without creating
  * hundreds of thin search-engine landing pages.
+ *
+ * `/library` is deliberately excluded: it is a browser-local utility whose
+ * contents exist only on the visitor's device, not a public discovery page.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 
@@ -12,7 +15,7 @@ const production = env === 'production';
 const read = (f) => JSON.parse(readFileSync(`src/content/${f}`, 'utf8'));
 
 const staticRoutes = [
-  '/', '/arupadai-veedu', '/temples', '/thiruppugazh', '/works', '/prayers',
+  '/', '/knowledge', '/arupadai-veedu', '/temples', '/thiruppugazh', '/works', '/prayers',
   '/practice', '/search', '/sources', '/content-completeness', '/about',
   '/privacy', '/terms', '/disclaimer', '/accessibility', '/contact',
 ];
