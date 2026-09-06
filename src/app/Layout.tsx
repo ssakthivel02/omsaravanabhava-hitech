@@ -1,11 +1,13 @@
 import { useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'wouter';
 import VelMark from '@/components/VelMark';
+import ConnectionStatus from '@/components/ConnectionStatus';
 import { useRouteMetadata } from '@/lib/routeMeta';
 
 const NAV = [
   { href: '/arupadai-veedu', ta: 'அறுபடை வீடு', en: 'Six abodes' },
   { href: '/temples', ta: 'கோயில்கள்', en: 'Temples' },
+  { href: '/knowledge', ta: 'அறிவுக் களம்', en: 'Knowledge' },
   { href: '/thiruppugazh', ta: 'திருப்புகழ்', en: 'Thiruppugazh' },
   { href: '/works', ta: 'நூல்கள்', en: 'Sacred works' },
   { href: '/prayers', ta: 'மந்திரம்', en: 'Prayers' },
@@ -13,14 +15,12 @@ const NAV = [
   { href: '/search', ta: 'தேடல்', en: 'Search' },
 ];
 
-// A route's nav item stays highlighted across its own detail pages (e.g.
-// /temples/:id, /thiruppugazh/:id) so the header reflects which section the
-// visitor is actually in, not only an exact top-level match.
 function isNavActive(location: string, href: string) {
   return location === href || location.startsWith(`${href}/`);
 }
 
 const TRUST = [
+  { href: '/library', ta: 'என் சேமிப்புகள்' },
   { href: '/sources', ta: 'மூலங்கள்' },
   { href: '/content-completeness', ta: 'உள்ளடக்க நிலை' },
   { href: '/works', ta: 'நூல்கள்' },
@@ -64,7 +64,18 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <span lang="ta">{n.ta}</span>
               </Link>
             ))}
-            <Link href="/sources" className="nav-link nav-link-trust">
+            <Link
+              href="/library"
+              className="nav-link nav-link-library"
+              aria-current={isNavActive(location, '/library') ? 'page' : undefined}
+            >
+              <span lang="ta">சேமிப்பு</span>
+            </Link>
+            <Link
+              href="/sources"
+              className="nav-link nav-link-trust"
+              aria-current={isNavActive(location, '/sources') ? 'page' : undefined}
+            >
               <span lang="ta">மூலங்கள்</span>
             </Link>
           </nav>
@@ -84,19 +95,9 @@ export default function Layout({ children }: { children: ReactNode }) {
               aria-hidden="true"
             >
               {open ? (
-                <path
-                  d="M4 4 L16 16 M16 4 L4 16"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
+                <path d="M4 4 L16 16 M16 4 L4 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               ) : (
-                <path
-                  d="M3 5.5 H17 M3 10 H17 M3 14.5 H17"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
+                <path d="M3 5.5 H17 M3 10 H17 M3 14.5 H17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               )}
             </svg>
             <span lang="ta">{open ? 'மூடு' : 'பட்டி'}</span>
@@ -105,7 +106,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
         {open && (
           <nav id="mobile-nav" className="mobile-nav" aria-label="முதன்மை வழிசெலுத்தல்">
-            {[...NAV, { href: '/sources', ta: 'மூலங்கள்', en: '' }].map((n) => (
+            {[...NAV, { href: '/library', ta: 'என் சேமிப்புகள்', en: 'My Library' }, { href: '/sources', ta: 'மூலங்கள்', en: '' }].map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
@@ -117,7 +118,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               </Link>
             ))}
             <div className="mobile-nav-trust">
-              {TRUST.filter((t) => t.href !== '/sources' && t.href !== '/works').map((t) => (
+              {TRUST.filter((t) => !['/sources', '/works', '/library'].includes(t.href)).map((t) => (
                 <Link
                   key={t.href}
                   href={t.href}
@@ -130,6 +131,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             </div>
           </nav>
         )}
+        <ConnectionStatus />
       </header>
 
       <main id="main" tabIndex={-1}>{children}</main>
