@@ -45,7 +45,6 @@ export default function Layout({ children }: { children: ReactNode }) {
   // behaviour and no scroll animation is forced.
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    setOpen(false);
   }, [location]);
 
   return (
