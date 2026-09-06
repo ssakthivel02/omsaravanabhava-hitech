@@ -24,8 +24,9 @@ test.describe('R2.6 product surfaces', () => {
   test('saving a temple is local-only and survives a reload', async ({ page }) => {
     await page.goto('/temples/ctm-tirupparankundram');
     await expect(page.getByRole('heading', { level: 1, name: 'திருப்பரங்குன்றம்' })).toBeVisible();
-    await page.getByRole('button', { name: 'சேமி' }).click();
-    await expect(page.getByRole('button', { name: 'சேமிக்கப்பட்டது' })).toHaveAttribute('aria-pressed', 'true');
+    const save = page.getByRole('article').getByRole('button', { name: 'சேமி' });
+    await save.click();
+    await expect(page.getByRole('article').getByRole('button', { name: 'சேமிக்கப்பட்டது' })).toHaveAttribute('aria-pressed', 'true');
 
     await page.goto('/library');
     await expect(page.getByRole('heading', { level: 1, name: 'என் சேமிப்புகள்' })).toBeVisible();
@@ -45,7 +46,11 @@ test.describe('R2.6 product surfaces', () => {
     await page.waitForFunction(() => localStorage.getItem('omsaravanabhava-hitech-library-v1')?.includes('thiruppugazh-0006'));
 
     await page.goto('/library');
-    const recent = page.getByRole('heading', { level: 2, name: 'சமீபத்தில் பார்த்தவை' }).locator('..').locator('..');
+    const recent = page
+      .getByRole('heading', { level: 2, name: 'சமீபத்தில் பார்த்தவை' })
+      .locator('..')
+      .locator('..')
+      .locator('..');
     await expect(recent).toContainText('திருப்பரங்குன்றம்');
     await expect(recent).toContainText('முத்தைத்தரு');
   });
