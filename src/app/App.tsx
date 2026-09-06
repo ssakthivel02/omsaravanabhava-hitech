@@ -7,12 +7,12 @@ import ArupadaiVeedu from '@/features/temples/ArupadaiVeedu';
 // The temple corpus is the largest content chunk. Split it out so it is
 // fetched only when a temple/search route is actually visited.
 const Temples = lazy(() => import('@/features/temples/Temples'));
-const TempleDetail = lazy(() => import('@/features/temples/TempleDetail'));
+const TempleExperience = lazy(() => import('@/features/library/TempleExperience'));
+const SongExperience = lazy(() => import('@/features/library/SongExperience'));
 const Search = lazy(() => import('@/features/search/Search'));
 const Knowledge = lazy(() => import('@/features/knowledge/Knowledge'));
 const Library = lazy(() => import('@/features/library/Library'));
 import Thiruppugazh from '@/features/thiruppugazh/Thiruppugazh';
-import SongDetail from '@/features/thiruppugazh/SongDetail';
 import Works from '@/features/works/Works';
 import Prayers from '@/features/prayers/Prayers';
 import Practice from '@/features/practice/Practice';
@@ -38,9 +38,9 @@ export default function App() {
           <Route path="/library" component={Library} />
           <Route path="/arupadai-veedu" component={ArupadaiVeedu} />
           <Route path="/temples" component={Temples} />
-          <Route path="/temples/:id" component={TempleDetail} />
+          <Route path="/temples/:id" component={TempleExperience} />
           <Route path="/thiruppugazh" component={Thiruppugazh} />
-          <Route path="/thiruppugazh/:id" component={SongDetail} />
+          <Route path="/thiruppugazh/:id" component={SongExperience} />
           <Route path="/works" component={Works} />
           <Route path="/prayers" component={Prayers} />
           <Route path="/practice" component={Practice} />
