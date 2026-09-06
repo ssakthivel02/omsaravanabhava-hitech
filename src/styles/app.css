@@ -1200,6 +1200,63 @@
   overflow-wrap: anywhere;
 }
 
+/* Current (HR&CE-sourced) temple info — a fourth, deliberately distinct
+   surface from provenance/official/layers so a reader never mistakes a
+   dynamic, can-change-any-time fact (today's opening hours) for the site's
+   governed canonical content. Saffron/vel edge instead of gold/copper keeps
+   it visually apart from the provenance panel above it (R2.5 Priority B). */
+.official-current {
+  position: relative;
+  margin-top: var(--band);
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--sanctum-edge);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--saffron) 7%, var(--sanctum-raised) 93%);
+}
+.official-current::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 1.75rem;
+  height: 2px;
+  background: linear-gradient(to right, var(--saffron), var(--vel) 70%, transparent);
+  opacity: 0.65;
+}
+.official-current h2 {
+  font-size: var(--t-lg);
+  color: var(--gold-soft);
+}
+.official-current-row {
+  margin-top: 1.1rem;
+}
+.official-current-row b {
+  display: block;
+  font-size: var(--t-sm);
+  letter-spacing: 0.04em;
+  color: var(--copper);
+  margin-bottom: 0.3rem;
+}
+.official-current-row p {
+  margin: 0;
+  color: var(--ink);
+  max-width: var(--measure-tamil);
+}
+.official-current-row small {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--ink-faint);
+  font-size: var(--t-xs);
+}
+.official-current .fields {
+  margin-top: 1.25rem;
+}
+.official-current .source-link {
+  display: inline-block;
+  margin-top: 1.1rem;
+  font-size: var(--t-sm);
+  color: var(--gold);
+}
+
 .source-list,
 .prose-list {
   margin: 1rem 0 0;

@@ -44,6 +44,12 @@ export default function ArupadaiVeedu() {
                         );
                         return <StateBadgeResolved label={label} tone={tone} />;
                       })()}
+                    {t.officialCurrentSource && (
+                      <StateBadge
+                        state={t.officialCurrentSource.state}
+                        dimension="தற்போதைய மூலம்"
+                      />
+                    )}
                   </span>
                   {literary && (
                     <span className="stop-literary" lang="ta">
@@ -59,8 +65,12 @@ export default function ArupadaiVeedu() {
       </ol>
 
       <p className="note" lang="ta">
-        மேலேயுள்ள வரிசையில் ஆயத்தொலைவு, வரலாறு, பயணத் தகவல் தற்போது ஒவ்வொரு
-        பதிவிலும் நிலுவையில் உள்ளது. இணையம் மூலம் உறுதி செய்யப்பட்ட தகவல்
+        ஆறு பதிவுகளுக்கும் HR&amp;CE-யிடமிருந்து தற்போதைய தரிசன நேரமும்
+        தொடர்புத் தகவலும் இப்போது கிடைக்கின்றன — ஒவ்வொரு பதிவின் பக்கத்திலும்
+        &ldquo;தற்போதைய உத்தியோகபூர்வத் தகவல்&rdquo; பிரிவில் காணலாம். இவை
+        மாறக்கூடியவை என்பதால் பயணத்திற்கு முன் மூலத்துடன் மீண்டும் உறுதி
+        செய்யவும். ஆயத்தொலைவு, வரலாறு, பயணத் தகவல் ஆகியவை தற்போதும் ஒவ்வொரு
+        பதிவிலும் நிலுவையில் உள்ளன — இணையம் மூலம் உறுதி செய்யப்பட்ட தகவல்
         கிடைத்தவுடன் இங்கு புதுப்பிக்கப்படும் —{' '}
         <Link href="/content-completeness" lang="ta">
           உள்ளடக்க நிலை

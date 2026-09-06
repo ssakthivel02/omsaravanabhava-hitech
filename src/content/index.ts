@@ -92,8 +92,48 @@ export interface Temple {
   sources: SourceRef[];
 }
 
+/**
+ * Current (as opposed to canonical/historical) HR&CE-source facts for an
+ * Arupadai Veedu temple: opening hours, contact channel and a freshness
+ * stamp. This is a deliberately separate layer from the canonical temple
+ * identity fields above — timings and contacts change; identity doesn't —
+ * and every field here is copied verbatim from
+ * `source-data/ARUPADAI_VEEDU_OFFICIAL_DYNAMIC_SEED_2026-09-04.json`, never
+ * derived or invented (R2.5 Priority B).
+ */
+export interface OfficialCurrentSourceContact {
+  phone: string | null;
+  email: string | null;
+  addressSummary: string | null;
+}
+
+export interface OfficialOpeningWindow {
+  from: string;
+  to: string;
+  timezone: string;
+  continuous?: boolean;
+}
+
+export interface OfficialCurrentSource {
+  sourceAuthority: string;
+  hrceId: string | null;
+  officialBaseUrl: string | null;
+  contactSourceUrl: string | null;
+  timingSourceUrl: string | null;
+  contact: OfficialCurrentSourceContact | null;
+  publishedOpeningWindows: OfficialOpeningWindow[];
+  publishedScheduleNote: string | null;
+  festivalVariation: boolean;
+  sourceDisplayQuality: string | null;
+  dynamic: boolean;
+  retrievedAt: string;
+  lastVerifiedAt: string;
+  state: string;
+}
+
 export interface ArupadaiTemple extends Temple {
   pilgrimageOrder: number;
+  officialCurrentSource?: OfficialCurrentSource | null;
 }
 
 export interface ThiruppugazhSong {
@@ -214,6 +254,14 @@ export type StateTone = 'verified' | 'pending' | 'absent';
 
 export function describeState(state: string): { label: string; tone: StateTone } {
   const s = state.toUpperCase();
+  // Current-official-source freshness states (R2.5) are checked first: they
+  // are their own family, distinct from the canonical-content truth states
+  // below, and "REVERIFY" does not share a substring with "VERIFIED" so it
+  // would otherwise fall through to the raw-enum default.
+  if (s === 'OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED')
+    return { label: 'தற்போதைய மூலம் · மறு-உறுதிப்படுத்தல் பரிந்துரை', tone: 'pending' };
+  if (s === 'VERIFIED_CURRENT_OFFICIAL_SOURCE')
+    return { label: 'தற்போதைய உத்தியோகபூர்வ மூலத்துடன் சரிபார்க்கப்பட்டது', tone: 'verified' };
   if (s.includes('NO_APPROVED_AUDIO'))
     return { label: 'அங்கீகரிக்கப்பட்ட ஒலி இல்லை', tone: 'absent' };
   if (s.includes('NO_IMAGE_AVAILABLE')) return { label: 'படம் இல்லை', tone: 'absent' };

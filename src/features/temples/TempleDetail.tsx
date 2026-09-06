@@ -196,6 +196,90 @@ export default function TempleDetail() {
         )}
       </section>
 
+      {pilgrimageStop?.officialCurrentSource && (
+        <section className="official-current" aria-labelledby="cur-h">
+          <h2 id="cur-h" lang="ta">
+            தற்போதைய உத்தியோகபூர்வத் தகவல்
+          </h2>
+          <p className="state-row">
+            <StateBadge
+              state={pilgrimageStop.officialCurrentSource.state}
+              dimension="தற்போதைமை"
+            />
+          </p>
+          <p className="note" lang="ta">
+            தற்போதைய நேரம், சேவைகள் மற்றும் பயணத் தகவலை உத்தியோகபூர்வ கோயில் /
+            HR&amp;CE மூலத்துடன் பயணத்திற்கு முன் உறுதி செய்யவும்.
+          </p>
+
+          {pilgrimageStop.officialCurrentSource.publishedScheduleNote && (
+            <div className="official-current-row">
+              <b lang="ta">தரிசன நேரம்</b>
+              <p lang="ta">{pilgrimageStop.officialCurrentSource.publishedScheduleNote}</p>
+              {pilgrimageStop.officialCurrentSource.festivalVariation && (
+                <small lang="ta">திருவிழா நாட்களில் நேரம் மாறுபடலாம்.</small>
+              )}
+            </div>
+          )}
+
+          {pilgrimageStop.officialCurrentSource.sourceDisplayQuality && (
+            <div className="official-current-row">
+              <b lang="ta">மூலக் குறிப்பு</b>
+              <p lang="ta">
+                மூல அட்டவணையில் வடிவமைப்புச் சிக்கல் இருந்தது; இணைந்த தமிழ்
+                விளக்கத்தின் அடிப்படையில் மேலேயுள்ள நேரம் இயல்பாக்கப்பட்டுள்ளது
+                — பயணத்திற்கு முன் மீண்டும் உறுதி செய்யவும்.
+              </p>
+            </div>
+          )}
+
+          {pilgrimageStop.officialCurrentSource.contact && (
+            <dl className="fields">
+              {pilgrimageStop.officialCurrentSource.contact.phone && (
+                <div className="field">
+                  <dt lang="ta">தொலைபேசி</dt>
+                  <dd>{pilgrimageStop.officialCurrentSource.contact.phone}</dd>
+                </div>
+              )}
+              {pilgrimageStop.officialCurrentSource.contact.email && (
+                <div className="field">
+                  <dt lang="ta">மின்னஞ்சல்</dt>
+                  <dd>{pilgrimageStop.officialCurrentSource.contact.email}</dd>
+                </div>
+              )}
+              {pilgrimageStop.officialCurrentSource.contact.addressSummary && (
+                <div className="field">
+                  <dt lang="ta">முகவரி</dt>
+                  <dd>{pilgrimageStop.officialCurrentSource.contact.addressSummary}</dd>
+                </div>
+              )}
+            </dl>
+          )}
+
+          <p className="note" lang="ta">
+            கடைசியாக உறுதிசெய்யப்பட்டது:{' '}
+            {pilgrimageStop.officialCurrentSource.lastVerifiedAt.slice(0, 10)} · மூலம்:{' '}
+            {pilgrimageStop.officialCurrentSource.sourceAuthority}
+          </p>
+          {(pilgrimageStop.officialCurrentSource.timingSourceUrl ??
+            pilgrimageStop.officialCurrentSource.officialBaseUrl) && (
+            <a
+              className="source-link"
+              href={
+                pilgrimageStop.officialCurrentSource.timingSourceUrl ??
+                pilgrimageStop.officialCurrentSource.officialBaseUrl ??
+                undefined
+              }
+              rel="noopener noreferrer"
+              target="_blank"
+              lang="ta"
+            >
+              மூலப் பக்கத்தில் காண்க ↗
+            </a>
+          )}
+        </section>
+      )}
+
       {temple.officialDirectSupportLink && (
         <section className="official" aria-labelledby="off-h">
           <h2 id="off-h" lang="ta">
