@@ -1,13 +1,7 @@
 import { works, devotionalWorks } from '@/content';
 import StateBadge from '@/components/StateBadge';
+import SaveControl from '@/components/SaveControl';
 
-// `works` and `devotionalWorks` are two separate registry chunks that
-// overlap on several ids (e.g. "kandar-anubhuti") — `devotionalWorks` is the
-// newer, more governed record (author, sources, per-layer publication
-// state) for the same work. Rendering both verbatim showed the same title
-// twice with two different badges, which reads as either a data error or a
-// contradiction rather than two honest states. `devotionalWorks` wins on a
-// shared id; `works` only contributes ids it alone still holds.
 const devotionalIds = new Set(devotionalWorks.map((w) => w.id));
 const catalogue = [
   ...devotionalWorks,
@@ -27,21 +21,35 @@ export default function Works() {
       </header>
 
       <ul className="temple-list">
-        {catalogue.map((w) => (
-          <li key={w.id}>
-            <div className="temple-row">
-              <b lang="ta">{w.titleTa ?? w.titleEn}</b>
-              <small>{w.titleEn}</small>
-              <StateBadge
-                state={
-                  'rightsState' in w
-                    ? w.rightsState
-                    : (w.verificationState ?? 'UNKNOWN')
-                }
-              />
-            </div>
-          </li>
-        ))}
+        {catalogue.map((w, index) => {
+          const id = w.id ?? `work-${index + 1}`;
+          const titleEn = w.titleEn;
+          return (
+            <li key={id} id={w.id ? `work-${w.id}` : undefined}>
+              <div className="temple-row work-row">
+                <b lang="ta">{w.titleTa ?? titleEn}</b>
+                <small>{titleEn}</small>
+                <StateBadge
+                  state={
+                    'rightsState' in w
+                      ? w.rightsState
+                      : (w.verificationState ?? 'UNKNOWN')
+                  }
+                />
+                {w.id && (
+                  <SaveControl
+                    item={{
+                      type: 'work',
+                      id: w.id,
+                      titleTa: w.titleTa,
+                      titleEn,
+                    }}
+                  />
+                )}
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </article>
   );
