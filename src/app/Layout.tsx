@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'wouter';
 import VelMark from '@/components/VelMark';
 import ConnectionStatus from '@/components/ConnectionStatus';
@@ -36,6 +36,17 @@ export default function Layout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [location] = useLocation();
   useRouteMetadata(location);
+
+  // Client-side navigation must feel like a real page transition. Without
+  // this reset, the browser can preserve the previous route's scroll offset,
+  // leaving the next page's title hidden beneath the sticky header (visible in
+  // the live-preview review on Works / Prayers / Thiruppugazh). Keep this
+  // deterministic and motion-free so reduced-motion users get identical
+  // behaviour and no scroll animation is forced.
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    setOpen(false);
+  }, [location]);
 
   return (
     <>
