@@ -21,8 +21,8 @@ interface Hit {
   kindTa: string;
   aliases: string[];
   metadata: string[];
-  state?: string | null;
-  sourceConfidence?: string | null;
+  state?: string | null | undefined;
+  sourceConfidence?: string | null | undefined;
 }
 
 const PAGE_SIZE = 20;
