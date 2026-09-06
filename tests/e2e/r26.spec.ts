@@ -30,10 +30,11 @@ test.describe('R2.6 product surfaces', () => {
 
     await page.goto('/library');
     await expect(page.getByRole('heading', { level: 1, name: 'என் சேமிப்புகள்' })).toBeVisible();
-    await expect(page.getByRole('link', { name: /திருப்பரங்குன்றம்/ })).toBeVisible();
+    const saved = page.getByLabel('சேமிக்கப்பட்டவை');
+    await expect(saved.getByRole('link', { name: /திருப்பரங்குன்றம்/ })).toBeVisible();
 
     await page.reload();
-    await expect(page.getByRole('link', { name: /திருப்பரங்குன்றம்/ })).toBeVisible();
+    await expect(page.getByLabel('சேமிக்கப்பட்டவை').getByRole('link', { name: /திருப்பரங்குன்றம்/ })).toBeVisible();
   });
 
   test('opening governed detail pages creates bounded local Recent entries', async ({ page }) => {
