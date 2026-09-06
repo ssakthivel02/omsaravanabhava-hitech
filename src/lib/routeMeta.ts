@@ -7,6 +7,8 @@ type Meta = { title: string; description: string };
 
 const META: Array<[RegExp, Meta]> = [
   [/^\/$/, { title: `${SITE} — முருகன் பக்தி அறிவுத் தளம்`, description: 'அறுபடை வீடு, திருப்புகழ், முருகன் கோயில்கள் மற்றும் மூலநிலை குறிக்கப்பட்ட தமிழ் பக்தி அறிவுத் தளம்.' }],
+  [/^\/knowledge\/?$/, { title: `முருகன் அறிவுக் களம் — ${SITE}`, description: 'இந்த வெளியீட்டில் உள்ள ஆளுகை/மூலம்-குறிக்கப்பட்ட முருகன் பெயர்கள், அறுபடை வீடுகள், நூல்கள் மற்றும் திருப்புகழ் பதிவுகளின் அறிவுக் களம்.' }],
+  [/^\/library\/?$/, { title: `என் சேமிப்புகள் — ${SITE}`, description: 'இந்த உலாவியில் மட்டும் சேமிக்கப்பட்ட மற்றும் சமீபத்தில் பார்த்த OmSaravanaBhava பதிவுகள்.' }],
   [/^\/arupadai-veedu\/?$/, { title: `அறுபடை வீடு — ${SITE}`, description: 'முருகனின் ஆறு படைவீடுகளை பாரம்பரிய யாத்திரை வரிசையிலும் மூல நிலையுடனும் அறிக.' }],
   [/^\/temples\/?$/, { title: `முருகன் கோயில்கள் — ${SITE}`, description: 'மூல மற்றும் சரிபார்ப்பு நிலையுடன் தொகுக்கப்பட்ட முருகன் கோயில் அடைவு.' }],
   [/^\/temples\//, { title: `கோயில் பதிவு — ${SITE}`, description: 'மூல ஆதாரம் மற்றும் உள்ளடக்க நிலை தெளிவாகக் காட்டப்படும் முருகன் கோயில் பதிவு.' }],
@@ -62,14 +64,6 @@ export function useRouteMetadata(path: string) {
   }, [path]);
 }
 
-/**
- * R2-CODE-018: a temple/Thiruppugazh *detail* route was titled generically
- * ("கோயில் பதிவு — ...") regardless of which record was open. Detail pages
- * call this after `useRouteMetadata` has set the generic fallback, replacing
- * it with the real governed record name once it is known. `title`/`description`
- * are omitted (not overridden) when the record itself has no name, so a
- * missing record never produces a fabricated title.
- */
 export function useEntityMeta(path: string, title: string | null, description?: string | null) {
   useEffect(() => {
     if (!title) return;
