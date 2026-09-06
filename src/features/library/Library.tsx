@@ -57,8 +57,16 @@ function resolve(ref: LibraryRef): ResolvedItem {
       ? { key, href: `/knowledge#name-${ref.id}`, titleTa: item.nameTa ?? item.nameEn ?? ref.id, titleEn: item.nameEn, typeTa: typeLabel.knowledge }
       : { key, href: '/knowledge', titleTa: ref.titleTa ?? ref.titleEn ?? ref.id, typeTa: typeLabel.knowledge, missing: true };
   }
-  if (ref.type === 'prayer' && kumarastavam.id === ref.id) {
-    return { key, href: '/prayers', titleTa: kumarastavam.titleTa ?? ref.titleTa ?? ref.id, typeTa: typeLabel.prayer };
+  if (ref.type === 'prayer') {
+    const prayer = kumarastavam.find((item) => item.id === ref.id);
+    if (prayer) {
+      return {
+        key,
+        href: '/prayers',
+        titleTa: prayer.titleTa ?? ref.titleTa ?? ref.id,
+        typeTa: typeLabel.prayer,
+      };
+    }
   }
   return { key, href: '/prayers', titleTa: ref.titleTa ?? ref.titleEn ?? ref.id, typeTa: typeLabel.prayer, missing: true };
 }
