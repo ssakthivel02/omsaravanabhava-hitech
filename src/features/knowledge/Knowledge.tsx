@@ -15,6 +15,7 @@ const workCatalogue = [
   ...devotionalWorks,
   ...works.filter((w) => !w.id || !devotionalIds.has(w.id)),
 ];
+const publishableNames = muruganNames.filter((name) => Boolean(name.nameTa || name.nameEn));
 
 export default function Knowledge() {
   return (
@@ -31,7 +32,7 @@ export default function Knowledge() {
       </header>
 
       <section className="knowledge-stats" aria-label="தற்போதைய உள்ளடக்க அளவு">
-        <div><b>{muruganNames.length}</b><span lang="ta">முருகன் பெயர்கள்</span></div>
+        <div><b>{publishableNames.length}</b><span lang="ta">வெளியிடப்பட்ட திருப்பெயர்கள்</span></div>
         <div><b>{arupadaiVeedu.length}</b><span lang="ta">அறுபடை வீடுகள்</span></div>
         <div><b>{workCatalogue.length}</b><span lang="ta">நூல் பதிவுகள்</span></div>
         <div><b>{thiruppugazh.length}</b><span lang="ta">திருப்புகழ் பதிவுகள்</span></div>
@@ -40,43 +41,54 @@ export default function Knowledge() {
       <section className="knowledge-section" aria-labelledby="names-h">
         <div className="band-head">
           <h2 id="names-h" lang="ta">திருப்பெயர்கள்</h2>
-          <p lang="ta">ஆளுகைப் பதிவில் உள்ள பெயர் மற்றும் பொருள் மட்டுமே கீழே காட்டப்படுகிறது.</p>
+          <p lang="ta">ஆளுகைப் பதிவில் பெயர் உரை உள்ள பதிவுகள் மட்டுமே வெளியிடப்படுகின்றன.</p>
         </div>
-        <div className="knowledge-grid">
-          {muruganNames.map((name, index) => {
-            const id = name.id ?? `name-${index + 1}`;
-            const sourceState = describeSourceConfidence(name.sources[0]?.confidence);
-            return (
-              <article className="knowledge-item" id={`name-${id}`} key={id}>
-                <div>
-                  <h3 lang="ta">{name.nameTa ?? name.nameEn ?? 'பெயர் நிலுவையில்'}</h3>
-                  {name.nameEn && <p className="latin-name">{name.nameEn}</p>}
-                  {name.meaning ? (
-                    <p lang="ta">{name.meaning}</p>
-                  ) : (
-                    <p className="note" lang="ta">பொருள் பதிவு இந்த வெளியீட்டில் இல்லை.</p>
-                  )}
-                </div>
-                <div className="knowledge-item-foot">
-                  <span className={`state state-${sourceState.tone}`}>
-                    <span className="state-dot" aria-hidden="true" />
-                    <span lang="ta">{sourceState.label}</span>
-                  </span>
-                  {name.id && (
-                    <SaveControl
-                      item={{
-                        type: 'knowledge',
-                        id: name.id,
-                        titleTa: name.nameTa,
-                        titleEn: name.nameEn,
-                      }}
-                    />
-                  )}
-                </div>
-              </article>
-            );
-          })}
-        </div>
+        {publishableNames.length === 0 ? (
+          <div className="empty" lang="ta">
+            <p>
+              இந்த வெளியீட்டில் வெளியிடத்தக்க திருப்பெயர் உரைகள் இன்னும் இல்லை.
+              {muruganNames.length} பதிவு அடையாளங்கள் உள்ளன; ஆனால் அவற்றின் பெயர்,
+              பொருள் மற்றும் மூல விவரங்கள் தற்போதைய ஆளுகைப் பதிவில் நிரப்பப்படவில்லை.
+            </p>
+            <p>இல்லாத பெயர் அல்லது பொருளை இத்தளம் அடையாளக் குறியீட்டிலிருந்து ஊகிக்காது.</p>
+          </div>
+        ) : (
+          <div className="knowledge-grid">
+            {publishableNames.map((name, index) => {
+              const id = name.id ?? `name-${index + 1}`;
+              const sourceState = describeSourceConfidence(name.sources[0]?.confidence);
+              return (
+                <article className="knowledge-item" id={`name-${id}`} key={id}>
+                  <div>
+                    <h3 lang="ta">{name.nameTa ?? name.nameEn}</h3>
+                    {name.nameEn && <p className="latin-name">{name.nameEn}</p>}
+                    {name.meaning ? (
+                      <p lang="ta">{name.meaning}</p>
+                    ) : (
+                      <p className="note" lang="ta">பொருள் பதிவு இந்த வெளியீட்டில் இல்லை.</p>
+                    )}
+                  </div>
+                  <div className="knowledge-item-foot">
+                    <span className={`state state-${sourceState.tone}`}>
+                      <span className="state-dot" aria-hidden="true" />
+                      <span lang="ta">{sourceState.label}</span>
+                    </span>
+                    {name.id && (
+                      <SaveControl
+                        item={{
+                          type: 'knowledge',
+                          id: name.id,
+                          titleTa: name.nameTa,
+                          titleEn: name.nameEn,
+                        }}
+                      />
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       <section className="knowledge-section knowledge-pilgrimage" aria-labelledby="abodes-h">
