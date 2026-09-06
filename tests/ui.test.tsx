@@ -43,10 +43,14 @@ describe('routing and deep links', () => {
     ).toBeInTheDocument();
   });
 
-  it('deep-links into a Thiruppugazh record', () => {
+  it('deep-links into a Thiruppugazh record', async () => {
     renderAt('/thiruppugazh/thiruppugazh-0006');
+    // The application has a global Suspense boundary because several R2.6
+    // product routes are code-split. Await the route content so this test
+    // verifies the resolved page rather than racing the legitimate loading
+    // fallback.
     expect(
-      screen.getByRole('heading', { level: 1, name: 'முத்தைத்தரு' }),
+      await screen.findByRole('heading', { level: 1, name: 'முத்தைத்தரு' }),
     ).toBeInTheDocument();
   });
 
