@@ -2,8 +2,18 @@ import { useEffect } from 'react';
 import { recordRecent, type LibraryRef } from './localLibrary';
 
 export function useRecentItem(item: LibraryRef | null | undefined) {
+  const type = item?.type;
+  const id = item?.id;
+  const titleTa = item?.titleTa;
+  const titleEn = item?.titleEn;
+
   useEffect(() => {
-    if (!item) return;
-    recordRecent(item);
-  }, [item?.type, item?.id, item?.titleTa, item?.titleEn]);
+    if (!type || !id) return;
+    recordRecent({
+      type,
+      id,
+      ...(titleTa !== undefined ? { titleTa } : {}),
+      ...(titleEn !== undefined ? { titleEn } : {}),
+    });
+  }, [type, id, titleTa, titleEn]);
 }
