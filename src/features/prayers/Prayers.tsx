@@ -1,6 +1,7 @@
 import { Link } from 'wouter';
 import { devotionalWorks, kumarastavam } from '@/content';
 import StateBadge from '@/components/StateBadge';
+import SaveControl from '@/components/SaveControl';
 
 /**
  * Mantras, prayers and Namavali.
@@ -23,9 +24,7 @@ export default function Prayers() {
       </header>
 
       <section aria-labelledby="works-h">
-        <h2 id="works-h" lang="ta">
-          பக்தி நூல்கள்
-        </h2>
+        <h2 id="works-h" lang="ta">பக்தி நூல்கள்</h2>
         <ul className="temple-list">
           {devotionalWorks.map((w) => (
             <li key={w.id}>
@@ -42,10 +41,11 @@ export default function Prayers() {
       {kumarastavam.map((k) => (
         <section key={k.id} className="kumarastavam" aria-labelledby={`k-${k.id}`}>
           <header className="kumarastavam-head">
-            <h2 id={`k-${k.id}`} lang="ta">
-              {k.titleTa}
-            </h2>
-            <p className="latin-name">{k.transliteration}</p>
+            <div>
+              <h2 id={`k-${k.id}`} lang="ta">{k.titleTa}</h2>
+              <p className="latin-name">{k.transliteration}</p>
+            </div>
+            <SaveControl item={{ type: 'prayer', id: k.id, titleTa: k.titleTa, titleEn: k.transliteration }} />
           </header>
 
           <p className="note" lang="ta">
@@ -80,16 +80,12 @@ export default function Prayers() {
       ))}
 
       <section aria-labelledby="nam-h">
-        <h2 id="nam-h" lang="ta">
-          நாமாவளி
-        </h2>
+        <h2 id="nam-h" lang="ta">நாமாவளி</h2>
         <p className="empty" lang="ta">
           தற்போது வெளியிடத்தக்க நாமாவளித் தொகுப்பு எதுவும் இல்லை. படங்கள்,
           சுவரொட்டிகள் அல்லது சரிபார்க்கப்படாத இணையப் பட்டியல்களிலிருந்து
           திருநாமங்களை இத்தளம் வெளியிடாது. ஆய்வு நிலையின் விரிவான குறிப்புகள்{' '}
-          <Link href="/content-completeness" lang="ta">
-            உள்ளடக்க நிலை
-          </Link>{' '}
+          <Link href="/content-completeness" lang="ta">உள்ளடக்க நிலை</Link>{' '}
           பக்கத்தில் உள்ளன.
         </p>
       </section>
