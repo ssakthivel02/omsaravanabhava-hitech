@@ -3,8 +3,8 @@ export type LibraryItemType = 'temple' | 'thiruppugazh' | 'work' | 'knowledge' |
 export interface LibraryRef {
   type: LibraryItemType;
   id: string;
-  titleTa?: string | null;
-  titleEn?: string | null;
+  titleTa?: string | null | undefined;
+  titleEn?: string | null | undefined;
 }
 
 export interface SavedLibraryRef extends LibraryRef {
