@@ -1,7 +1,10 @@
 import { useParams, Link } from 'wouter';
 import { songById } from '@/content';
 import StateBadge from '@/components/StateBadge';
+import SaveControl from '@/components/SaveControl';
+import ReadAloud from '@/components/ReadAloud';
 import { useEntityMeta } from '@/lib/routeMeta';
+import { useRecentItem } from '@/lib/useRecent';
 
 export default function SongDetail() {
   const params = useParams<{ id: string }>();
@@ -11,6 +14,11 @@ export default function SongDetail() {
     `/thiruppugazh/${params.id ?? ''}`,
     title,
     title ? `${title} — திருப்புகழ் பதிவு, மூல பதிப்பு மற்றும் நிலையுடன்.` : null,
+  );
+  useRecentItem(
+    song
+      ? { type: 'thiruppugazh', id: song.id, titleTa: song.titleTa ?? song.openingWords }
+      : null,
   );
 
   if (!song) {
@@ -29,14 +37,20 @@ export default function SongDetail() {
       <header className="page-head">
         <h1 lang="ta">{song.titleTa ?? song.openingWords}</h1>
         <p className="latin-name">{song.edition}</p>
+        <SaveControl
+          item={{ type: 'thiruppugazh', id: song.id, titleTa: song.titleTa ?? song.openingWords }}
+        />
       </header>
 
       {/* Canonical layer. Rendered only when the registry actually holds the
-          verse body — never reconstructed, never paraphrased. */}
+          verse body — never reconstructed, never paraphrased. Browser TTS is
+          only offered for that governed canonical body, never for a guessed
+          reconstruction or for the placeholder message. */}
       {song.canonicalText ? (
-        <div className="canonical" lang="ta">
-          {song.canonicalText}
-        </div>
+        <>
+          <div className="canonical" lang="ta">{song.canonicalText}</div>
+          <ReadAloud text={song.canonicalText} labelTa="மூல உரையை வாசிக்க" />
+        </>
       ) : (
         <p className="empty" lang="ta">
           இப்பதிவின் மூலப் பதிப்பு அடையாளம் காணப்பட்டுள்ளது; ஆனால் மூலத் தமிழ்
@@ -45,9 +59,7 @@ export default function SongDetail() {
       )}
 
       <section className="layers" aria-labelledby="layers-h">
-        <h2 id="layers-h" lang="ta">
-          அடுக்குகள்
-        </h2>
+        <h2 id="layers-h" lang="ta">அடுக்குகள்</h2>
         <p className="note" lang="ta">
           மூல உரை, பொருள், ஒலிபெயர்ப்பு, ஒலி — ஒவ்வொன்றும் தனித்தனி வெளியீட்டு
           நிலை; ஒன்று கிடைத்துவிட்டால் மற்றொன்றும் கிடைத்துவிட்டதாகக்
