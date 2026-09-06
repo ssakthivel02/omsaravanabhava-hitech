@@ -7,7 +7,7 @@
  * archive, not a hypothetical one. See docs/PHASE0_RECOVERY_REPORT.md.
  */
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
-import { join, extname } from 'node:path';
+import { join, extname, basename, sep } from 'node:path';
 
 const DIST = 'dist';
 const REPOSITORY = 'ssakthivel02/omsaravanabhava-hitech';
@@ -69,8 +69,8 @@ if (!existsSync(rp)) {
 const LEGACY = ['app.js', 'rc1.js', 'rc2.js', 'rc1.css', 'rc2.css', 'styles.css',
   'route-alias-guard.js', 'locale-bootstrap.js', 'locale-runtime-guard.js'];
 const legacyHits = files.filter((f) => {
-  const base = f.split('/').pop();
-  return LEGACY.includes(base) || /^phase2[a-z]\.js$/.test(base ?? '');
+  const base = basename(f);
+  return LEGACY.includes(base) || /^phase2[a-z]\.js$/.test(base);
 });
 if (legacyHits.length) fail(`legacy shell artefacts in dist/: ${legacyHits.join(', ')}`);
 else ok('no legacy shell artefacts (app.js / rc*.js / phase2*.js)');
@@ -102,7 +102,16 @@ if (existsSync(sw)) {
 // 4 ---------------------------------- the app must actually be a bundled SPA
 // R6 "built" successfully while transforming 1 module and emitting zero JS.
 // A real build of this app emits hashed JS chunks; assert that.
-const jsChunks = files.filter((f) => f.includes('/assets/') && extname(f) === '.js');
+// IMPORTANT: be platform-neutral. GitHub CI runs on Linux, but owner release
+// qualification also runs on Windows where Node's path.join emits backslashes.
+// Checking for the literal string "/assets/" caused a false blocking failure on
+// Windows even though Vite had emitted the real React chunks.
+const assetsDir = join(DIST, 'assets');
+const jsChunks = files.filter((f) => {
+  if (extname(f) !== '.js') return false;
+  const relativeToAssets = f.startsWith(`${assetsDir}${sep}`);
+  return relativeToAssets;
+});
 if (jsChunks.length === 0) {
   fail('no JS chunks emitted — the React entry is not wired into index.html');
 } else ok(`${jsChunks.length} JS chunk(s) emitted`);
