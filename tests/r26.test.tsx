@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Router } from 'wouter';
@@ -24,9 +24,13 @@ function renderAt(path: string) {
 }
 
 beforeEach(() => {
-  cleanup();
   window.localStorage.clear();
   vi.restoreAllMocks();
+});
+
+afterEach(() => {
+  cleanup();
+  window.localStorage.clear();
 });
 
 describe('R2.6 local-only library', () => {
@@ -69,6 +73,8 @@ describe('R2.6 governed product routes', () => {
     expect(await screen.findByRole('heading', { level: 1, name: 'முருகன் அறிவுக் களம்' })).toBeInTheDocument();
     expect(screen.getByText(/ஆளுகை\/மூலம்-குறிக்கப்பட்ட பதிவுகளை மட்டுமே/)).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2, name: 'திருப்பெயர்கள்' })).toBeInTheDocument();
+    expect(screen.getByText(/வெளியிடத்தக்க திருப்பெயர் உரைகள் இன்னும் இல்லை/)).toBeInTheDocument();
+    expect(screen.getByText(/அடையாளக் குறியீட்டிலிருந்து ஊகிக்காது/)).toBeInTheDocument();
   });
 
   it('renders My Library as explicitly local-only', async () => {
@@ -78,14 +84,14 @@ describe('R2.6 governed product routes', () => {
     expect(screen.getByText(/இன்னும் எந்தப் பதிவும் சேமிக்கப்படவில்லை/)).toBeInTheDocument();
   });
 
-  it('finds a governed Murugan name and can narrow to the names facet', async () => {
+  it('does not fabricate Murugan names from identifier-only registry records', async () => {
     const user = userEvent.setup();
     renderAt('/search');
     const input = await screen.findByLabelText('தேடல் சொல்');
     await user.type(input, 'முருக');
     await user.click(screen.getByRole('button', { name: 'முருகன் பெயர்கள்' }));
-    expect(screen.queryByText(/இத்தளம் இல்லாத உள்ளடக்கத்தை உருவாக்காது/)).not.toBeInTheDocument();
-    expect(screen.getAllByText('முருகன் பெயர்').length).toBeGreaterThan(0);
+    expect(screen.getByText(/இத்தளம் இல்லாத உள்ளடக்கத்தை உருவாக்காது/)).toBeInTheDocument();
+    expect(screen.queryByText('முருகன் பெயர்')).not.toBeInTheDocument();
   });
 });
 
