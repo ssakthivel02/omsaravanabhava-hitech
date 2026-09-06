@@ -26,7 +26,9 @@ const CHANGE_EVENT = 'omsaravanabhava-library-change';
 const MAX_RECENT = 20;
 const MAX_SAVED = 200;
 
-const EMPTY: LocalLibraryState = { version: 1, saved: [], recent: [] };
+// Always return a fresh empty state. A shared mutable singleton would retain
+// saved/recent items in memory after localStorage itself has been cleared.
+const emptyState = (): LocalLibraryState => ({ version: 1, saved: [], recent: [] });
 
 const keyOf = (item: Pick<LibraryRef, 'type' | 'id'>) => `${item.type}:${item.id}`;
 
@@ -88,19 +90,19 @@ function sanitizeRecent(value: unknown): RecentLibraryRef[] {
 }
 
 export function readLibrary(): LocalLibraryState {
-  if (typeof window === 'undefined') return EMPTY;
+  if (typeof window === 'undefined') return emptyState();
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return EMPTY;
+    if (!raw) return emptyState();
     const parsed = JSON.parse(raw) as Record<string, unknown>;
-    if (parsed?.version !== 1) return EMPTY;
+    if (parsed?.version !== 1) return emptyState();
     return {
       version: 1,
       saved: sanitizeSaved(parsed.saved),
       recent: sanitizeRecent(parsed.recent),
     };
   } catch {
-    return EMPTY;
+    return emptyState();
   }
 }
 
