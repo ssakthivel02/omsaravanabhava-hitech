@@ -179,6 +179,29 @@
   color: var(--gold);
 }
 
+/* Abstract stepped-gopuram silhouette, hidden until there is real spare
+   width to use it in (below ~90rem it would only ever collide with the
+   text column). Purely geometric line-work, never a representational
+   illustration — see SanctumAbstraction's own doc comment. */
+.hero-architecture {
+  display: none;
+  position: absolute;
+  inset-block-end: -1px;
+  /* Sits in the gap between the text column and the Vel stage, low enough
+     that its topmost tier clears the hero-lead paragraph — geometry that
+     fills empty ground rather than crossing live text. */
+  inset-inline-start: 46%;
+  inset-inline-end: 6%;
+  height: 56%;
+  opacity: 0.24;
+  pointer-events: none;
+}
+@media (min-width: 90rem) {
+  .hero-architecture {
+    display: block;
+  }
+}
+
 .hero-stage {
   position: absolute;
   inset-block-start: 0;
@@ -223,6 +246,24 @@
      in the corner rather than a real focal element. */
   .hero {
     grid-template-columns: minmax(0, 1fr) minmax(300px, 42%);
+    max-width: 92rem;
+    min-height: 44rem;
+    align-items: center;
+    /* A third, deeper sanctum-depth wash specific to wide screens: it sits
+       low and wide behind the architecture silhouette so 1920px reads as
+       one lit chamber rather than the same two-spotlight composition used
+       at 1440px just stretched wider (flagship review: "1920px must look
+       designed specifically for 1920px"). */
+    background:
+      radial-gradient(50% 65% at 80% 16%, color-mix(in srgb, var(--gold) 16%, transparent), transparent 70%),
+      radial-gradient(55% 60% at 32% 92%, color-mix(in srgb, var(--copper) 9%, transparent), transparent 78%),
+      radial-gradient(60% 55% at 20% 70%, color-mix(in srgb, var(--vel) 7%, transparent), transparent 80%);
+  }
+  .hero-copy {
+    max-width: 38ch;
+  }
+  .hero h1 {
+    font-size: clamp(3.25rem, 2.4rem + 1.6vw, 4.4rem);
   }
   .hero-stage {
     height: 500px;
@@ -368,6 +409,23 @@
   gap: 1.5rem 2.5rem;
   margin: 0;
 }
+@media (min-width: 90rem) {
+  /* At wide desktop the two-column stat block otherwise sits as a small
+     island in a sea of empty band, disconnected from the prose beside it.
+     Widening to four columns lets it claim real width instead of leaving
+     an empty-looking gap (flagship review: "empty wide-screen voids"). */
+  .band-split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
+    gap: 3.5rem;
+    align-items: center;
+  }
+  .counts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.75rem 2rem;
+    padding-inline-start: 2rem;
+    border-inline-start: 1px solid var(--sanctum-edge);
+  }
+}
 .count dt {
   font-size: var(--t-xs);
   color: var(--ink-faint);
@@ -407,13 +465,20 @@
   display: flex;
   align-items: baseline;
   gap: 1.25rem;
-  padding: 1.15rem 0.25rem;
+  padding: 1.15rem 0.25rem 1.15rem 0.9rem;
   background: var(--sanctum);
   text-decoration: none;
   min-height: 44px;
+  /* Same six-colour warm-to-cool accent the hero Vel axis and the full
+     pilgrimage route use for these same six stops (--abode-accent is set
+     inline per row), so the relationship reads across all three surfaces
+     instead of being redrawn three separate ways. */
+  border-inline-start: 2px solid color-mix(in srgb, var(--abode-accent, var(--gold)) 55%, transparent);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 .abode:hover {
   background: var(--sanctum-raised);
+  border-inline-start-color: var(--abode-accent, var(--gold));
 }
 .abode-num {
   font-family: var(--font-tamil-serif);
@@ -638,6 +703,28 @@
   .stop-body b {
     font-size: var(--t-xl);
   }
+
+  /* A real pilgrimage does not walk a perfectly straight line: every
+     second stop steps away from the thread, joined back to it by a short
+     spur — an actual left/right cadence, not only a colour swap, so the
+     desktop route reads as a walked path rather than a uniform stacked
+     list (flagship review priority 2: "desktop asymmetry"). Odd stops are
+     untouched and stay directly on the thread. */
+  .pilgrimage-stop:nth-child(even) {
+    position: relative;
+    margin-inline-start: clamp(2.5rem, 7vw, 5.5rem);
+  }
+  .pilgrimage-stop:nth-child(even)::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    inset-inline-start: clamp(-5.5rem, -7vw, -2.5rem);
+    inset-block-start: 2.55rem;
+    width: clamp(2.5rem, 7vw, 5.5rem);
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--stop-accent, var(--gold)));
+    opacity: 0.65;
+  }
 }
 
 /* -------------------------------------------------------------------- page */
@@ -717,6 +804,40 @@
 .filter input::placeholder {
   color: var(--ink-faint);
   font-size: var(--t-base);
+}
+
+.search-starters {
+  margin: 2.5rem 0 0;
+  display: grid;
+  gap: 1px;
+  background: var(--sanctum-edge);
+  border: 1px solid var(--sanctum-edge);
+  max-width: 46rem;
+}
+@media (min-width: 40rem) {
+  .search-starters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.search-starter {
+  display: grid;
+  gap: 0.35rem;
+  background: var(--sanctum);
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  min-height: 44px;
+}
+.search-starter:hover {
+  background: var(--sanctum-raised);
+}
+.search-starter b {
+  font-family: var(--font-tamil-serif);
+  font-size: var(--t-md);
+  color: var(--gold-soft);
+}
+.search-starter small {
+  color: var(--ink-faint);
+  font-size: var(--t-xs);
 }
 
 .result-count {
@@ -976,16 +1097,55 @@
   margin-top: 1rem;
 }
 
+.kumarastavam {
+  margin-top: var(--band);
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--sanctum-edge);
+  border-radius: var(--radius);
+  background: var(--sanctum-raised);
+}
+.kumarastavam + .kumarastavam {
+  margin-top: 2rem;
+}
+.kumarastavam-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+.kumarastavam-head h2 {
+  font-size: var(--t-lg);
+  color: var(--gold-soft);
+}
+.kumarastavam .fields {
+  margin-top: 1.25rem;
+}
+
 .provenance,
 .official,
 .layers {
   margin-top: var(--band);
 }
 .provenance {
+  position: relative;
   padding: 1.5rem 1.75rem;
   border: 1px solid var(--sanctum-edge);
   border-radius: var(--radius);
   background: color-mix(in srgb, var(--sanctum-raised) 55%, transparent);
+}
+/* The same quiet copper/gold threshold cue used by the hero and the
+   Arupadai thread seam — provenance is where a record's trust rests, so it
+   gets the same "sacred edge" language as the rest of the site rather than
+   reading as a plain bordered box (visual-cohesion pass). */
+.provenance::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 1.75rem;
+  height: 2px;
+  background: linear-gradient(to right, var(--vel), var(--gold) 60%, transparent);
+  opacity: 0.6;
 }
 .official {
   padding: 1.5rem 1.75rem;
@@ -1048,6 +1208,12 @@
   display: grid;
   gap: 0.6rem;
   max-width: var(--measure);
+}
+/* A gold marker instead of the browser-default bullet — a small touch that
+   ties even a plain prose list back to the site's copper/gold accent
+   language instead of reading as unstyled body copy. */
+.prose-list li::marker {
+  color: var(--gold);
 }
 .source-list li {
   display: flex;

@@ -99,6 +99,31 @@ export default function Search() {
         </p>
       )}
 
+      {/* Before typing, the page offers real starting points instead of an
+          empty results column — every link below is a real route, never a
+          suggested search term standing in for content that doesn't
+          exist yet. */}
+      {q.trim().length === 0 && (
+        <nav className="search-starters" aria-label="தேடலைத் தொடங்க">
+          <Link href="/arupadai-veedu" className="search-starter">
+            <b lang="ta">அறுபடை வீடு</b>
+            <small lang="ta">ஆறு படைவீடுகளும் ஒரே இடத்தில்</small>
+          </Link>
+          <Link href="/temples" className="search-starter">
+            <b lang="ta">கோயில் அடைவு</b>
+            <small lang="ta">376 ஆளுகைப் பதிவுகள்</small>
+          </Link>
+          <Link href="/thiruppugazh" className="search-starter">
+            <b lang="ta">திருப்புகழ்</b>
+            <small lang="ta">மூலம்-இணைக்கப்பட்ட பாடல்கள்</small>
+          </Link>
+          <Link href="/content-completeness" className="search-starter">
+            <b lang="ta">உள்ளடக்க நிலை</b>
+            <small lang="ta">எது தயார், எது நிலுவையில்</small>
+          </Link>
+        </nav>
+      )}
+
       <ul className="temple-list">
         {hits.map((h) => (
           <li key={h.href + (h.titleTa ?? '')}>

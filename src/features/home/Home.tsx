@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { Link } from 'wouter';
 import { arupadaiVeedu, completeness, thiruppugazh } from '@/content';
 import { localDayIndex } from '@/lib/localDay';
@@ -9,8 +10,21 @@ import { localDayIndex } from '@/lib/localDay';
  * encodes real information rather than decorating the layout — the ordinal
  * beside each dot is the same 01..06 the Arupadai band below uses, making
  * the Vel a small map of the journey rather than a bare decorative icon
- * (flagship visual review: "is the Vel a meaningful focal motif?").
+ * (flagship visual review: "is the Vel a meaningful focal motif?"). Each
+ * ordinal's dot uses the same six-colour warm-to-cool sequence as the
+ * Arupadai band below and the abode list in this same page, so the
+ * relationship between hero, list and full pilgrimage route reads as one
+ * continuous idea rather than three separately-designed things.
  */
+const STOP_COLORS = [
+  'var(--gold)',
+  'var(--gold-soft)',
+  'var(--saffron)',
+  'var(--copper)',
+  'var(--vel)',
+  'var(--vel-bright)',
+];
+
 function VelAxis() {
   return (
     <div className="vel-axis" aria-hidden="true">
@@ -22,19 +36,27 @@ function VelAxis() {
             <stop offset="100%" stopColor="var(--copper)" stopOpacity="0.15" />
           </linearGradient>
           <radialGradient id="glow">
-            <stop offset="0%" stopColor="var(--gold-soft)" stopOpacity="0.55" />
+            <stop offset="0%" stopColor="var(--gold-soft)" stopOpacity="0.65" />
+            <stop offset="55%" stopColor="var(--gold)" stopOpacity="0.22" />
             <stop offset="100%" stopColor="var(--gold)" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="glow-ambient">
-            <stop offset="0%" stopColor="var(--gold)" stopOpacity="0.16" />
+            <stop offset="0%" stopColor="var(--gold)" stopOpacity="0.2" />
             <stop offset="100%" stopColor="var(--gold)" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="glow-ambient-cool">
+            <stop offset="0%" stopColor="var(--vel)" stopOpacity="0.14" />
+            <stop offset="100%" stopColor="var(--vel)" stopOpacity="0" />
           </radialGradient>
         </defs>
 
-        {/* Ambient sanctum-depth wash, wider and softer than the Vel's own glow */}
-        <circle cx="100" cy="220" r="230" fill="url(#glow-ambient)" />
+        {/* Deep sanctum-depth wash: a wide warm field up top fading into a
+            cool Vel-toned field lower down, so the axis reads as travelling
+            through a lit space rather than floating on flat ground. */}
+        <circle cx="100" cy="150" r="260" fill="url(#glow-ambient)" />
+        <circle cx="100" cy="520" r="240" fill="url(#glow-ambient-cool)" />
 
-        <circle cx="100" cy="86" r="76" fill="url(#glow)" />
+        <circle cx="100" cy="86" r="104" fill="url(#glow)" />
         <path
           d="M100 12 C122 44 128 66 128 80 C128 100 116 112 100 118 C84 112 72 100 72 80 C72 66 78 44 100 12 Z"
           fill="none"
@@ -46,12 +68,13 @@ function VelAxis() {
 
         {arupadaiVeedu.map((t, i) => (
           <g key={t.id}>
+            <circle cx="100" cy={168 + i * 84} r="9" fill={STOP_COLORS[i]} opacity="0.14" />
             <circle
               cx="100"
               cy={168 + i * 84}
               r="5"
               fill="var(--sanctum)"
-              stroke="var(--gold)"
+              stroke={STOP_COLORS[i]}
               strokeWidth="2"
             />
             <text
@@ -67,6 +90,41 @@ function VelAxis() {
         ))}
       </svg>
     </div>
+  );
+}
+
+/**
+ * A lightweight, non-representational suggestion of temple architecture —
+ * stepped gopuram tiers as flat geometric bands — sitting behind the hero
+ * copy on wide screens only. It is abstract line/shape geometry (no raster
+ * art, no invented temple likeness), present purely to give ultra-wide
+ * viewports a second compositional anchor instead of empty ground between
+ * the text column and the Vel (flagship review: "1920px must look designed
+ * specifically for 1920px", "remove dead dark voids").
+ */
+function SanctumAbstraction() {
+  return (
+    <svg
+      className="hero-architecture"
+      aria-hidden="true"
+      viewBox="0 0 960 520"
+      preserveAspectRatio="xMidYMax meet"
+    >
+      <defs>
+        <linearGradient id="tier-fade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--copper)" stopOpacity="0" />
+          <stop offset="100%" stopColor="var(--copper)" stopOpacity="0.5" />
+        </linearGradient>
+      </defs>
+      {/* Five receding stepped tiers, each narrower and higher than the
+          last — a gopuram's silhouette reduced to pure proportion. */}
+      <polygon points="480,40 560,120 400,120" fill="none" stroke="url(#tier-fade)" strokeWidth="1.5" />
+      <polygon points="480,90 610,190 350,190" fill="none" stroke="url(#tier-fade)" strokeWidth="1.5" />
+      <polygon points="480,150 660,270 300,270" fill="none" stroke="url(#tier-fade)" strokeWidth="1.5" />
+      <polygon points="480,220 710,360 250,360" fill="none" stroke="url(#tier-fade)" strokeWidth="1.5" />
+      <polygon points="480,300 760,460 200,460" fill="none" stroke="url(#tier-fade)" strokeWidth="1.5" />
+      <line x1="150" y1="460" x2="810" y2="460" stroke="var(--copper)" strokeWidth="1.5" opacity="0.55" />
+    </svg>
   );
 }
 
@@ -94,6 +152,7 @@ export default function Home() {
     <>
       <section className="hero">
         <span className="hero-edge" aria-hidden="true" />
+        <SanctumAbstraction />
         <div className="hero-copy">
           <p className="hero-eyebrow" lang="ta">
             வேல் · அறுபடை வீடு · திருப்புகழ்
@@ -135,9 +194,13 @@ export default function Home() {
           </p>
         </div>
         <ol className="abode-list">
-          {arupadaiVeedu.map((t) => (
+          {arupadaiVeedu.map((t, i) => (
             <li key={t.id}>
-              <Link href={`/temples/${t.id}`} className="abode">
+              <Link
+                href={`/temples/${t.id}`}
+                className="abode"
+                style={{ '--abode-accent': STOP_COLORS[i % STOP_COLORS.length] } as CSSProperties}
+              >
                 <span className="abode-num">{String(t.pilgrimageOrder).padStart(2, '0')}</span>
                 <span className="abode-body">
                   <b lang="ta">{t.nameTa}</b>

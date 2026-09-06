@@ -40,10 +40,25 @@ export default function Prayers() {
       </section>
 
       {kumarastavam.map((k) => (
-        <section key={k.id} aria-labelledby={`k-${k.id}`}>
-          <h2 id={`k-${k.id}`} lang="ta">
-            {k.titleTa}
-          </h2>
+        <section key={k.id} className="kumarastavam" aria-labelledby={`k-${k.id}`}>
+          <header className="kumarastavam-head">
+            <h2 id={`k-${k.id}`} lang="ta">
+              {k.titleTa}
+            </h2>
+            <p className="latin-name">{k.transliteration}</p>
+          </header>
+
+          <p className="note" lang="ta">
+            மூல உரை, பொருள், ஒலி — ஒவ்வொன்றும் தனித்தனி வெளியீட்டு நிலை.{' '}
+            {k.invocationsInSource ?? 0} துதிகளில் {k.invocationsPublished} மட்டுமே
+            இங்கு வெளியிடப்பட்டுள்ளன.
+          </p>
+          <p className="state-row">
+            <StateBadge state={k.canonicalTextStatus} dimension="மூல உரை" />
+            {k.meaningStatus && <StateBadge state={k.meaningStatus} dimension="பொருள்" />}
+            {k.audioStatus && <StateBadge state={k.audioStatus} dimension="ஒலி" />}
+          </p>
+
           <dl className="fields">
             <div className="field">
               <dt lang="ta">ஆசிரியர்</dt>
@@ -53,21 +68,14 @@ export default function Prayers() {
               <dt lang="ta">பதிப்பு</dt>
               <dd>{k.edition ?? '—'}</dd>
             </div>
-            <div className="field">
-              <dt lang="ta">மூலத்தில் உள்ள துதிகள்</dt>
-              <dd>{k.invocationsInSource ?? '—'}</dd>
-            </div>
-            <div className="field">
-              <dt lang="ta">வெளியிடப்பட்டவை</dt>
-              <dd>{k.invocationsPublished}</dd>
-            </div>
-            <div className="field">
-              <dt lang="ta">உரை நிலை</dt>
-              <dd>
-                <StateBadge state={k.canonicalTextStatus} />
-              </dd>
-            </div>
           </dl>
+
+          <p className="empty" lang="ta">
+            இந்த நூலின் மூல தமிழ் உரை உரிமை நிலை உறுதிசெய்யப்படாததால்
+            மறுவெளியிடப்படவில்லை. விவரமும் மூலமும் மட்டுமே இங்கு
+            வெளியிடப்படுகின்றன — உரிமை உறுதி செய்யப்பட்டதும் இந்தப் பதிவு
+            புதுப்பிக்கப்படும்.
+          </p>
         </section>
       ))}
 
