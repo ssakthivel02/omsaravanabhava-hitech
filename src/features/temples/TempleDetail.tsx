@@ -2,7 +2,10 @@ import { useParams, Link } from 'wouter';
 import { templeById, templeCompleteness } from '@/content/temples';
 import { describeSourceConfidence, works, arupadaiVeedu } from '@/content';
 import StateBadge from '@/components/StateBadge';
+import SaveControl from '@/components/SaveControl';
+import ReadAloud from '@/components/ReadAloud';
 import { useEntityMeta } from '@/lib/routeMeta';
+import { useRecentItem } from '@/lib/useRecent';
 
 export default function TempleDetail() {
   const params = useParams<{ id: string }>();
@@ -12,6 +15,11 @@ export default function TempleDetail() {
     `/temples/${params.id ?? ''}`,
     title,
     title ? `${title} — கோயில் பதிவு, மூலம் மற்றும் நிலையுடன்.` : null,
+  );
+  useRecentItem(
+    temple
+      ? { type: 'temple', id: temple.id, titleTa: temple.nameTa, titleEn: temple.nameEn }
+      : null,
   );
 
   if (!temple) {
@@ -27,23 +35,10 @@ export default function TempleDetail() {
   }
 
   const { documentedFields, totalFields } = templeCompleteness(temple);
-  // The registry's `sources[]` entries carry an identity-confidence signal
-  // (HIGH / PARTIAL_IDENTITY / LOW) that is a genuinely separate dimension
-  // from `coordinateConfidence` — see R2-CODE-005/012.
   const primarySource = temple.sources[0];
   const sourceConfidence = describeSourceConfidence(primarySource?.confidence);
-
-  // One of the six traditional abodes gets a visible flag on its own detail
-  // page — the pilgrimage order is real information (the same 01..06 the
-  // Arupadai band and page already use), not decoration.
   const pilgrimageStop = arupadaiVeedu.find((a) => a.id === temple.id);
 
-  // Short categorical facts (deity / form / location) read as an editorial
-  // identity line under the name. The longer prose fields — sthala purana,
-  // history, architecture, visitor information — are a different kind of
-  // content and are handled separately below so a page with only two or
-  // three of them populated still reads as "here is what we know," not as
-  // a ledger with blank rows.
   const facts = [
     temple.deity && { label: 'தெய்வம்', value: temple.deity },
     temple.muruganForm && { label: 'முருகன் வடிவம்', value: temple.muruganForm },
@@ -71,6 +66,14 @@ export default function TempleDetail() {
       return work ? { id: work.id, titleTa: work.titleTa } : null;
     })
     .filter((w): w is { id: string; titleTa: string | null } => w !== null);
+
+  const readAloudText = [
+    temple.nameTa,
+    ...facts.map((fact) => `${fact.label}: ${fact.value}`),
+    ...populatedProse.map((field) => `${field.label}. ${field.value}`),
+  ]
+    .filter((value): value is string => Boolean(value))
+    .join('. ');
 
   return (
     <article className="page">
@@ -103,6 +106,12 @@ export default function TempleDetail() {
             ))}
           </p>
         )}
+        <div className="record-actions">
+          <SaveControl
+            item={{ type: 'temple', id: temple.id, titleTa: temple.nameTa, titleEn: temple.nameEn }}
+          />
+          {readAloudText && <ReadAloud text={readAloudText} labelTa="கோயில் பதிவை வாசிக்க" />}
+        </div>
       </header>
 
       {literaryLinks.length > 0 && (
@@ -120,9 +129,7 @@ export default function TempleDetail() {
 
       {populatedProse.length > 0 && (
         <section className="temple-known" aria-labelledby="known-h">
-          <h2 id="known-h" lang="ta">
-            அறியப்பட்ட தகவல்
-          </h2>
+          <h2 id="known-h" lang="ta">அறியப்பட்ட தகவல்</h2>
           {populatedProse.map((f) => (
             <div className="temple-prose" key={f.key}>
               <h3 lang="ta">{f.label}</h3>
@@ -134,14 +141,10 @@ export default function TempleDetail() {
 
       {pendingProse.length > 0 && (
         <section className="temple-pending" aria-labelledby="pending-h">
-          <h2 id="pending-h" lang="ta">
-            இன்னும் நிலுவையில்
-          </h2>
+          <h2 id="pending-h" lang="ta">இன்னும் நிலுவையில்</h2>
           <ul className="temple-pending-list">
             {pendingProse.map((f) => (
-              <li key={f.key} lang="ta">
-                {f.label}
-              </li>
+              <li key={f.key} lang="ta">{f.label}</li>
             ))}
           </ul>
           <p className="note" lang="ta">
@@ -153,9 +156,7 @@ export default function TempleDetail() {
       )}
 
       <section className="provenance" aria-labelledby="prov-h">
-        <h2 id="prov-h" lang="ta">
-          மூலமும் நிலையும்
-        </h2>
+        <h2 id="prov-h" lang="ta">மூலமும் நிலையும்</h2>
         <p lang="ta" className="note">
           கீழேயுள்ள ஒவ்வொரு நிலையும் ஒரு தனித்தன்மையைக் குறிக்கிறது; ஒன்று
           மற்றொன்றைப் பொதுமைப்படுத்தாது.
@@ -169,8 +170,7 @@ export default function TempleDetail() {
           <StateBadge state={temple.imageStatus} dimension="படம்" />
         </p>
         <p className="note" lang="ta">
-          முழுமை நிலை: {documentedFields}/{totalFields} விவரப் புலங்கள்
-          கிடைத்துள்ளன.
+          முழுமை நிலை: {documentedFields}/{totalFields} விவரப் புலங்கள் கிடைத்துள்ளன.
         </p>
         {temple.sources.length > 0 && (
           <ul className="source-list">
@@ -198,20 +198,14 @@ export default function TempleDetail() {
 
       {pilgrimageStop?.officialCurrentSource && (
         <section className="official-current" aria-labelledby="cur-h">
-          <h2 id="cur-h" lang="ta">
-            தற்போதைய உத்தியோகபூர்வத் தகவல்
-          </h2>
+          <h2 id="cur-h" lang="ta">தற்போதைய உத்தியோகபூர்வத் தகவல்</h2>
           <p className="state-row">
-            <StateBadge
-              state={pilgrimageStop.officialCurrentSource.state}
-              dimension="தற்போதைமை"
-            />
+            <StateBadge state={pilgrimageStop.officialCurrentSource.state} dimension="தற்போதைமை" />
           </p>
           <p className="note" lang="ta">
             தற்போதைய நேரம், சேவைகள் மற்றும் பயணத் தகவலை உத்தியோகபூர்வ கோயில் /
             HR&amp;CE மூலத்துடன் பயணத்திற்கு முன் உறுதி செய்யவும்.
           </p>
-
           {pilgrimageStop.officialCurrentSource.publishedScheduleNote && (
             <div className="official-current-row">
               <b lang="ta">தரிசன நேரம்</b>
@@ -221,18 +215,16 @@ export default function TempleDetail() {
               )}
             </div>
           )}
-
           {pilgrimageStop.officialCurrentSource.sourceDisplayQuality && (
             <div className="official-current-row">
               <b lang="ta">மூலக் குறிப்பு</b>
               <p lang="ta">
                 மூல அட்டவணையில் வடிவமைப்புச் சிக்கல் இருந்தது; இணைந்த தமிழ்
-                விளக்கத்தின் அடிப்படையில் மேலேயுள்ள நேரம் இயல்பாக்கப்பட்டுள்ளது
-                — பயணத்திற்கு முன் மீண்டும் உறுதி செய்யவும்.
+                விளக்கத்தின் அடிப்படையில் மேலேயுள்ள நேரம் இயல்பாக்கப்பட்டுள்ளது —
+                பயணத்திற்கு முன் மீண்டும் உறுதி செய்யவும்.
               </p>
             </div>
           )}
-
           {pilgrimageStop.officialCurrentSource.contact && (
             <dl className="fields">
               {pilgrimageStop.officialCurrentSource.contact.phone && (
@@ -255,47 +247,17 @@ export default function TempleDetail() {
               )}
             </dl>
           )}
-
           <p className="note" lang="ta">
-            கடைசியாக உறுதிசெய்யப்பட்டது:{' '}
-            {pilgrimageStop.officialCurrentSource.lastVerifiedAt.slice(0, 10)} · மூலம்:{' '}
-            {pilgrimageStop.officialCurrentSource.sourceAuthority}
-          </p>
-          {(pilgrimageStop.officialCurrentSource.timingSourceUrl ??
-            pilgrimageStop.officialCurrentSource.officialBaseUrl) && (
-            <a
-              className="source-link"
-              href={
-                pilgrimageStop.officialCurrentSource.timingSourceUrl ??
-                pilgrimageStop.officialCurrentSource.officialBaseUrl ??
-                undefined
-              }
-              rel="noopener noreferrer"
-              target="_blank"
-              lang="ta"
-            >
-              மூலப் பக்கத்தில் காண்க ↗
-            </a>
-          )}
-        </section>
-      )}
-
-      {temple.officialDirectSupportLink && (
-        <section className="official" aria-labelledby="off-h">
-          <h2 id="off-h" lang="ta">
-            உத்தியோகபூர்வ தொடர்பு
-          </h2>
-          <p lang="ta">
-            கீழ்க்கண்டது கோயிலின் உத்தியோகபூர்வ சேனல். இத்தளம் நன்கொடைகளைப்
-            பெறுவதோ கையாள்வதோ இல்லை.
+            கீழே இணைக்கப்பட்டிருக்கும் உத்தியோகபூர்வ மூலமே நேரம் மற்றும் தொடர்பு
+            விவரங்களுக்கான தற்போதைய ஆதாரம்.
           </p>
           <a
-            className="official-link"
-            href={temple.officialDirectSupportLink}
+            className="btn btn-quiet"
+            href={pilgrimageStop.officialCurrentSource.url}
             rel="noopener noreferrer"
             target="_blank"
           >
-            {temple.officialAuthority ?? temple.officialDirectSupportLink}
+            <span lang="ta">உத்தியோகபூர்வ மூலத்தைத் திற</span>
           </a>
         </section>
       )}
