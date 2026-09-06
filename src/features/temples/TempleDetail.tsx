@@ -27,9 +27,7 @@ export default function TempleDetail() {
       <article className="page">
         <h1 lang="ta">பதிவு காணப்படவில்லை</h1>
         <p lang="ta">இந்த முகவரிக்குக் கோயில் பதிவு இல்லை.</p>
-        <Link href="/temples" lang="ta">
-          கோயில் பட்டியலுக்குத் திரும்பு
-        </Link>
+        <Link href="/temples" lang="ta">கோயில் பட்டியலுக்குத் திரும்பு</Link>
       </article>
     );
   }
@@ -75,6 +73,12 @@ export default function TempleDetail() {
     .filter((value): value is string => Boolean(value))
     .join('. ');
 
+  const officialCurrentUrl = pilgrimageStop?.officialCurrentSource
+    ? (pilgrimageStop.officialCurrentSource.timingSourceUrl ??
+      pilgrimageStop.officialCurrentSource.contactSourceUrl ??
+      pilgrimageStop.officialCurrentSource.officialBaseUrl)
+    : null;
+
   return (
     <article className="page">
       <header className="page-head temple-head">
@@ -82,9 +86,7 @@ export default function TempleDetail() {
           {temple.classification.length > 0 && (
             <p className="tag-row">
               {temple.classification.map((c) => (
-                <span key={c} className="tag" lang="ta">
-                  {c}
-                </span>
+                <span key={c} className="tag" lang="ta">{c}</span>
               ))}
             </p>
           )}
@@ -107,9 +109,7 @@ export default function TempleDetail() {
           </p>
         )}
         <div className="record-actions">
-          <SaveControl
-            item={{ type: 'temple', id: temple.id, titleTa: temple.nameTa, titleEn: temple.nameEn }}
-          />
+          <SaveControl item={{ type: 'temple', id: temple.id, titleTa: temple.nameTa, titleEn: temple.nameEn }} />
           {readAloudText && <ReadAloud text={readAloudText} labelTa="கோயில் பதிவை வாசிக்க" />}
         </div>
       </header>
@@ -143,14 +143,11 @@ export default function TempleDetail() {
         <section className="temple-pending" aria-labelledby="pending-h">
           <h2 id="pending-h" lang="ta">இன்னும் நிலுவையில்</h2>
           <ul className="temple-pending-list">
-            {pendingProse.map((f) => (
-              <li key={f.key} lang="ta">{f.label}</li>
-            ))}
+            {pendingProse.map((f) => <li key={f.key} lang="ta">{f.label}</li>)}
           </ul>
           <p className="note" lang="ta">
             சரிபார்க்கப்படாத தகவலை இத்தளம் வெளியிடாது. இது கோயிலின் அடையாளம்
-            குறித்த ஐயத்தைக் குறிக்காது — கீழே &ldquo;மூலமும் நிலையும்&rdquo;
-            பிரிவைப் பார்க்கவும்.
+            குறித்த ஐயத்தைக் குறிக்காது — கீழே &ldquo;மூலமும் நிலையும்&rdquo; பிரிவைப் பார்க்கவும்.
           </p>
         </section>
       )}
@@ -158,8 +155,7 @@ export default function TempleDetail() {
       <section className="provenance" aria-labelledby="prov-h">
         <h2 id="prov-h" lang="ta">மூலமும் நிலையும்</h2>
         <p lang="ta" className="note">
-          கீழேயுள்ள ஒவ்வொரு நிலையும் ஒரு தனித்தன்மையைக் குறிக்கிறது; ஒன்று
-          மற்றொன்றைப் பொதுமைப்படுத்தாது.
+          கீழேயுள்ள ஒவ்வொரு நிலையும் ஒரு தனித்தன்மையைக் குறிக்கிறது; ஒன்று மற்றொன்றைப் பொதுமைப்படுத்தாது.
         </p>
         <p className="state-row">
           <span className={`state state-${sourceConfidence.tone}`}>
@@ -169,9 +165,7 @@ export default function TempleDetail() {
           <StateBadge state={temple.coordinateConfidence} dimension="ஆயத்தொலைவு" />
           <StateBadge state={temple.imageStatus} dimension="படம்" />
         </p>
-        <p className="note" lang="ta">
-          முழுமை நிலை: {documentedFields}/{totalFields} விவரப் புலங்கள் கிடைத்துள்ளன.
-        </p>
+        <p className="note" lang="ta">முழுமை நிலை: {documentedFields}/{totalFields} விவரப் புலங்கள் கிடைத்துள்ளன.</p>
         {temple.sources.length > 0 && (
           <ul className="source-list">
             {temple.sources.map((s, i) => {
@@ -179,9 +173,7 @@ export default function TempleDetail() {
               return (
                 <li key={i}>
                   {s.url ? (
-                    <a href={s.url} rel="noopener noreferrer" target="_blank">
-                      {s.reference ?? s.url}
-                    </a>
+                    <a href={s.url} rel="noopener noreferrer" target="_blank">{s.reference ?? s.url}</a>
                   ) : (
                     (s.reference ?? '—')
                   )}
@@ -203,62 +195,44 @@ export default function TempleDetail() {
             <StateBadge state={pilgrimageStop.officialCurrentSource.state} dimension="தற்போதைமை" />
           </p>
           <p className="note" lang="ta">
-            தற்போதைய நேரம், சேவைகள் மற்றும் பயணத் தகவலை உத்தியோகபூர்வ கோயில் /
-            HR&amp;CE மூலத்துடன் பயணத்திற்கு முன் உறுதி செய்யவும்.
+            தற்போதைய நேரம், சேவைகள் மற்றும் பயணத் தகவலை உத்தியோகபூர்வ கோயில் / HR&amp;CE மூலத்துடன் பயணத்திற்கு முன் உறுதி செய்யவும்.
           </p>
           {pilgrimageStop.officialCurrentSource.publishedScheduleNote && (
             <div className="official-current-row">
               <b lang="ta">தரிசன நேரம்</b>
               <p lang="ta">{pilgrimageStop.officialCurrentSource.publishedScheduleNote}</p>
-              {pilgrimageStop.officialCurrentSource.festivalVariation && (
-                <small lang="ta">திருவிழா நாட்களில் நேரம் மாறுபடலாம்.</small>
-              )}
+              {pilgrimageStop.officialCurrentSource.festivalVariation && <small lang="ta">திருவிழா நாட்களில் நேரம் மாறுபடலாம்.</small>}
             </div>
           )}
           {pilgrimageStop.officialCurrentSource.sourceDisplayQuality && (
             <div className="official-current-row">
               <b lang="ta">மூலக் குறிப்பு</b>
               <p lang="ta">
-                மூல அட்டவணையில் வடிவமைப்புச் சிக்கல் இருந்தது; இணைந்த தமிழ்
-                விளக்கத்தின் அடிப்படையில் மேலேயுள்ள நேரம் இயல்பாக்கப்பட்டுள்ளது —
-                பயணத்திற்கு முன் மீண்டும் உறுதி செய்யவும்.
+                மூல அட்டவணையில் வடிவமைப்புச் சிக்கல் இருந்தது; இணைந்த தமிழ் விளக்கத்தின் அடிப்படையில் மேலேயுள்ள நேரம் இயல்பாக்கப்பட்டுள்ளது — பயணத்திற்கு முன் மீண்டும் உறுதி செய்யவும்.
               </p>
             </div>
           )}
           {pilgrimageStop.officialCurrentSource.contact && (
             <dl className="fields">
               {pilgrimageStop.officialCurrentSource.contact.phone && (
-                <div className="field">
-                  <dt lang="ta">தொலைபேசி</dt>
-                  <dd>{pilgrimageStop.officialCurrentSource.contact.phone}</dd>
-                </div>
+                <div className="field"><dt lang="ta">தொலைபேசி</dt><dd>{pilgrimageStop.officialCurrentSource.contact.phone}</dd></div>
               )}
               {pilgrimageStop.officialCurrentSource.contact.email && (
-                <div className="field">
-                  <dt lang="ta">மின்னஞ்சல்</dt>
-                  <dd>{pilgrimageStop.officialCurrentSource.contact.email}</dd>
-                </div>
+                <div className="field"><dt lang="ta">மின்னஞ்சல்</dt><dd>{pilgrimageStop.officialCurrentSource.contact.email}</dd></div>
               )}
               {pilgrimageStop.officialCurrentSource.contact.addressSummary && (
-                <div className="field">
-                  <dt lang="ta">முகவரி</dt>
-                  <dd>{pilgrimageStop.officialCurrentSource.contact.addressSummary}</dd>
-                </div>
+                <div className="field"><dt lang="ta">முகவரி</dt><dd>{pilgrimageStop.officialCurrentSource.contact.addressSummary}</dd></div>
               )}
             </dl>
           )}
-          <p className="note" lang="ta">
-            கீழே இணைக்கப்பட்டிருக்கும் உத்தியோகபூர்வ மூலமே நேரம் மற்றும் தொடர்பு
-            விவரங்களுக்கான தற்போதைய ஆதாரம்.
-          </p>
-          <a
-            className="btn btn-quiet"
-            href={pilgrimageStop.officialCurrentSource.url}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <span lang="ta">உத்தியோகபூர்வ மூலத்தைத் திற</span>
-          </a>
+          {officialCurrentUrl && (
+            <>
+              <p className="note" lang="ta">இணைக்கப்பட்டிருக்கும் உத்தியோகபூர்வ மூலமே நேரம் மற்றும் தொடர்பு விவரங்களுக்கான தற்போதைய ஆதாரம்.</p>
+              <a className="btn btn-quiet" href={officialCurrentUrl} rel="noopener noreferrer" target="_blank">
+                <span lang="ta">உத்தியோகபூர்வ மூலத்தைத் திற</span>
+              </a>
+            </>
+          )}
         </section>
       )}
     </article>
