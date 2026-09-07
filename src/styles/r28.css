@@ -1,0 +1,71 @@
+/* R2.8 — multilingual shell and final flagship utility layer.
+   Interface language is browser-local. Canonical/source text remains governed
+   and is never machine-translated by this layer. */
+
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--sanctum-edge);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sanctum) 92%, var(--copper));
+  flex: none;
+}
+
+.language-switch-option {
+  min-height: 40px;
+  min-width: 44px;
+  padding: 0.35rem 0.7rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-faint);
+  font: inherit;
+  font-size: var(--t-xs);
+  cursor: pointer;
+}
+
+.language-switch-option:hover,
+.language-switch-option:focus-visible {
+  color: var(--gold-soft);
+}
+
+.language-switch-option[aria-pressed='true'] {
+  color: var(--sanctum);
+  background: var(--gold-soft);
+}
+
+@media (max-width: 71.99rem) {
+  .language-switch {
+    margin-inline-start: auto;
+  }
+
+  .topbar-inner .language-switch + .menu-toggle {
+    margin-inline-start: 0;
+  }
+}
+
+@media (max-width: 28rem) {
+  .language-switch-option {
+    min-width: 40px;
+    padding-inline: 0.55rem;
+  }
+}
+
+/* Keep the language utility quiet next to the sacred brand and content nav. */
+@media (min-width: 72rem) {
+  .desktop-nav {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+  }
+}
+
+/* English UI text uses the same measured editorial rhythm rather than a
+   separate SaaS-like visual system. */
+[data-ui-locale='en'] .hero-lead,
+[data-ui-locale='en'] .band-head p,
+[data-ui-locale='en'] .page > p,
+[data-ui-locale='en'] .knowledge-trust p {
+  max-width: 58ch;
+}
