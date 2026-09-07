@@ -28,7 +28,13 @@ type LocaleContextValue = {
   text: (ta: string, en: string) => string;
 };
 
-const LocaleContext = createContext<LocaleContextValue | null>(null);
+// A Tamil fallback keeps independently-rendered route components and tests
+// deterministic. The production application is always wrapped by LocaleProvider.
+const LocaleContext = createContext<LocaleContextValue>({
+  locale: 'ta',
+  setLocale: () => undefined,
+  text: (ta) => ta,
+});
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<UiLocale>(readStoredLocale);
@@ -60,7 +66,5 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
 }
 
 export function useLocale() {
-  const value = useContext(LocaleContext);
-  if (!value) throw new Error('useLocale must be used inside LocaleProvider');
-  return value;
+  return useContext(LocaleContext);
 }
