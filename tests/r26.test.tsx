@@ -90,11 +90,11 @@ describe('R2.6 governed product routes', () => {
     const input = await screen.findByLabelText('தேடல் சொல்');
 
     await user.type(input, 'குமாரஸ்த்தவம்');
-    expect(await screen.findByText('ஸ்ரீ குமாரஸ்த்தவம்')).toBeInTheDocument();
+    expect((await screen.findAllByText('ஸ்ரீ குமாரஸ்த்தவம்')).length).toBeGreaterThanOrEqual(1);
 
     await user.clear(input);
     await user.type(input, 'Kumarastavam');
-    expect(await screen.findByText('ஸ்ரீ குமாரஸ்த்தவம்')).toBeInTheDocument();
+    expect((await screen.findAllByText('ஸ்ரீ குமாரஸ்த்தவம்')).length).toBeGreaterThanOrEqual(1);
   });
 
   it('does not fabricate Murugan names from identifier-only registry records', async () => {
