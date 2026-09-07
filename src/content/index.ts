@@ -55,14 +55,24 @@ export const normalizeSources = (sources: SourceRef[] | undefined | null): Sourc
  */
 export function describeSourceConfidence(
   confidence: string | null | undefined,
+  locale: 'ta' | 'en' = 'ta',
 ): { label: string; tone: StateTone } {
   const c = (confidence ?? '').toUpperCase();
-  if (c === 'HIGH') return { label: 'மூல அடையாளம்: உறுதியான மூலம்', tone: 'verified' };
+  const t = (ta: string, en: string) => (locale === 'ta' ? ta : en);
+  if (c === 'HIGH')
+    return { label: t('மூல அடையாளம்: உறுதியான மூலம்', 'Source identity: confirmed source'), tone: 'verified' };
   if (c === 'PARTIAL_IDENTITY')
-    return { label: 'மூல அடையாளம்: பகுதி அடையாளச் சான்று', tone: 'pending' };
-  if (c === 'LOW') return { label: 'மூல அடையாளம்: குறைந்த சான்று', tone: 'pending' };
-  if (c) return { label: `மூல அடையாளம்: ${confidence}`, tone: 'pending' };
-  return { label: 'மூல அடையாளம்: மதிப்பீடு செய்யப்படவில்லை', tone: 'absent' };
+    return {
+      label: t('மூல அடையாளம்: பகுதி அடையாளச் சான்று', 'Source identity: partial identity evidence'),
+      tone: 'pending',
+    };
+  if (c === 'LOW')
+    return { label: t('மூல அடையாளம்: குறைந்த சான்று', 'Source identity: low evidence'), tone: 'pending' };
+  if (c) return { label: t(`மூல அடையாளம்: ${confidence}`, `Source identity: ${confidence}`), tone: 'pending' };
+  return {
+    label: t('மூல அடையாளம்: மதிப்பீடு செய்யப்படவில்லை', 'Source identity: not yet assessed'),
+    tone: 'absent',
+  };
 }
 
 export interface Temple {
@@ -134,6 +144,36 @@ export interface OfficialCurrentSource {
 export interface ArupadaiTemple extends Temple {
   pilgrimageOrder: number;
   officialCurrentSource?: OfficialCurrentSource | null;
+}
+
+/**
+ * Preview freshness policy for dynamic official temple facts. The R2.9 audit
+ * found that ingested `state` values otherwise remain "current" forever.
+ * Sixty days is the provisional preview/review window proposed by that audit;
+ * it is intentionally an exported policy constant so the owner can tighten or
+ * relax it before production without rewriting governed source data.
+ */
+export const OFFICIAL_CURRENT_SOURCE_REVERIFY_AFTER_DAYS = 60;
+
+export function resolveOfficialSourceState(
+  source: OfficialCurrentSource,
+  now: Date = new Date(),
+  maxAgeDays: number = OFFICIAL_CURRENT_SOURCE_REVERIFY_AFTER_DAYS,
+): string {
+  if (source.state === 'OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED') return source.state;
+
+  const verifiedAt = Date.parse(source.lastVerifiedAt);
+  const nowMs = now.getTime();
+  if (!Number.isFinite(verifiedAt) || !Number.isFinite(nowMs) || !Number.isFinite(maxAgeDays) || maxAgeDays < 0) {
+    // Fail closed: malformed freshness evidence must never render as current.
+    return 'OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED';
+  }
+
+  const ageMs = Math.max(0, nowMs - verifiedAt);
+  const maxAgeMs = maxAgeDays * 24 * 60 * 60 * 1000;
+  return ageMs > maxAgeMs
+    ? 'OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED'
+    : source.state;
 }
 
 export interface ThiruppugazhSong {
@@ -252,39 +292,60 @@ export const songById = (id: string): ThiruppugazhSong | undefined =>
  */
 export type StateTone = 'verified' | 'pending' | 'absent';
 
-export function describeState(state: string): { label: string; tone: StateTone } {
+export function describeState(
+  state: string,
+  locale: 'ta' | 'en' = 'ta',
+): { label: string; tone: StateTone } {
   const s = state.toUpperCase();
+  const t = (ta: string, en: string) => (locale === 'ta' ? ta : en);
   // Current-official-source freshness states (R2.5) are checked first: they
   // are their own family, distinct from the canonical-content truth states
   // below, and "REVERIFY" does not share a substring with "VERIFIED" so it
   // would otherwise fall through to the raw-enum default.
   if (s === 'OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED')
-    return { label: 'தற்போதைய மூலம் · மறு-உறுதிப்படுத்தல் பரிந்துரை', tone: 'pending' };
+    return {
+      label: t('தற்போதைய மூலம் · மறு-உறுதிப்படுத்தல் பரிந்துரை', 'Current source · re-verification recommended'),
+      tone: 'pending',
+    };
   if (s === 'VERIFIED_CURRENT_OFFICIAL_SOURCE')
-    return { label: 'தற்போதைய உத்தியோகபூர்வ மூலத்துடன் சரிபார்க்கப்பட்டது', tone: 'verified' };
+    return {
+      label: t('தற்போதைய உத்தியோகபூர்வ மூலத்துடன் சரிபார்க்கப்பட்டது', 'Verified against current official source'),
+      tone: 'verified',
+    };
   if (s.includes('NO_APPROVED_AUDIO'))
-    return { label: 'அங்கீகரிக்கப்பட்ட ஒலி இல்லை', tone: 'absent' };
-  if (s.includes('NO_IMAGE_AVAILABLE')) return { label: 'படம் இல்லை', tone: 'absent' };
-  if (s.includes('IMAGE_PENDING')) return { label: 'படம் நிலுவையில்', tone: 'pending' };
+    return { label: t('அங்கீகரிக்கப்பட்ட ஒலி இல்லை', 'No approved audio'), tone: 'absent' };
+  if (s.includes('NO_IMAGE_AVAILABLE'))
+    return { label: t('படம் இல்லை', 'No image'), tone: 'absent' };
+  if (s.includes('IMAGE_PENDING'))
+    return { label: t('படம் நிலுவையில்', 'Image pending'), tone: 'pending' };
   if (s === 'UNKNOWN')
-    return { label: 'சரிபார்ப்பு நிலை பதிவு செய்யப்படவில்லை', tone: 'pending' };
+    return { label: t('சரிபார்ப்பு நிலை பதிவு செய்யப்படவில்லை', 'Verification state not recorded'), tone: 'pending' };
   if (s.includes('NOT_REIMPORTED'))
-    return { label: 'மூலம் இணைக்கப்பட்டது · உரை இன்னும் ஏற்றப்படவில்லை', tone: 'pending' };
+    return {
+      label: t('மூலம் இணைக்கப்பட்டது · உரை இன்னும் ஏற்றப்படவில்லை', 'Source linked · text not yet imported'),
+      tone: 'pending',
+    };
   if (s.includes('ZERO_PUBLISHABLE'))
-    return { label: 'வெளியிடத்தக்க தொகுப்பு இல்லை', tone: 'absent' };
+    return { label: t('வெளியிடத்தக்க தொகுப்பு இல்லை', 'No publishable set'), tone: 'absent' };
   if (s.includes('RIGHTS_UNCERTAIN') || s.includes('NO_REPUBLICATION'))
-    return { label: 'உரிமை உறுதிசெய்யப்படவில்லை · மறுவெளியீடு இல்லை', tone: 'absent' };
+    return {
+      label: t('உரிமை உறுதிசெய்யப்படவில்லை · மறுவெளியீடு இல்லை', 'Rights not confirmed · not republished'),
+      tone: 'absent',
+    };
   if (s.includes('METADATA_ONLY'))
-    return { label: 'விவரங்கள் மட்டும் · உரை இல்லை', tone: 'pending' };
+    return { label: t('விவரங்கள் மட்டும் · உரை இல்லை', 'Metadata only · no text'), tone: 'pending' };
   if (s.includes('NOT_REPUBLISHED'))
-    return { label: 'மறுவெளியீடு செய்யப்படவில்லை', tone: 'absent' };
+    return { label: t('மறுவெளியீடு செய்யப்படவில்லை', 'Not republished'), tone: 'absent' };
   if (s.includes('HEADER_PRESERVATION'))
     return {
-      label: 'மூல பதிப்பாளர் தலைப்பு/பண்புரிமைக் குறிப்புடன் மட்டுமே மறுவெளியீடு',
+      label: t(
+        'மூல பதிப்பாளர் தலைப்பு/பண்புரிமைக் குறிப்புடன் மட்டுமே மறுவெளியீடு',
+        "Republished only with the source publisher's title/attribution note",
+      ),
       tone: 'pending',
     };
   if (s.includes('SOURCE_REQUIRED'))
-    return { label: 'மூலம் தேவை', tone: 'pending' };
+    return { label: t('மூலம் தேவை', 'Source required'), tone: 'pending' };
   // Checked before the bare NOT_PUBLISHED case below: the temple registry's
   // coordinateConfidence uses two differently-worded values for the exact
   // same real state (zero coordinates published for any of the 376
@@ -294,13 +355,14 @@ export function describeState(state: string): { label: string; tone: StateTone }
   // different labels/tones depending only on which wording a record
   // happened to use; both now read as pending verification.
   if (s.includes('PENDING_VERIFICATION'))
-    return { label: 'சரிபார்ப்பு நிலுவையில்', tone: 'pending' };
+    return { label: t('சரிபார்ப்பு நிலுவையில்', 'Verification pending'), tone: 'pending' };
   if (s.includes('NOT_PUBLISHED'))
-    return { label: 'இன்னும் வெளியிடப்படவில்லை', tone: 'absent' };
+    return { label: t('இன்னும் வெளியிடப்படவில்லை', 'Not yet published'), tone: 'absent' };
   if (s.includes('INHERITED_VERIFIED') || s.includes('VERIFIED'))
-    return { label: 'மூலத்துடன் சரிபார்க்கப்பட்டது', tone: 'verified' };
+    return { label: t('மூலத்துடன் சரிபார்க்கப்பட்டது', 'Verified against source'), tone: 'verified' };
   if (s.includes('ILLUSTRATIVE'))
-    return { label: 'விளக்கப் படம் · ஆவணப் படம் அல்ல', tone: 'pending' };
-  if (s.includes('PUBLISHED')) return { label: 'வெளியிடப்பட்டது', tone: 'verified' };
+    return { label: t('விளக்கப் படம் · ஆவணப் படம் அல்ல', 'Illustrative image · not a documentary photo'), tone: 'pending' };
+  if (s.includes('PUBLISHED'))
+    return { label: t('வெளியிடப்பட்டது', 'Published'), tone: 'verified' };
   return { label: state, tone: 'pending' };
 }

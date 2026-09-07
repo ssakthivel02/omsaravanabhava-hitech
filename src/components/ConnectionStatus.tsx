@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useLocale } from '@/lib/locale';
 
 export default function ConnectionStatus() {
   const [online, setOnline] = useState(() => (typeof navigator === 'undefined' ? true : navigator.onLine));
   const [reconnected, setReconnected] = useState(false);
+  const { locale, text } = useLocale();
 
   useEffect(() => {
     let timer: number | undefined;
@@ -31,10 +33,13 @@ export default function ConnectionStatus() {
   return (
     <div className={`connection-status ${online ? 'is-online' : 'is-offline'}`} role="status" aria-live="polite">
       <span aria-hidden="true">{online ? '✓' : '○'}</span>
-      <span lang="ta">
+      <span lang={locale}>
         {online
-          ? 'இணைய இணைப்பு மீண்டும் கிடைத்தது.'
-          : 'இணைய இணைப்பு இல்லை. முன்பு தற்காலிகமாக சேமிக்கப்பட்ட பக்கங்கள் மட்டும் கிடைக்கலாம்.'}
+          ? text('இணைய இணைப்பு மீண்டும் கிடைத்தது.', 'Internet connection is back.')
+          : text(
+              'இணைய இணைப்பு இல்லை. முன்பு தற்காலிகமாக சேமிக்கப்பட்ட பக்கங்கள் மட்டும் கிடைக்கலாம்.',
+              'No internet connection. Only previously cached pages may be available.',
+            )}
       </span>
     </div>
   );

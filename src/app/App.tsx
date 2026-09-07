@@ -20,14 +20,16 @@ import Practice from '@/features/practice/Practice';
 import Completeness from '@/features/trust/Completeness';
 import Sources from '@/features/trust/Sources';
 import NotFound from '@/features/trust/NotFound';
-import {
-  About,
-  Privacy,
-  Terms,
-  Disclaimer,
-  Accessibility,
-  Contact,
-} from '@/features/legal/Legal';
+// Legal/public-information pages are valid direct routes but are rarely part
+// of a first Home visit. Keep the shared Doc implementation in one module and
+// lazy-load each named export so Legal.tsx no longer inflates the eager Home
+// application chunk. Vite may coalesce these into one shared legal chunk.
+const About = lazy(() => import('@/features/legal/Legal').then((module) => ({ default: module.About })));
+const Privacy = lazy(() => import('@/features/legal/Legal').then((module) => ({ default: module.Privacy })));
+const Terms = lazy(() => import('@/features/legal/Legal').then((module) => ({ default: module.Terms })));
+const Disclaimer = lazy(() => import('@/features/legal/Legal').then((module) => ({ default: module.Disclaimer })));
+const Accessibility = lazy(() => import('@/features/legal/Legal').then((module) => ({ default: module.Accessibility })));
+const Contact = lazy(() => import('@/features/legal/Legal').then((module) => ({ default: module.Contact })));
 
 export default function App() {
   const { locale, text } = useLocale();

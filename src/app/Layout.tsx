@@ -124,7 +124,9 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <path d="M3 5.5 H17 M3 10 H17 M3 14.5 H17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               )}
             </svg>
-            <span lang={locale}>{open ? text('மூடு', 'Close') : text('பட்டி', 'Menu')}</span>
+            <span className="menu-toggle-label" lang={locale}>
+              {open ? text('மூடு', 'Close') : text('பட்டி', 'Menu')}
+            </span>
           </button>
         </div>
 

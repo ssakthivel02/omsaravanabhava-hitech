@@ -1,0 +1,81 @@
+import { test, expect } from '@playwright/test';
+
+const STORAGE_KEY = 'omsaravanabhava-hitech-ui-locale-v1';
+
+async function switchToEnglish(page: import('@playwright/test').Page) {
+  await page.getByRole('button', { name: 'English interface' }).click();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+}
+
+async function switchToTamil(page: import('@playwright/test').Page) {
+  await page.getByRole('button', { name: 'தமிழ் இடைமுகம்' }).click();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ta');
+}
+
+test.describe('R2.8 local-first Tamil / English interface', () => {
+  test('defaults to Tamil and switches the shared shell to English', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'ta');
+    await expect(page.getByRole('link', { name: 'அறுபடை வீடு' }).first()).toBeVisible();
+
+    await switchToEnglish(page);
+    await expect(page.getByRole('link', { name: 'Six Abodes' }).first()).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Through the Vel');
+    await expect(page).toHaveTitle(/Murugan devotional knowledge/i);
+
+    const stored = await page.evaluate((key) => localStorage.getItem(key), STORAGE_KEY);
+    expect(stored).toBe('en');
+  });
+
+  test('persists English across reload and can return to Tamil', async ({ page }) => {
+    await page.goto('/knowledge');
+    await switchToEnglish(page);
+    await page.reload();
+
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Murugan Knowledge');
+    await expect(page).toHaveTitle(/Murugan Knowledge/i);
+
+    await switchToTamil(page);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('முருகன் அறிவுக் களம்');
+    await expect(page).toHaveTitle(/முருகன் அறிவுக் களம்/);
+  });
+
+  test('localizes route metadata when language changes', async ({ page }) => {
+    await page.goto('/search');
+    await expect(page).toHaveTitle(/தேடல்/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /தமிழ்/);
+
+    await switchToEnglish(page);
+    await expect(page).toHaveTitle(/Search — Om Saravana Bhava/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Search source-aware Murugan content/i);
+  });
+
+  test('keeps canonical Tamil content Tamil while English UI is active', async ({ page }) => {
+    await page.goto('/temples/ctm-tirupparankundram');
+    await switchToEnglish(page);
+
+    await expect(page.getByRole('heading', { level: 1 })).toHaveAttribute('lang', 'en');
+    await expect(page.locator('.latin-name[lang="ta"]').first()).toBeVisible();
+
+    await page.goto('/thiruppugazh/thiruppugazh-0006');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveAttribute('lang', 'ta');
+    await expect(page.locator('.latin-name[lang="en"]')).toBeVisible();
+  });
+
+  test('mobile menu remains usable in both interface languages', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+
+    await page.getByRole('button', { name: 'பட்டி' }).click();
+    await expect(page.getByRole('navigation', { name: 'முதன்மை வழிசெலுத்தல்' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'கோயில்கள்' }).first()).toBeVisible();
+
+    await page.getByRole('button', { name: 'மூடு' }).click();
+    await switchToEnglish(page);
+    await page.getByRole('button', { name: 'Menu' }).click();
+    await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Temples' }).first()).toBeVisible();
+  });
+});

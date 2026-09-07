@@ -17,6 +17,7 @@ export default function LanguageSwitch() {
           className="language-switch-option"
           aria-pressed={locale === option.value}
           aria-label={option.label}
+          lang={option.value}
           onClick={() => setLocale(option.value)}
         >
           {option.short}

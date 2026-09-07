@@ -12,6 +12,8 @@ import {
   namavali,
   completeness,
   describeState,
+  resolveOfficialSourceState,
+  OFFICIAL_CURRENT_SOURCE_REVERIFY_AFTER_DAYS,
 } from '@/content';
 
 describe('governed corpus', () => {
@@ -82,3 +84,41 @@ describe('state labelling', () => {
     expect(describeState('INHERITED_VERIFIED_SOURCE_LINKED').tone).toBe('verified');
   });
 });
+
+describe('dynamic official-source freshness', () => {
+  it('preserves a recent verified state and recommends re-verification after the preview window', () => {
+    const source = arupadaiVeedu
+      .map((temple) => temple.officialCurrentSource)
+      .find((candidate) => candidate?.state === 'VERIFIED_CURRENT_OFFICIAL_SOURCE');
+    expect(source).toBeTruthy();
+    if (!source) return;
+
+    const verifiedAt = new Date(source.lastVerifiedAt);
+    const recent = new Date(verifiedAt.getTime() + 1 * 24 * 60 * 60 * 1000);
+    const stale = new Date(
+      verifiedAt.getTime() + (OFFICIAL_CURRENT_SOURCE_REVERIFY_AFTER_DAYS + 1) * 24 * 60 * 60 * 1000,
+    );
+
+    expect(resolveOfficialSourceState(source, recent)).toBe('VERIFIED_CURRENT_OFFICIAL_SOURCE');
+    expect(resolveOfficialSourceState(source, stale)).toBe('OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED');
+  });
+
+  it('preserves an ingestion-time reverify recommendation and fails closed on malformed dates', () => {
+    const source = arupadaiVeedu
+      .map((temple) => temple.officialCurrentSource)
+      .find((candidate) => candidate?.state === 'OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED');
+    expect(source).toBeTruthy();
+    if (!source) return;
+
+    expect(resolveOfficialSourceState(source, new Date('2026-09-07T12:00:00Z'))).toBe(
+      'OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED',
+    );
+    expect(
+      resolveOfficialSourceState(
+        { ...source, state: 'VERIFIED_CURRENT_OFFICIAL_SOURCE', lastVerifiedAt: 'not-a-date' },
+        new Date('2026-09-07T12:00:00Z'),
+      ),
+    ).toBe('OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED');
+  });
+});
+
