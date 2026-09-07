@@ -3,6 +3,7 @@ import { Route, Switch } from 'wouter';
 import Layout from './Layout';
 import Home from '@/features/home/Home';
 import ArupadaiVeedu from '@/features/temples/ArupadaiVeedu';
+import { useLocale } from '@/lib/locale';
 
 // The temple corpus is the largest content chunk. Split it out so it is
 // fetched only when a temple/search route is actually visited.
@@ -29,9 +30,17 @@ import {
 } from '@/features/legal/Legal';
 
 export default function App() {
+  const { locale, text } = useLocale();
+
   return (
     <Layout>
-      <Suspense fallback={<p className="page" role="status" lang="ta">ஏற்றப்படுகிறது…</p>}>
+      <Suspense
+        fallback={
+          <p className="page" role="status" lang={locale}>
+            {text('ஏற்றப்படுகிறது…', 'Loading…')}
+          </p>
+        }
+      >
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/knowledge" component={Knowledge} />
