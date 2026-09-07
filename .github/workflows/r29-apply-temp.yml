@@ -30,7 +30,7 @@ jobs:
           base64 -d /tmp/r29-integrated-files.tar.gz.b64 > /tmp/r29-integrated-files.tar.gz
           echo "9941c22bd6e71617c5d54495b47fe348e52094f5765aedb81af6e9b99d1685bd  /tmp/r29-integrated-files.tar.gz" | sha256sum -c -
 
-          cat > /tmp/r29-expected.txt <<'EOF'
+          cat > /tmp/r29-archive-expected.txt <<'EOF'
           src/app/App.tsx
           src/app/Layout.tsx
           src/components/ConnectionStatus.tsx
@@ -63,20 +63,24 @@ jobs:
           tests/locale.test.tsx
           tests/r26.test.tsx
           EOF
-          sed -i 's/^          //' /tmp/r29-expected.txt
+          sed -i 's/^          //' /tmp/r29-archive-expected.txt
           tar -tzf /tmp/r29-integrated-files.tar.gz | sort > /tmp/r29-archive.txt
-          sort /tmp/r29-expected.txt > /tmp/r29-expected-sorted.txt
-          diff -u /tmp/r29-expected-sorted.txt /tmp/r29-archive.txt
+          sort /tmp/r29-archive-expected.txt > /tmp/r29-archive-expected-sorted.txt
+          diff -u /tmp/r29-archive-expected-sorted.txt /tmp/r29-archive.txt
           test "$(wc -l < /tmp/r29-archive.txt | tr -d ' ')" -eq 31
 
-      - name: Extract and enforce exact 31-file scope
+      - name: Extract and enforce exact 30-file delta
         shell: bash
         run: |
           set -euo pipefail
           tar -xzf /tmp/r29-integrated-files.tar.gz
+
+          # r28-locale.spec.ts is intentionally carried in the reviewed transport bundle
+          # but is byte-identical to the authoritative R2.8 baseline, so the real Git delta is 30 files.
+          grep -v '^tests/e2e/r28-locale.spec.ts$' /tmp/r29-archive-expected-sorted.txt > /tmp/r29-diff-expected.txt
           git diff --name-only | sort > /tmp/r29-diff.txt
-          diff -u /tmp/r29-expected-sorted.txt /tmp/r29-diff.txt
-          test "$(wc -l < /tmp/r29-diff.txt | tr -d ' ')" -eq 31
+          diff -u /tmp/r29-diff-expected.txt /tmp/r29-diff.txt
+          test "$(wc -l < /tmp/r29-diff.txt | tr -d ' ')" -eq 30
           if grep -Eq '^(public/|source-data/|src/content/.*\.json$|wrangler\.preview\.jsonc$|\.github/workflows/(ci|deploy-preview)\.yml$|release/|docs/)' /tmp/r29-diff.txt; then
             echo "::error::Integrated candidate attempted a forbidden deployment, corpus, governance, or release-contract change"
             exit 1
