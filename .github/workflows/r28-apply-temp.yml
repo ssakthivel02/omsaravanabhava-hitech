@@ -1,0 +1,57 @@
+name: Apply reviewed R2.8 integration bundle
+
+on:
+  push:
+    branches:
+      - chatgpt/r28-reviewed-integration
+    paths:
+      - .github/workflows/r28-apply-temp.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-reviewed-r28:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout temporary integration branch
+        uses: actions/checkout@v7
+        with:
+          ref: chatgpt/r28-reviewed-integration
+          fetch-depth: 0
+
+      - name: Verify and extract reviewed source bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 -d .r28-reviewed-source.tar.gz.b64 > /tmp/r28-reviewed-source.tar.gz
+          echo "8c975c8d50e2ad3ffc0dfe84da7f4a00f72f81e89f5b5130965689daed307ee6  /tmp/r28-reviewed-source.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/r28-reviewed-source.tar.gz
+
+      - name: Guard scope before commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only > /tmp/r28-files.txt
+          cat /tmp/r28-files.txt
+          test -s /tmp/r28-files.txt
+          if grep -Eq '^(public/|source-data/|src/content/.*\.json$|\.github/workflows/(ci|deploy-preview)\.yml$|wrangler\.preview\.jsonc$)' /tmp/r28-files.txt; then
+            echo "::error::Reviewed R2.8 bundle attempted a forbidden deployment/corpus change"
+            exit 1
+          fi
+          expected=29
+          actual=$(wc -l < /tmp/r28-files.txt | tr -d ' ')
+          test "$actual" -eq "$expected"
+
+      - name: Commit temporary integrated tree
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src tests
+          git commit -m "R2.8: apply reviewed Tamil English visitor UI"
+          git push origin HEAD:chatgpt/r28-reviewed-integration
