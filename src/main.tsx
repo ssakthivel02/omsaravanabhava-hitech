@@ -1,17 +1,21 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './app/App';
+import { LocaleProvider } from './lib/locale';
 import './styles/tokens.css';
 import './styles/app.css';
 import './styles/r26.css';
 import './styles/r27.css';
+import './styles/r28.css';
 
 const el = document.getElementById('root');
 if (!el) throw new Error('#root missing from index.html');
 
 createRoot(el).render(
   <StrictMode>
-    <App />
+    <LocaleProvider>
+      <App />
+    </LocaleProvider>
   </StrictMode>,
 );
 
