@@ -1,4 +1,5 @@
 import { describeState, type StateTone } from '@/content';
+import { useLocale } from '@/lib/locale';
 
 /**
  * Renders an already-resolved {label, tone} pair (e.g. from
@@ -16,10 +17,11 @@ export function StateBadgeResolved({
   tone: StateTone;
   dimension?: string | undefined;
 }) {
+  const { locale } = useLocale();
   return (
     <span className={`state state-${tone}`}>
       <span className="state-dot" aria-hidden="true" />
-      <span lang="ta">
+      <span lang={locale}>
         {dimension ? <span className="state-dimension">{dimension}: </span> : null}
         {label}
       </span>
@@ -44,6 +46,7 @@ export default function StateBadge({
   state: string;
   dimension?: string;
 }) {
-  const { label, tone } = describeState(state);
+  const { locale } = useLocale();
+  const { label, tone } = describeState(state, locale);
   return <StateBadgeResolved label={label} tone={tone} dimension={dimension} />;
 }

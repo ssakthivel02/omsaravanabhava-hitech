@@ -27,6 +27,8 @@ describe('local-first UI language', () => {
 
     expect(screen.getByTestId('locale-probe')).toHaveTextContent('ta:தமிழ்');
     expect(screen.getByRole('button', { name: 'தமிழ் இடைமுகம்' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'தமிழ் இடைமுகம்' })).toHaveAttribute('lang', 'ta');
+    expect(screen.getByRole('button', { name: 'English interface' })).toHaveAttribute('lang', 'en');
 
     await user.click(screen.getByRole('button', { name: 'English interface' }));
 

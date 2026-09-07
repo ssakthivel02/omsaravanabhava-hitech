@@ -84,6 +84,19 @@ describe('R2.6 governed product routes', () => {
     expect(screen.getByText(/இன்னும் எந்தப் பதிவும் சேமிக்கப்படவில்லை/)).toBeInTheDocument();
   });
 
+  it('finds governed Kumarastavam metadata in Tamil and Latin-keyboard search', async () => {
+    const user = userEvent.setup();
+    renderAt('/search');
+    const input = await screen.findByLabelText('தேடல் சொல்');
+
+    await user.type(input, 'குமாரஸ்த்தவம்');
+    expect(await screen.findByText('ஸ்ரீ குமாரஸ்த்தவம்')).toBeInTheDocument();
+
+    await user.clear(input);
+    await user.type(input, 'Kumarastavam');
+    expect(await screen.findByText('ஸ்ரீ குமாரஸ்த்தவம்')).toBeInTheDocument();
+  });
+
   it('does not fabricate Murugan names from identifier-only registry records', async () => {
     const user = userEvent.setup();
     renderAt('/search');

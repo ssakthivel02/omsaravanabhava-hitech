@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { arupadaiVeedu } from '@/content';
 import { localDayIndex } from '@/lib/localDay';
+import { useLocale } from '@/lib/locale';
 
 const KEY = 'omsaravanabhava-hitech.practice.count';
 
@@ -24,6 +25,7 @@ const readStoredCount = (): number => {
  */
 export default function Practice() {
   const [count, setCount] = useState<number>(readStoredCount);
+  const { locale, text } = useLocale();
 
   const persist = useCallback((n: number) => {
     setCount(n);
@@ -43,17 +45,21 @@ export default function Practice() {
   return (
     <article className="page">
       <header className="page-head">
-        <h1 lang="ta">தினசரி வழிபாடு</h1>
-        <p lang="ta">
-          எண்ணிக்கை இந்த உலாவியில் மட்டுமே சேமிக்கப்படுகிறது. கணக்கு தேவையில்லை.
+        <h1 lang={locale}>{text('தினசரி வழிபாடு', 'Daily Practice')}</h1>
+        <p lang={locale}>
+          {text(
+            'எண்ணிக்கை இந்த உலாவியில் மட்டுமே சேமிக்கப்படுகிறது. கணக்கு தேவையில்லை.',
+            'The count is saved only in this browser. No account needed.',
+          )}
         </p>
       </header>
 
       {focus && (
         <section aria-labelledby="focus-h">
-          <h2 id="focus-h" lang="ta">
-            இன்றைய நினைவு
+          <h2 id="focus-h" lang={locale}>
+            {text('இன்றைய நினைவு', "Today's Focus")}
           </h2>
+          {/* Canonical Tamil name on the parchment reading surface: always Tamil. */}
           <p className="canonical" lang="ta">
             {focus.nameTa}
           </p>
@@ -61,8 +67,8 @@ export default function Practice() {
       )}
 
       <section aria-labelledby="count-h">
-        <h2 id="count-h" lang="ta">
-          ஜப எண்ணிக்கை
+        <h2 id="count-h" lang={locale}>
+          {text('ஜப எண்ணிக்கை', 'Japa Count')}
         </h2>
         <p className="counter" aria-live="polite">
           <span className="counter-value">{count}</span>
@@ -73,19 +79,21 @@ export default function Practice() {
             className="btn btn-primary"
             onClick={() => persist(count + 1)}
           >
-            <span lang="ta">ஒன்று சேர்</span>
+            <span lang={locale}>{text('ஒன்று சேர்', 'Add one')}</span>
           </button>
           <button
             type="button"
             className="btn btn-quiet"
             onClick={() => persist(0)}
           >
-            <span lang="ta">மீட்டமை</span>
+            <span lang={locale}>{text('மீட்டமை', 'Reset')}</span>
           </button>
         </div>
-        <p className="note" lang="ta">
-          இத்தளம் எந்த வாக்குறுதியையும் அளிக்கவில்லை. இது ஒரு தனிப்பட்ட
-          எண்ணிக்கைக் கருவி மட்டுமே.
+        <p className="note" lang={locale}>
+          {text(
+            'இத்தளம் எந்த வாக்குறுதியையும் அளிக்கவில்லை. இது ஒரு தனிப்பட்ட எண்ணிக்கைக் கருவி மட்டுமே.',
+            'This site makes no promises. This is only a private counting tool.',
+          )}
         </p>
       </section>
     </article>
