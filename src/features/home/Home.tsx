@@ -4,19 +4,6 @@ import { arupadaiVeedu, completeness, thiruppugazh } from '@/content';
 import { localDayIndex } from '@/lib/localDay';
 import { useLocale } from '@/lib/locale';
 
-/**
- * The hero is a single orchestrated moment: the Vel drawn as a vertical
- * luminous axis with the six Arupadai Veedu set along its shaft. The six
- * abodes are a genuine traditional pilgrimage sequence, so numbering them
- * encodes real information rather than decorating the layout — the ordinal
- * beside each dot is the same 01..06 the Arupadai band below uses, making
- * the Vel a small map of the journey rather than a bare decorative icon
- * (flagship visual review: "is the Vel a meaningful focal motif?"). Each
- * ordinal's dot uses the same six-colour warm-to-cool sequence as the
- * Arupadai band below and the abode list in this same page, so the
- * relationship between hero, list and full pilgrimage route reads as one
- * continuous idea rather than three separately-designed things.
- */
 const STOP_COLORS = [
   'var(--gold)',
   'var(--gold-soft)',
@@ -26,116 +13,41 @@ const STOP_COLORS = [
   'var(--vel-bright)',
 ];
 
-function VelAxis() {
-  return (
-    <div className="vel-axis" aria-hidden="true">
-      <svg viewBox="0 0 200 640" preserveAspectRatio="xMidYMin meet">
-        <defs>
-          <linearGradient id="shaft" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--vel-bright)" stopOpacity="0.95" />
-            <stop offset="45%" stopColor="var(--gold)" stopOpacity="0.7" />
-            <stop offset="100%" stopColor="var(--copper)" stopOpacity="0.15" />
-          </linearGradient>
-          <radialGradient id="glow">
-            <stop offset="0%" stopColor="var(--gold-soft)" stopOpacity="0.65" />
-            <stop offset="55%" stopColor="var(--gold)" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="var(--gold)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="glow-ambient">
-            <stop offset="0%" stopColor="var(--gold)" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="var(--gold)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="glow-ambient-cool">
-            <stop offset="0%" stopColor="var(--vel)" stopOpacity="0.14" />
-            <stop offset="100%" stopColor="var(--vel)" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-
-        {/* Deep sanctum-depth wash: a wide warm field up top fading into a
-            cool Vel-toned field lower down, so the axis reads as travelling
-            through a lit space rather than floating on flat ground. */}
-        <circle cx="100" cy="150" r="260" fill="url(#glow-ambient)" />
-        <circle cx="100" cy="520" r="240" fill="url(#glow-ambient-cool)" />
-
-        <circle cx="100" cy="86" r="104" fill="url(#glow)" />
-        <path
-          d="M100 12 C122 44 128 66 128 80 C128 100 116 112 100 118 C84 112 72 100 72 80 C72 66 78 44 100 12 Z"
-          fill="none"
-          stroke="var(--vel-bright)"
-          strokeWidth="2"
-        />
-        <line x1="100" y1="24" x2="100" y2="616" stroke="url(#shaft)" strokeWidth="2.5" />
-        <line x1="84" y1="124" x2="116" y2="124" stroke="var(--copper)" strokeWidth="3" strokeLinecap="round" />
-
-        {arupadaiVeedu.map((t, i) => (
-          <g key={t.id}>
-            <circle cx="100" cy={168 + i * 84} r="9" fill={STOP_COLORS[i]} opacity="0.14" />
-            <circle
-              cx="100"
-              cy={168 + i * 84}
-              r="5"
-              fill="var(--sanctum)"
-              stroke={STOP_COLORS[i]}
-              strokeWidth="2"
-            />
-            <text
-              x="118"
-              y={168 + i * 84 + 4}
-              fontSize="13"
-              fill="var(--gold-soft)"
-              opacity="0.85"
-            >
-              {String(t.pilgrimageOrder).padStart(2, '0')}
-            </text>
-          </g>
-        ))}
-      </svg>
-    </div>
-  );
-}
-
 /**
- * A lightweight, non-representational suggestion of temple architecture —
- * stepped gopuram tiers as flat geometric bands — sitting behind the hero
- * copy on wide screens only. It is abstract line/shape geometry (no raster
- * art, no invented temple likeness), present purely to give ultra-wide
- * viewports a second compositional anchor instead of empty ground between
- * the text column and the Vel (flagship review: "1920px must look designed
- * specifically for 1920px", "remove dead dark voids").
+ * Flagship sacred visual. Desktop and mobile use two responsive crops of the
+ * same approved artwork so Murugan, Valli, Deivanai, the Vel and peacock stay
+ * legible without stretching or squeezing faces on narrow screens.
  */
-function SanctumAbstraction() {
+function HomeSacredVisual({ locale }: { locale: 'ta' | 'en' }) {
+  const alt =
+    locale === 'ta'
+      ? 'முருகன், வள்ளி, தெய்வானை, வேல் மற்றும் மயில் கொண்ட பக்தி காட்சி'
+      : 'Devotional scene of Murugan with Valli, Deivanai, the Vel and peacock';
+
   return (
-    <svg
-      className="hero-architecture"
-      aria-hidden="true"
-      viewBox="0 0 960 520"
-      preserveAspectRatio="xMidYMax meet"
-    >
-      <defs>
-        <linearGradient id="tier-fade" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--copper)" stopOpacity="0" />
-          <stop offset="100%" stopColor="var(--copper)" stopOpacity="0.5" />
-        </linearGradient>
-      </defs>
-      {/* Five receding stepped tiers, each narrower and higher than the
-          last — a gopuram's silhouette reduced to pure proportion. */}
-      <polygon points="480,40 560,120 400,120" fill="none" stroke="url(#tier-fade)" strokeWidth="1.5" />
-      <polygon points="480,90 610,190 350,190" fill="none" stroke="url(#tier-fade)" strokeWidth="1.5" />
-      <polygon points="480,150 660,270 300,270" fill="none" stroke="url(#tier-fade)" strokeWidth="1.5" />
-      <polygon points="480,220 710,360 250,360" fill="none" stroke="url(#tier-fade)" strokeWidth="1.5" />
-      <polygon points="480,300 760,460 200,460" fill="none" stroke="url(#tier-fade)" strokeWidth="1.5" />
-      <line x1="150" y1="460" x2="810" y2="460" stroke="var(--copper)" strokeWidth="1.5" opacity="0.55" />
-    </svg>
+    <figure className="home-sacred-visual">
+      <picture>
+        <source
+          media="(max-width: 47.99rem)"
+          srcSet="/images/home-murugan-valli-deivanai-mobile.webp"
+          type="image/webp"
+        />
+        <img
+          src="/images/home-murugan-valli-deivanai-1920.webp"
+          alt={alt}
+          width="1920"
+          height="1080"
+          decoding="async"
+          fetchPriority="high"
+        />
+      </picture>
+      <span className="home-sacred-visual-shade" aria-hidden="true" />
+    </figure>
   );
 }
 
 export default function Home() {
   const { locale, text } = useLocale();
-  // Counts come from the precomputed completeness summary so the home route
-  // never pulls the full 376-record temple chunk (or any other full corpus)
-  // just to render a number. R2-CODE-003: a raw record count must never
-  // stand in for completeness, so every count below is paired with its real
-  // state rather than presented as if it were finished coverage.
   const templeDomain = completeness.domains.find((d) => d.key === 'temples');
   const templeCount = templeDomain?.records ?? 0;
   const thiruppugazhDomain = completeness.domains.find((d) => d.key === 'thiruppugazh');
@@ -145,16 +57,14 @@ export default function Home() {
   const namesDomain = completeness.domains.find((d) => d.key === 'names');
   const prayersDomain = completeness.domains.find((d) => d.key === 'prayers');
 
-  // Today's focus mirrors Practice's own derivation (src/lib/localDay.ts):
-  // stable for the visitor's whole local calendar day, no stored state.
   const todayIndex = localDayIndex(arupadaiVeedu.length);
   const todayFocus = arupadaiVeedu[todayIndex];
 
   return (
     <>
-      <section className="hero">
+      <section className="hero hero-sacred-family">
         <span className="hero-edge" aria-hidden="true" />
-        <SanctumAbstraction />
+        <HomeSacredVisual locale={locale} />
         <div className="hero-copy">
           <p className="hero-eyebrow" lang={locale}>
             {text('வேல் · அறுபடை வீடு · திருப்புகழ்', 'Vel · Six Abodes · Thiruppugazh')}
@@ -192,9 +102,6 @@ export default function Home() {
               <span lang={locale}>{text('தேடல்', 'Search')}</span>
             </Link>
           </div>
-        </div>
-        <div className="hero-stage">
-          <VelAxis />
         </div>
       </section>
 
@@ -320,7 +227,6 @@ export default function Home() {
             </h2>
             <p lang={locale}>
               {text("இன்றைய நினைவு: ", "Today's focus: ")}
-              {/* Canonical Tamil name: always Tamil. */}
               <b lang="ta">{todayFocus.nameTa}</b>
               {text(
                 '. எண்ணிக்கை இந்த உலாவியில் மட்டுமே சேமிக்கப்படுகிறது — கணக்கு தேவையில்லை, தொடர் இழப்பு அழுத்தமும் இல்லை.',
