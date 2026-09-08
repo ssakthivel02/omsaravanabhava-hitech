@@ -1,0 +1,129 @@
+/* R2.7 — live-preview closure fixes and restrained flagship motion.
+   This layer intentionally overrides only shell/navigation and finite interaction
+   behaviour. It does not alter canonical content, data, source state or the
+   established Sacred-Tech colour/type tokens. */
+
+/* The live 1440–1600px review showed the full desktop navigation becoming
+   visually crowded. Keep every destination reachable while tightening the
+   intermediate desktop range; wide screens retain the more generous rhythm. */
+@media (min-width: 72rem) and (max-width: 88rem) {
+  .topbar-inner {
+    max-width: none;
+    padding-inline: clamp(1rem, 2.4vw, 2rem);
+  }
+
+  .desktop-nav {
+    gap: 0.78rem;
+  }
+
+  .nav-link {
+    font-size: clamp(0.78rem, 0.95vw, var(--t-sm));
+  }
+
+  .nav-link-trust {
+    margin-inline-start: 0;
+    padding-inline-start: 0.75rem;
+  }
+
+  .brand-text small {
+    display: none;
+  }
+}
+
+@media (min-width: 88rem) {
+  .topbar-inner {
+    max-width: 92rem;
+  }
+}
+
+/* Hash targets and focused route sections must never land underneath the
+   sticky navigation bar. */
+[id] {
+  scroll-margin-top: 7rem;
+}
+
+/* Finite, respectful motion only. The sacred content itself never loops,
+   bounces, spins or scroll-jacks. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes r27-enter {
+    from {
+      transform: translateY(14px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes r27-stage {
+    from {
+      transform: translateY(10px) scale(0.985);
+    }
+    to {
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes r27-vel-draw {
+    from {
+      stroke-dashoffset: 760;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .hero-copy {
+    animation: r27-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .hero-stage {
+    animation: r27-stage 820ms 80ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .vel-axis line:first-of-type {
+    stroke-dasharray: 760;
+    stroke-dashoffset: 760;
+    animation: r27-vel-draw 1100ms 180ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .portal,
+  .abode,
+  .knowledge-item,
+  .save-control,
+  .search-facet,
+  .btn {
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background-color 180ms ease,
+      color 180ms ease;
+  }
+
+  .portal:hover,
+  .abode:hover,
+  .knowledge-item:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn:hover,
+  .save-control:hover,
+  .search-facet:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy,
+  .hero-stage,
+  .vel-axis line:first-of-type,
+  .portal,
+  .abode,
+  .knowledge-item,
+  .save-control,
+  .search-facet,
+  .btn {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

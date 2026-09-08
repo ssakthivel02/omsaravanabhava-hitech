@@ -1,0 +1,132 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  provenance:
+    name: Repository provenance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # Fail closed if CI is ever pointed at the legacy repository.
+      - name: Assert this is the hi-tech repository
+        run: |
+          set -euo pipefail
+          if [ "${{ github.repository }}" != "ssakthivel02/omsaravanabhava-hitech" ]; then
+            echo "::error::Build repository is ${{ github.repository }}, expected ssakthivel02/omsaravanabhava-hitech"
+            exit 1
+          fi
+      - name: Assert no legacy checkout step exists
+        run: |
+          set -euo pipefail
+          if grep -rn "ssakthivel02/OmSaravanaBhava\b" .github/workflows | grep -v "omsaravanabhava-hitech"; then
+            echo "::error::A workflow references the legacy repository"
+            exit 1
+          fi
+
+  quality:
+    name: Typecheck, lint, test, build
+    runs-on: ubuntu-latest
+    needs: provenance
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # full history — required for the gitleaks history scan below
+      # R2Q-006: pnpm/action-setup v4 audited; current supported line for
+      # pnpm v10 is v6 (pnpm/setup is the v11+ successor — do not migrate,
+      # per CURRENT_PROJECT_AUTHORITY.md's pin of pnpm 10.4.1). Pinned to the
+      # exact reviewed commit for the v6 tag.
+      - uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
+        with: { version: 10.4.1 }
+      - uses: actions/setup-node@v7
+        with: { node-version: 22, cache: pnpm, cache-dependency-path: pnpm-lock.yaml }
+
+      - name: Assert exact pnpm version
+        run: test "$(pnpm --version)" = "10.4.1"
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Unit and integration tests
+        run: pnpm run test
+
+      - name: Quick secret grep (fast fail before the full scan)
+        run: |
+          set -euo pipefail
+          if grep -rnE "(CLOUDFLARE_API_TOKEN|GITHUB_TOKEN|AWS_SECRET|BEGIN [A-Z ]*PRIVATE KEY)[[:space:]]*[=:][[:space:]]*[A-Za-z0-9_-]{16,}" \
+               --exclude-dir=node_modules --exclude-dir=.git . ; then
+            echo "::error::Possible committed secret"
+            exit 1
+          fi
+          if git ls-files | grep -E "^\.env($|\.)" ; then
+            echo "::error::.env committed"
+            exit 1
+          fi
+
+      # R2Q-008: dedicated secret-scan gate. gitleaks scans tracked source AND
+      # git history (fetch-depth: 0 above), fails the job on a confirmed
+      # finding, and needs no license/secret for a personal-account repo
+      # (ssakthivel02/omsaravanabhava-hitech) — see gitleaks-action README
+      # "Do I need a free license key?". Pinned to the exact reviewed commit
+      # for the v2 tag.
+      - uses: gitleaks/gitleaks-action@dcedce43c6f43de0b836d1fe38946645c9c638dc # v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cross-project contamination scan
+        run: pnpm run scan:contamination
+
+      - name: Build
+        env:
+          DEPLOY_ENV: ci
+        run: pnpm run build
+
+      # verify-build.mjs runs inside `pnpm run build` and fails the job on any
+      # legacy artefact, missing release marker, or zero-JS-chunk output.
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 14
+
+  e2e:
+    name: Browser journeys and accessibility
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
+        with: { version: 10.4.1 }
+      - uses: actions/setup-node@v7
+        with: { node-version: 22, cache: pnpm, cache-dependency-path: pnpm-lock.yaml }
+      - run: test "$(pnpm --version)" = "10.4.1"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - env:
+          DEPLOY_ENV: ci
+        run: pnpm run build
+      - run: pnpm exec playwright test
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

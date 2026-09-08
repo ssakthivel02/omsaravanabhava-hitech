@@ -22,28 +22,67 @@ Deploy only from:
 
 `ssakthivel02/omsaravanabhava-hitech`
 
-at the exact approved candidate Git SHA.
+at the exact approved candidate Git SHA on branch:
 
-Build:
+`build/native-r6-flagship`
 
-`pnpm run build`
+Use the repository-owned preview configuration only:
 
-Deploy the explicit Vite output directory only (expected `dist`).
+`wrangler.preview.jsonc`
 
-Never deploy repository root with a generic assets command.
+It names only `omsaravanabhava-hitech-preview`, enables `workers_dev`, points at `./dist`, and uses Cloudflare Workers Static Assets SPA fallback. It contains no production route or root-domain binding.
+
+### Required preview build
+
+The preview release marker must say `environment: preview`. Therefore the build **must** set `DEPLOY_ENV=preview`; a plain `pnpm run build` defaults to `development` and is not accepted as preview evidence.
+
+PowerShell / Windows 11:
+
+```powershell
+$env:DEPLOY_ENV = 'preview'
+pnpm install --frozen-lockfile
+pnpm run build
+node scripts/check-pwa-installability.mjs
+npx wrangler@4.129.0 deploy --config wrangler.preview.jsonc
+```
+
+Bash / Linux / macOS:
+
+```bash
+export DEPLOY_ENV=preview
+pnpm install --frozen-lockfile
+pnpm run build
+node scripts/check-pwa-installability.mjs
+npx wrangler@4.129.0 deploy --config wrangler.preview.jsonc
+```
+
+Wrangler is deliberately version-pinned for the release attempt. Do not use a generic repository-root assets deploy. Deploy the Vite `dist/` artifact through the dedicated preview config only.
+
+Before deploying, verify the local checkout is at the exact approved Git SHA:
+
+```powershell
+git rev-parse HEAD
+```
+
+If the SHA does not match the approved release candidate, stop.
 
 ## 3. SPA routing
 
 The preview must support direct refresh for React routes.
 
-Configure current Cloudflare-supported static-assets SPA fallback so routes such as:
+The dedicated preview Wrangler configuration uses current Cloudflare Workers Static Assets routing:
+
+- `assets.directory = ./dist`
+- `assets.not_found_handling = single-page-application`
+
+Routes such as:
 
 - `/temples/...`
 - `/thiruppugazh/...`
 - `/search`
 - `/sources`
 
-return the new React application shell rather than a Cloudflare 404.
+must return the new React application shell rather than a Cloudflare 404.
 
 Unknown application routes must still render the application's intended Not Found experience after the SPA shell loads.
 
@@ -59,6 +98,8 @@ Require:
 - no preview/production canonical collision;
 - no unsupported structured-data production claim.
 
+The preview build generates these controls from `scripts/generate-deployment-files.mjs`; do not hand-edit the built files.
+
 ## 5. Release identity
 
 Preview `/release.json` must include:
@@ -67,7 +108,7 @@ Preview `/release.json` must include:
 - exact Git SHA;
 - build timestamp/version;
 - environment `preview`;
-- R6 role `governed-data/provenance only`;
+- R6 role `governed-data-and-provenance-only`;
 - deployment identity where practical.
 
 The local Claude placeholder SHA is not accepted after GitHub import.
@@ -79,6 +120,8 @@ Apply preview headers according to:
 `release/SECURITY_HEADERS_POLICY_V1.json`
 
 CSP begins report-only where specified and must not be globally weakened to accommodate an unnecessary third-party widget.
+
+The generated `public/_headers` file is copied into `dist/` by Vite and is consumed by Cloudflare Workers Static Assets. Preview must retain the generated security headers and noindex policy.
 
 ## 7. Service worker
 
@@ -101,14 +144,19 @@ Before declaring preview stable, test:
 Immediately after deployment verify:
 
 - `/`
-- `/arupadai-veedu` or final equivalent
+- `/knowledge`
+- `/library` (must remain private/local and non-indexable)
+- `/arupadai-veedu`
 - `/temples`
 - one temple detail
 - `/thiruppugazh`
 - one Thiruppugazh detail
+- `/works`
+- `/prayers`
+- `/practice`
 - `/search`
 - `/sources`
-- `/content-completeness` or final equivalent
+- `/content-completeness`
 - `/accessibility`
 - `/release.json`
 - `/robots.txt`
@@ -125,12 +173,18 @@ On workers.dev preview verify:
 - no other-project asset/runtime;
 - private browser shows same new release immediately.
 
+If any legacy runtime identifier appears, classify the preview as:
+
+`ANTI-REVERSION FAILURE — NO-GO`
+
+and do not proceed to production.
+
 ## 10. Preview evidence
 
 Record:
 
 - Git SHA;
-- CI run;
+- GitHub CI run;
 - Cloudflare deployment ID/URL;
 - `/release.json` capture;
 - route smoke results;
@@ -147,7 +201,8 @@ Creating or updating the preview must not:
 - change root DNS;
 - attach `omsaravanabhava.org`;
 - modify legacy production Worker/hosting;
-- remove rollback evidence.
+- remove rollback evidence;
+- merge PR #2 merely to create the preview.
 
 ## Preview gate
 

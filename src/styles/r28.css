@@ -1,0 +1,113 @@
+/* R2.8 — multilingual shell and final flagship utility layer.
+   Interface language is browser-local. Canonical/source text remains governed
+   and is never machine-translated by this layer. */
+
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--sanctum-edge);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sanctum) 92%, var(--copper));
+  flex: none;
+}
+
+.language-switch-option {
+  /* Primary controls target ~44x44 CSS px (this project's stated standard,
+     stricter than WCAG 2.2 AA's 24x24 floor) — 40px was 4px short and
+     failed the touch-target QA gate. */
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.35rem 0.7rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  /* ink-faint measured 4.42:1 on this control's mixed background — just
+     under the 4.5:1 WCAG AA floor (caught by axe). ink-muted clears it with
+     real margin (7.6:1) while staying visually quiet next to the pressed
+     (active-language) gold-soft state. */
+  color: var(--ink-muted);
+  font: inherit;
+  font-size: var(--t-xs);
+  cursor: pointer;
+}
+
+.language-switch-option:hover,
+.language-switch-option:focus-visible {
+  color: var(--gold-soft);
+}
+
+.language-switch-option[aria-pressed='true'] {
+  color: var(--sanctum);
+  background: var(--gold-soft);
+}
+
+@media (max-width: 71.99rem) {
+  .language-switch {
+    margin-inline-start: auto;
+  }
+
+  .topbar-inner .language-switch + .menu-toggle {
+    margin-inline-start: 0;
+  }
+}
+
+@media (max-width: 28rem) {
+  .language-switch-option {
+    /* Width narrows only via padding — min-width stays 44px so this control
+       never drops below the site's primary-control touch-target floor. */
+    padding-inline: 0.55rem;
+  }
+
+  /* R2.8 added a second 44px-floor control (the language switch) to a
+     topbar row that previously fit brand + menu-toggle alone. At 320px the
+     row no longer has room for the menu-toggle's visible text label
+     alongside both language buttons (real horizontal-overflow QA failure).
+     The label is visually hidden — not removed — so the icon-only button
+     keeps its full accessible name via the same text node. */
+  .menu-toggle-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .menu-toggle {
+    /* The label is visually hidden (not removed) above, so it no longer
+       contributes to the button's flex-content width — without an explicit
+       floor the button was measuring ~39px wide, 5px under this project's
+       44px primary-control standard (real touch-target QA failure). */
+    min-width: 44px;
+    padding-inline: 0.6rem;
+    gap: 0;
+  }
+
+  /* The remaining few pixels come from the row's own gaps, not any single
+     control — tighten those rather than shrinking a touch target further. */
+  .topbar-inner {
+    gap: 0.5rem;
+  }
+}
+
+/* Keep the language utility quiet next to the sacred brand and content nav. */
+@media (min-width: 72rem) {
+  .desktop-nav {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+  }
+}
+
+/* English UI text uses the same measured editorial rhythm rather than a
+   separate SaaS-like visual system. */
+[data-ui-locale='en'] .hero-lead,
+[data-ui-locale='en'] .band-head p,
+[data-ui-locale='en'] .page > p,
+[data-ui-locale='en'] .knowledge-trust p {
+  max-width: 58ch;
+}
