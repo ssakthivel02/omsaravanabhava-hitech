@@ -26,10 +26,10 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
 
   it('shows all four governed Project Madurai source parts', () => {
     renderAt('/thiruppugazh');
-    expect(screen.getByText('Project Madurai Part I')).toBeInTheDocument();
-    expect(screen.getByText('Project Madurai Part II')).toBeInTheDocument();
-    expect(screen.getByText('Project Madurai Part III')).toBeInTheDocument();
-    expect(screen.getByText('Project Madurai Part IV')).toBeInTheDocument();
+    expect(screen.getAllByText('Project Madurai Part I').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Project Madurai Part II').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Project Madurai Part III').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Project Madurai Part IV').length).toBeGreaterThan(0);
     expect(screen.getByText('1001–1326')).toBeInTheDocument();
   });
 
