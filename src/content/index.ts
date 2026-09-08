@@ -10,6 +10,7 @@
 
 import arupadaiRaw from './arupadai-veedu.json';
 import thiruppugazhRaw from './thiruppugazh.json';
+import thiruppugazhBatch002Raw from './intake/thiruppugazh-batch-002.json';
 import namesRaw from './murugan-names.json';
 import worksRaw from './works.json';
 import sourcesRaw from './sources.json';
@@ -25,15 +26,6 @@ export interface SourceRef {
   [k: string]: unknown;
 }
 
-/**
- * The recovered R6 registries are inconsistent about the field name for a
- * source's confidence: the top-level source ledger uses `confidence`, but
- * per-record `sources[]` arrays (temples, Arupadai Veedu) use
- * `source_confidence`. `SourceRef.confidence` is the only field the UI ever
- * reads, so a raw `source_confidence` value would silently disappear.
- * Normalizing here, once, at the data boundary keeps every consumer honest
- * without asking each feature to know about the legacy field name.
- */
 function normalizeSourceRef(raw: SourceRef): SourceRef {
   const legacyConfidence = raw['source_confidence'];
   const rest: SourceRef = { ...raw };
@@ -47,12 +39,8 @@ function normalizeSourceRef(raw: SourceRef): SourceRef {
 export const normalizeSources = (sources: SourceRef[] | undefined | null): SourceRef[] =>
   (sources ?? []).map(normalizeSourceRef);
 
-/**
- * `confidence` describes how strongly a source establishes a record's
- * *identity* (is this really Palani / is this really song N). It is a
- * distinct dimension from `coordinateConfidence` (does the site know where
- * the temple physically is) — conflating the two was R2-CODE-005.
- */
+export type StateTone = 'verified' | 'pending' | 'absent';
+
 export function describeSourceConfidence(
   confidence: string | null | undefined,
   locale: 'ta' | 'en' = 'ta',
@@ -102,15 +90,6 @@ export interface Temple {
   sources: SourceRef[];
 }
 
-/**
- * Current (as opposed to canonical/historical) HR&CE-source facts for an
- * Arupadai Veedu temple: opening hours, contact channel and a freshness
- * stamp. This is a deliberately separate layer from the canonical temple
- * identity fields above — timings and contacts change; identity doesn't —
- * and every field here is copied verbatim from
- * `source-data/ARUPADAI_VEEDU_OFFICIAL_DYNAMIC_SEED_2026-09-04.json`, never
- * derived or invented (R2.5 Priority B).
- */
 export interface OfficialCurrentSourceContact {
   phone: string | null;
   email: string | null;
@@ -146,13 +125,6 @@ export interface ArupadaiTemple extends Temple {
   officialCurrentSource?: OfficialCurrentSource | null;
 }
 
-/**
- * Preview freshness policy for dynamic official temple facts. The R2.9 audit
- * found that ingested `state` values otherwise remain "current" forever.
- * Sixty days is the provisional preview/review window proposed by that audit;
- * it is intentionally an exported policy constant so the owner can tighten or
- * relax it before production without rewriting governed source data.
- */
 export const OFFICIAL_CURRENT_SOURCE_REVERIFY_AFTER_DAYS = 60;
 
 export function resolveOfficialSourceState(
@@ -165,7 +137,6 @@ export function resolveOfficialSourceState(
   const verifiedAt = Date.parse(source.lastVerifiedAt);
   const nowMs = now.getTime();
   if (!Number.isFinite(verifiedAt) || !Number.isFinite(nowMs) || !Number.isFinite(maxAgeDays) || maxAgeDays < 0) {
-    // Fail closed: malformed freshness evidence must never render as current.
     return 'OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED';
   }
 
@@ -229,7 +200,17 @@ export const arupadaiVeedu = (arupadaiRaw as ArupadaiTemple[]).map((t) => ({
   ...t,
   sources: normalizeSources(t.sources),
 }));
-export const thiruppugazh = thiruppugazhRaw as ThiruppugazhSong[];
+
+const promotedBatch002 = (thiruppugazhBatch002Raw as ThiruppugazhSong[]).map((song) => ({
+  ...song,
+  publicationState: 'PUBLISHED_METADATA_ONLY_SOURCE_LINKED',
+}));
+
+export const thiruppugazh: ThiruppugazhSong[] = [
+  ...(thiruppugazhRaw as ThiruppugazhSong[]),
+  ...promotedBatch002,
+].sort((a, b) => (a.sourceNumbering?.number ?? Number.MAX_SAFE_INTEGER) - (b.sourceNumbering?.number ?? Number.MAX_SAFE_INTEGER));
+
 export const muruganNames = (namesRaw as MuruganName[]).map((n) => ({
   ...n,
   sources: normalizeSources(n.sources),
@@ -286,22 +267,12 @@ export const namavali = namavaliRaw as {
 export const songById = (id: string): ThiruppugazhSong | undefined =>
   thiruppugazh.find((s) => s.id === id);
 
-/**
- * Human-readable state labels. Every governed record surfaces its real state
- * to the reader; we never render a "pending" record as though it were verified.
- */
-export type StateTone = 'verified' | 'pending' | 'absent';
-
 export function describeState(
   state: string,
   locale: 'ta' | 'en' = 'ta',
 ): { label: string; tone: StateTone } {
   const s = state.toUpperCase();
   const t = (ta: string, en: string) => (locale === 'ta' ? ta : en);
-  // Current-official-source freshness states (R2.5) are checked first: they
-  // are their own family, distinct from the canonical-content truth states
-  // below, and "REVERIFY" does not share a substring with "VERIFIED" so it
-  // would otherwise fall through to the raw-enum default.
   if (s === 'OFFICIAL_CURRENT_SOURCE_REVERIFY_RECOMMENDED')
     return {
       label: t('தற்போதைய மூலம் · மறு-உறுதிப்படுத்தல் பரிந்துரை', 'Current source · re-verification recommended'),
@@ -346,14 +317,6 @@ export function describeState(
     };
   if (s.includes('SOURCE_REQUIRED'))
     return { label: t('மூலம் தேவை', 'Source required'), tone: 'pending' };
-  // Checked before the bare NOT_PUBLISHED case below: the temple registry's
-  // coordinateConfidence uses two differently-worded values for the exact
-  // same real state (zero coordinates published for any of the 376
-  // temples) — "COORDINATES_PENDING_VERIFICATION" on 16 records and
-  // "not_published_pending_verification" on the other 360. Checking
-  // NOT_PUBLISHED first was making the identical ground truth show two
-  // different labels/tones depending only on which wording a record
-  // happened to use; both now read as pending verification.
   if (s.includes('PENDING_VERIFICATION'))
     return { label: t('சரிபார்ப்பு நிலுவையில்', 'Verification pending'), tone: 'pending' };
   if (s.includes('NOT_PUBLISHED'))
