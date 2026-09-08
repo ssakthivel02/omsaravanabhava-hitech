@@ -33,9 +33,12 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     expect(screen.getByText('1001–1326')).toBeInTheDocument();
   });
 
-  it('publishes the validated song 1 metadata without publishing its body', () => {
+  it('publishes the validated song 1 metadata without confusing duplicate source titles', () => {
     renderAt('/thiruppugazh');
-    expect(screen.getByRole('link', { name: /விநாயகர் துதி/ })).toBeInTheDocument();
+    const songOneLink = screen
+      .getAllByRole('link', { name: /விநாயகர் துதி/ })
+      .find((link) => link.getAttribute('href') === '/thiruppugazh/thiruppugazh-0001');
+    expect(songOneLink).toBeInTheDocument();
   });
 
   it('searches only the verified catalogue and finds முத்தைத்தரு', async () => {
