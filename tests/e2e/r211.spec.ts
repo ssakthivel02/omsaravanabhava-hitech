@@ -1,7 +1,5 @@
 import { expect, test } from '@playwright/test';
 
-const projects = test.describe;
-
 test.describe('R2.11 Thiruppugazh catalogue browser qualification', () => {
   test('publishes truthful corpus coverage and source lanes', async ({ page }) => {
     await page.goto('/thiruppugazh');
