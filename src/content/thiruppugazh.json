@@ -1,5 +1,105 @@
 [
   {
+    "id": "thiruppugazh-0001",
+    "openingWords": "கைத்தல நிறைகனி",
+    "titleTa": "விநாயகர் துதி",
+    "canonicalTextStatus": "SOURCE_LINKED_TEXT_NOT_IMPORTED",
+    "canonicalText": null,
+    "attribution": "SOURCE_VERIFIED_METADATA_ONLY",
+    "sourceId": "MHS1",
+    "edition": "Project Madurai Part I, verses 1–330",
+    "sourceNumbering": {
+      "system": "Project Madurai Part I",
+      "number": 1
+    },
+    "rightsStatus": "HEADER_PRESERVATION_CONDITION_STATED",
+    "verificationState": "SOURCE_VERIFIED_METADATA_ONLY",
+    "meaningState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO",
+    "publicationState": "PUBLISHED_METADATA_ONLY_SOURCE_LINKED"
+  },
+  {
+    "id": "thiruppugazh-0002",
+    "openingWords": "பக்கரைவி சித்ரமணி",
+    "titleTa": "விநாயகர் துதி",
+    "canonicalTextStatus": "SOURCE_LINKED_TEXT_NOT_IMPORTED",
+    "canonicalText": null,
+    "attribution": "SOURCE_VERIFIED_METADATA_ONLY",
+    "sourceId": "MHS1",
+    "edition": "Project Madurai Part I, verses 1–330",
+    "sourceNumbering": {
+      "system": "Project Madurai Part I",
+      "number": 2
+    },
+    "rightsStatus": "HEADER_PRESERVATION_CONDITION_STATED",
+    "verificationState": "SOURCE_VERIFIED_METADATA_ONLY",
+    "meaningState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO",
+    "publicationState": "PUBLISHED_METADATA_ONLY_SOURCE_LINKED"
+  },
+  {
+    "id": "thiruppugazh-0003",
+    "openingWords": "உம்பர்தருத் தேநுமணிக்",
+    "titleTa": "விநாயகர்",
+    "canonicalTextStatus": "SOURCE_LINKED_TEXT_NOT_IMPORTED",
+    "canonicalText": null,
+    "attribution": "SOURCE_VERIFIED_METADATA_ONLY",
+    "sourceId": "MHS1",
+    "edition": "Project Madurai Part I, verses 1–330",
+    "sourceNumbering": {
+      "system": "Project Madurai Part I",
+      "number": 3
+    },
+    "rightsStatus": "HEADER_PRESERVATION_CONDITION_STATED",
+    "verificationState": "SOURCE_VERIFIED_METADATA_ONLY",
+    "meaningState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO",
+    "publicationState": "PUBLISHED_METADATA_ONLY_SOURCE_LINKED"
+  },
+  {
+    "id": "thiruppugazh-0004",
+    "openingWords": "நினது திருவடி",
+    "titleTa": "விநாயகர்",
+    "canonicalTextStatus": "SOURCE_LINKED_TEXT_NOT_IMPORTED",
+    "canonicalText": null,
+    "attribution": "SOURCE_VERIFIED_METADATA_ONLY",
+    "sourceId": "MHS1",
+    "edition": "Project Madurai Part I, verses 1–330",
+    "sourceNumbering": {
+      "system": "Project Madurai Part I",
+      "number": 4
+    },
+    "rightsStatus": "HEADER_PRESERVATION_CONDITION_STATED",
+    "verificationState": "SOURCE_VERIFIED_METADATA_ONLY",
+    "meaningState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO",
+    "publicationState": "PUBLISHED_METADATA_ONLY_SOURCE_LINKED"
+  },
+  {
+    "id": "thiruppugazh-0005",
+    "openingWords": "விடமடைசு வேலை",
+    "titleTa": "விநாயகர்",
+    "canonicalTextStatus": "SOURCE_LINKED_TEXT_NOT_IMPORTED",
+    "canonicalText": null,
+    "attribution": "SOURCE_VERIFIED_METADATA_ONLY",
+    "sourceId": "MHS1",
+    "edition": "Project Madurai Part I, verses 1–330",
+    "sourceNumbering": {
+      "system": "Project Madurai Part I",
+      "number": 5
+    },
+    "rightsStatus": "HEADER_PRESERVATION_CONDITION_STATED",
+    "verificationState": "SOURCE_VERIFIED_METADATA_ONLY",
+    "meaningState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO",
+    "publicationState": "PUBLISHED_METADATA_ONLY_SOURCE_LINKED"
+  },
+  {
     "id": "thiruppugazh-0006",
     "openingWords": "முத்தைத்தரு",
     "titleTa": "முத்தைத்தரு",
