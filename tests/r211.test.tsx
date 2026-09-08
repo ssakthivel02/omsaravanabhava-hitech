@@ -17,10 +17,10 @@ function renderAt(path: string) {
 beforeEach(cleanup);
 
 describe('R2.11 Thiruppugazh corpus catalogue', () => {
-  it('distinguishes the 1326-song reference corpus from the 12 source-linked records', () => {
+  it('distinguishes the 1326-song reference corpus from the 17 source-linked records', () => {
     renderAt('/thiruppugazh');
     expect(screen.getByText('1326')).toBeInTheDocument();
-    expect(screen.getByText('12')).toBeInTheDocument();
+    expect(screen.getByText('17')).toBeInTheDocument();
     expect(screen.getByText(/முழு 1,326 பாடல்களும் இத்தளத்தில் வெளியிடப்பட்டதாக/)).toBeInTheDocument();
   });
 
@@ -33,12 +33,17 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     expect(screen.getByText('1001–1326')).toBeInTheDocument();
   });
 
+  it('publishes the validated song 1 metadata without publishing its body', () => {
+    renderAt('/thiruppugazh');
+    expect(screen.getByRole('link', { name: /விநாயகர் துதி/ })).toBeInTheDocument();
+  });
+
   it('searches only the verified catalogue and finds முத்தைத்தரு', async () => {
     const user = userEvent.setup();
     renderAt('/thiruppugazh');
     await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'முத்தைத்தரு');
     expect(screen.getByRole('link', { name: /முத்தைத்தரு/ })).toBeInTheDocument();
-    expect(screen.getByText('காட்டப்படுவது 1 / 12')).toBeInTheDocument();
+    expect(screen.getByText('காட்டப்படுவது 1 / 17')).toBeInTheDocument();
   });
 
   it('does not fabricate records for an uncovered source part', async () => {
@@ -46,7 +51,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     renderAt('/thiruppugazh');
     await user.selectOptions(screen.getByLabelText('மூல பகுதி'), 'part-2');
     expect(screen.getByText(/இந்த வடிகட்டலில் சரிபார்க்கப்பட்ட பதிவு இல்லை/)).toBeInTheDocument();
-    expect(screen.getByText('காட்டப்படுவது 0 / 12')).toBeInTheDocument();
+    expect(screen.getByText('காட்டப்படுவது 0 / 17')).toBeInTheDocument();
   });
 
   it('reports zero canonical texts and zero approved audio without hiding the gap', () => {
