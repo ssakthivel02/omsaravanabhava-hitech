@@ -8,6 +8,7 @@ import './styles/r26.css';
 import './styles/r27.css';
 import './styles/r28.css';
 import './styles/r210.css';
+import './styles/r211.css';
 
 const el = document.getElementById('root');
 if (!el) throw new Error('#root missing from index.html');
