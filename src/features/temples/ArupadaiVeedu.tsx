@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
 import { arupadaiVeedu, describeSourceConfidence } from '@/content';
+import ArupadaiVelMap from '@/components/ArupadaiVelMap';
 import StateBadge, { StateBadgeResolved } from '@/components/StateBadge';
 import { useLocale } from '@/lib/locale';
 
@@ -7,15 +8,26 @@ export default function ArupadaiVeedu() {
   const { locale, text } = useLocale();
   return (
     <article className="page arupadai-page">
-      <header className="page-head">
-        <h1 lang={locale}>{text('அறுபடை வீடு', 'Six Abodes (Arupadai Veedu)')}</h1>
-        <p lang={locale}>
-          {text(
-            'முருகனின் ஆறு படைவீடுகள். வரிசை பாரம்பரிய யாத்திரை முறையைப் பின்பற்றுகிறது. ஒவ்வொரு பதிவும் அதன் ஆயத்தொலைவு நிலையையும் மூல அடையாள நிலையையும் தனித்தனியாகக் காட்டுகிறது — ஒன்று மற்றொன்றைக் குறிக்காது.',
-            "Murugan's six abodes. The order follows the traditional pilgrimage sequence. Each record shows its coordinate state and source-identity state separately — one is never taken to imply the other.",
-          )}
-        </p>
-      </header>
+      <div className="arupadai-intro">
+        <header className="page-head arupadai-page-head">
+          <h1 lang={locale}>{text('அறுபடை வீடு', 'Six Abodes (Arupadai Veedu)')}</h1>
+          <p lang={locale}>
+            {text(
+              'முருகனின் ஆறு படைவீடுகள். வரிசை பாரம்பரிய யாத்திரை முறையைப் பின்பற்றுகிறது. ஒவ்வொரு பதிவும் அதன் ஆயத்தொலைவு நிலையையும் மூல அடையாள நிலையையும் தனித்தனியாகக் காட்டுகிறது — ஒன்று மற்றொன்றைக் குறிக்காது.',
+              "Murugan's six abodes. The order follows the traditional pilgrimage sequence. Each record shows its coordinate state and source-identity state separately — one is never taken to imply the other.",
+            )}
+          </p>
+          <p className="arupadai-map-key" lang={locale}>
+            {text(
+              'வலப்புற வேலில் 01–06 குறியீடுகள் இதே ஆறு படைவீடுகளின் யாத்திரை வரிசையைக் குறிக்கின்றன.',
+              'The 01–06 markers on the Vel at right represent this same six-abode pilgrimage order.',
+            )}
+          </p>
+        </header>
+        <aside className="arupadai-visual" aria-label={text('அறுபடை வீடு யாத்திரை வேல் வரைபடம்', 'Arupadai Veedu pilgrimage Vel map')}>
+          <ArupadaiVelMap />
+        </aside>
+      </div>
 
       <ol className="pilgrimage">
         {arupadaiVeedu.map((t) => {
