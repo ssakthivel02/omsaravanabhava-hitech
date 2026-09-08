@@ -1,0 +1,79 @@
+/* R2.10 sacred visual layer.
+   Keep representational imagery route-specific and preserve Tamil readability.
+   The Arupadai Vel map carries real pilgrimage-order meaning (01..06). */
+
+.arupadai-intro {
+  display: grid;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.arupadai-page-head {
+  min-width: 0;
+}
+
+.arupadai-map-key {
+  padding-inline-start: 0.9rem;
+  border-inline-start: 2px solid color-mix(in srgb, var(--gold) 62%, transparent);
+  color: var(--ink-faint) !important;
+  font-size: var(--t-sm);
+}
+
+.arupadai-visual {
+  min-height: 22rem;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--sanctum-edge);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(60% 52% at 50% 18%, color-mix(in srgb, var(--gold) 20%, transparent), transparent 72%),
+    linear-gradient(180deg, color-mix(in srgb, var(--sanctum-raised) 82%, transparent), var(--sanctum));
+}
+
+.arupadai-vel-map {
+  width: min(13rem, 68vw);
+  height: 26rem;
+  opacity: 0.86;
+}
+
+.arupadai-vel-map svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 48rem) {
+  .arupadai-intro {
+    grid-template-columns: minmax(0, 1.35fr) minmax(15rem, 0.65fr);
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+
+  .arupadai-visual {
+    min-height: 30rem;
+    position: sticky;
+    top: 6.5rem;
+  }
+
+  .arupadai-vel-map {
+    width: min(15rem, 100%);
+    height: 30rem;
+  }
+}
+
+@media (min-width: 72rem) {
+  .arupadai-page {
+    max-width: 78rem;
+  }
+
+  .arupadai-intro {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 22rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arupadai-visual,
+  .arupadai-vel-map {
+    scroll-behavior: auto;
+  }
+}
