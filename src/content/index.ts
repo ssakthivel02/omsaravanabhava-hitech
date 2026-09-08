@@ -11,6 +11,7 @@
 import arupadaiRaw from './arupadai-veedu.json';
 import thiruppugazhRaw from './thiruppugazh.json';
 import thiruppugazhBatch002Raw from './intake/thiruppugazh-batch-002.json';
+import thiruppugazhBatch003Raw from './intake/thiruppugazh-batch-003.json';
 import namesRaw from './murugan-names.json';
 import worksRaw from './works.json';
 import sourcesRaw from './sources.json';
@@ -201,14 +202,21 @@ export const arupadaiVeedu = (arupadaiRaw as ArupadaiTemple[]).map((t) => ({
   sources: normalizeSources(t.sources),
 }));
 
-const promotedBatch002 = (thiruppugazhBatch002Raw as ThiruppugazhSong[]).map((song) => ({
-  ...song,
-  publicationState: 'PUBLISHED_METADATA_ONLY_SOURCE_LINKED',
-}));
+function promoteThiruppugazhMetadataBatch(raw: unknown): ThiruppugazhSong[] {
+  return (raw as ThiruppugazhSong[]).map((song) => ({
+    ...song,
+    publicationState: 'PUBLISHED_METADATA_ONLY_SOURCE_LINKED',
+  }));
+}
+
+const promotedThiruppugazhBatches = [
+  ...promoteThiruppugazhMetadataBatch(thiruppugazhBatch002Raw),
+  ...promoteThiruppugazhMetadataBatch(thiruppugazhBatch003Raw),
+];
 
 export const thiruppugazh: ThiruppugazhSong[] = [
   ...(thiruppugazhRaw as ThiruppugazhSong[]),
-  ...promotedBatch002,
+  ...promotedThiruppugazhBatches,
 ].sort((a, b) => (a.sourceNumbering?.number ?? Number.MAX_SAFE_INTEGER) - (b.sourceNumbering?.number ?? Number.MAX_SAFE_INTEGER));
 
 export const muruganNames = (namesRaw as MuruganName[]).map((n) => ({
