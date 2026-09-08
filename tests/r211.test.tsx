@@ -53,8 +53,8 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
   it('publishes validated batch 003 metadata through song 50 without publishing its body', async () => {
     const user = userEvent.setup();
     renderAt('/thiruppugazh');
-    await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'சருகணி');
-    const songFifty = screen.getByRole('link', { name: /சருகணி/ });
+    await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'கொங்கைகள்');
+    const songFifty = screen.getByRole('link', { name: /கொங்கைகள்/ });
     expect(songFifty).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0050');
     expect(screen.getByText('காட்டப்படுவது 1 / 50')).toBeInTheDocument();
   });
