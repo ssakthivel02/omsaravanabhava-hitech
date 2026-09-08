@@ -17,10 +17,10 @@ function renderAt(path: string) {
 beforeEach(cleanup);
 
 describe('R2.11 Thiruppugazh corpus catalogue', () => {
-  it('distinguishes the 1326-song reference corpus from the 30 source-linked records', () => {
+  it('distinguishes the 1326-song reference corpus from the 50 source-linked records', () => {
     renderAt('/thiruppugazh');
     expect(screen.getByText('1326')).toBeInTheDocument();
-    expect(screen.getByText('30')).toBeInTheDocument();
+    expect(screen.getByText('50')).toBeInTheDocument();
     expect(screen.getByText(/முழு 1,326 பாடல்களும் இத்தளத்தில் வெளியிடப்பட்டதாக/)).toBeInTheDocument();
   });
 
@@ -47,7 +47,16 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'அனைவரும் மருண்டு');
     const songThirty = screen.getByRole('link', { name: /அனைவரும் மருண்டு/ });
     expect(songThirty).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0030');
-    expect(screen.getByText('காட்டப்படுவது 1 / 30')).toBeInTheDocument();
+    expect(screen.getByText('காட்டப்படுவது 1 / 50')).toBeInTheDocument();
+  });
+
+  it('publishes validated batch 003 metadata through song 50 without publishing its body', async () => {
+    const user = userEvent.setup();
+    renderAt('/thiruppugazh');
+    await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'சருகணி');
+    const songFifty = screen.getByRole('link', { name: /சருகணி/ });
+    expect(songFifty).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0050');
+    expect(screen.getByText('காட்டப்படுவது 1 / 50')).toBeInTheDocument();
   });
 
   it('searches only the verified catalogue and finds முத்தைத்தரு', async () => {
@@ -55,7 +64,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     renderAt('/thiruppugazh');
     await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'முத்தைத்தரு');
     expect(screen.getByRole('link', { name: /முத்தைத்தரு/ })).toBeInTheDocument();
-    expect(screen.getByText('காட்டப்படுவது 1 / 30')).toBeInTheDocument();
+    expect(screen.getByText('காட்டப்படுவது 1 / 50')).toBeInTheDocument();
   });
 
   it('does not fabricate records for an uncovered source part', async () => {
@@ -63,7 +72,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     renderAt('/thiruppugazh');
     await user.selectOptions(screen.getByLabelText('மூல பகுதி'), 'part-2');
     expect(screen.getByText(/இந்த வடிகட்டலில் சரிபார்க்கப்பட்ட பதிவு இல்லை/)).toBeInTheDocument();
-    expect(screen.getByText('காட்டப்படுவது 0 / 30')).toBeInTheDocument();
+    expect(screen.getByText('காட்டப்படுவது 0 / 50')).toBeInTheDocument();
   });
 
   it('reports zero canonical texts and zero approved audio without hiding the gap', () => {
