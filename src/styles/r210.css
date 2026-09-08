@@ -2,6 +2,112 @@
    Keep representational imagery route-specific and preserve Tamil readability.
    The Arupadai Vel map carries real pilgrimage-order meaning (01..06). */
 
+/* ------------------------------------------------------- flagship home hero */
+.hero-sacred-family {
+  isolation: isolate;
+  min-height: clamp(40rem, 72vw, 54rem);
+  align-items: end;
+  background: var(--sanctum);
+}
+
+.home-sacred-visual {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  margin: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 70% at 72% 35%, color-mix(in srgb, var(--gold) 18%, transparent), transparent 72%),
+    var(--sanctum);
+}
+
+.home-sacred-visual picture,
+.home-sacred-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.home-sacred-visual img {
+  object-fit: cover;
+  object-position: 62% center;
+}
+
+.home-sacred-visual-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(8, 6, 4, 0.97) 0%, rgba(8, 6, 4, 0.88) 30%, rgba(8, 6, 4, 0.46) 52%, rgba(8, 6, 4, 0.08) 76%),
+    linear-gradient(0deg, rgba(8, 6, 4, 0.72) 0%, transparent 38%);
+  pointer-events: none;
+}
+
+.hero-sacred-family .hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 36rem;
+  padding-block: clamp(2rem, 6vw, 5rem);
+}
+
+.hero-sacred-family .hero-sub,
+.hero-sacred-family .hero-lead {
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.75);
+}
+
+/* On phones use the dedicated crop of the same artwork. Keep all sacred
+   figures intact and place copy below the visual instead of covering faces. */
+@media (max-width: 47.99rem) {
+  .hero-sacred-family {
+    display: block;
+    min-height: 0;
+    padding-top: clamp(20rem, 112vw, 31rem);
+    background: var(--sanctum);
+  }
+
+  .home-sacred-visual {
+    height: clamp(20rem, 112vw, 31rem);
+    inset-block-end: auto;
+  }
+
+  .home-sacred-visual img {
+    object-position: center top;
+  }
+
+  .home-sacred-visual-shade {
+    background:
+      linear-gradient(0deg, var(--sanctum) 0%, rgba(8, 6, 4, 0.58) 16%, transparent 44%),
+      linear-gradient(90deg, rgba(8, 6, 4, 0.14), transparent 28%, transparent 72%, rgba(8, 6, 4, 0.1));
+  }
+
+  .hero-sacred-family .hero-copy {
+    max-width: none;
+    padding-block: 1.5rem 0;
+  }
+}
+
+@media (min-width: 48rem) and (max-width: 71.99rem) {
+  .hero-sacred-family {
+    min-height: 46rem;
+  }
+
+  .home-sacred-visual img {
+    object-position: 60% center;
+  }
+}
+
+@media (min-width: 72rem) {
+  .hero-sacred-family {
+    grid-template-columns: minmax(25rem, 42%) minmax(0, 58%);
+    min-height: 46rem;
+  }
+
+  .hero-sacred-family .hero-copy {
+    grid-column: 1;
+    align-self: center;
+  }
+}
+
+/* ---------------------------------------------------- Arupadai Vel journey */
 .arupadai-intro {
   display: grid;
   gap: 1.5rem;
