@@ -5,11 +5,18 @@ test.describe('R2.11 Thiruppugazh catalogue browser qualification', () => {
     await page.goto('/thiruppugazh');
 
     await expect(page.getByRole('heading', { level: 1, name: 'திருப்புகழ்' })).toBeVisible();
-    await expect(page.getByText('1326')).toBeVisible();
-    await expect(page.getByText('12')).toBeVisible();
-    await expect(page.getByText('Project Madurai Part I')).toBeVisible();
-    await expect(page.getByText('Project Madurai Part IV')).toBeVisible();
-    await expect(page.getByText('1001–1326')).toBeVisible();
+    // The corpus number also legitimately appears in explanatory prose and
+    // the Part IV range. Target the exact stat value rather than relying on
+    // a substring text locator, so this remains stable as truthful context
+    // is added around the number.
+    await expect(page.getByText('1326', { exact: true })).toBeVisible();
+    await expect(page.getByText('12', { exact: true })).toBeVisible();
+    // Source-part names also appear in the filter options by design. Verify
+    // at least one visible rendered source label rather than requiring the
+    // string to occur only once in the DOM.
+    await expect(page.getByText('Project Madurai Part I', { exact: true }).first()).toBeVisible();
+    await expect(page.getByText('Project Madurai Part IV', { exact: true }).first()).toBeVisible();
+    await expect(page.getByText('1001–1326', { exact: true })).toBeVisible();
 
     const bodyWidth = await page.locator('body').evaluate((body) => body.scrollWidth);
     const viewportWidth = await page.evaluate(() => window.innerWidth);
