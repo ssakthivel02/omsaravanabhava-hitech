@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-09T00:12:00.000+01:00",
+  "generatedAt": "2026-09-09T00:42:00.000+01:00",
   "sourceArchiveSha256": "3477dd375e9545bd51482f9cacabe851adc6a841cdf111ffd5eb408f76c26585",
   "note": "Counts reflect the hash-verified R6 governed baseline plus source-validated R2.11 catalogue additions. Published state reflects what is actually present, never what is aspirational.",
   "domains": [
@@ -25,7 +25,7 @@
       "key": "thiruppugazh",
       "labelTa": "திருப்புகழ்",
       "labelEn": "Thiruppugazh",
-      "records": 75,
+      "records": 100,
       "withCanonicalText": 0,
       "withMeaning": 0,
       "withAudio": 0
