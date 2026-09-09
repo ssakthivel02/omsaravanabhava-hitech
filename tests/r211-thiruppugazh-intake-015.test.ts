@@ -21,7 +21,7 @@ describe('R2.11 Thiruppugazh intake batch 015 — Project Madurai Part I closure
   });
 
   it('closes Project Madurai Part I at song 330 without crossing into Part II', () => {
-    expect(batch015[0].sourceNumbering.system).toBe('Project Madurai Part I');
+    expect(batch015.at(0)?.sourceNumbering.system).toBe('Project Madurai Part I');
     expect(batch015.at(-1)?.sourceNumbering.number).toBe(330);
     expect(batch015.some((song) => song.sourceNumbering.number > 330)).toBe(false);
   });
