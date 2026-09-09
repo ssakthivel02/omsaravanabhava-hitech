@@ -86,5 +86,13 @@
     "confidence": null,
     "url": "https://www.projectmadurai.org/pmworks.html",
     "rights": "METADATA_ONLY"
+  },
+  {
+    "id": "MHS12",
+    "reference": "Project Madurai Thiruppugazh Part II, verses 331–670",
+    "type": "PUBLIC_UNICODE_EDITION",
+    "confidence": "HIGH",
+    "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0187.html",
+    "rights": "HEADER_PRESERVATION_CONDITION_STATED"
   }
 ]
