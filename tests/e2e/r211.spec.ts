@@ -65,7 +65,7 @@ test.describe('R2.11 Thiruppugazh catalogue browser qualification', () => {
     await expect(songOneHundred).toBeVisible();
     await expect(page.getByText('காட்டப்படுவது 1 / 200')).toBeVisible();
     await songOneHundred.click();
-    await expect(page).toHaveURL(/thirுப்புகazh-0100/);
+    await expect(page).toHaveURL(/thiruppugazh-0100/);
     await expect(page.getByText(/உரை.*ஏற்றப்படவில்லை|text.*not.*imported/i).first()).toBeVisible();
   });
 
