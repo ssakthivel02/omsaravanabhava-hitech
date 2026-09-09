@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Router } from 'wouter';
 import { memoryLocation } from 'wouter/memory-location';
 import App from '@/app/App';
+import { thiruppugazh } from '@/content';
 
 function renderAt(path: string) {
   const { hook } = memoryLocation({ path, static: false });
@@ -13,6 +14,14 @@ function renderAt(path: string) {
 beforeEach(cleanup);
 
 describe('R2.11 Thiruppugazh corpus catalogue', () => {
+  it('locks the governed runtime at exactly 300 source-linked records with no canonical bodies', () => {
+    expect(thiruppugazh).toHaveLength(300);
+    expect(thiruppugazh.every((song) => song.canonicalText === null)).toBe(true);
+    expect(thiruppugazh.every((song) => song.audioState === 'NO_APPROVED_AUDIO')).toBe(true);
+    expect(thiruppugazh.at(-1)?.id).toBe('thiruppugazh-0300');
+    expect(thiruppugazh.at(-1)?.openingWords).toBe('வார் உற்று எழும்');
+  });
+
   it('distinguishes the 1326-song reference corpus from the 300 source-linked records', () => {
     renderAt('/thiruppugazh');
     expect(screen.getByText('1326')).toBeInTheDocument();
