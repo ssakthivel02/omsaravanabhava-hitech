@@ -94,5 +94,13 @@
     "confidence": "HIGH",
     "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0187.html",
     "rights": "HEADER_PRESERVATION_CONDITION_STATED"
+  },
+  {
+    "id": "MHS13",
+    "reference": "Project Madurai Thiruppugazh Part III, verses 671–1000",
+    "type": "PUBLIC_UNICODE_EDITION",
+    "confidence": "HIGH",
+    "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0189.html",
+    "rights": "HEADER_PRESERVATION_CONDITION_STATED"
   }
 ]
