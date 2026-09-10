@@ -14,18 +14,18 @@ function renderAt(path: string) {
 beforeEach(cleanup);
 
 describe('R2.11 Thiruppugazh corpus catalogue', () => {
-  it('locks the governed runtime at exactly 800 source-linked records with no canonical bodies', () => {
-    expect(thiruppugazh).toHaveLength(800);
+  it('locks the governed runtime at exactly 825 source-linked records with no canonical bodies', () => {
+    expect(thiruppugazh).toHaveLength(825);
     expect(thiruppugazh.every((song) => song.canonicalText === null)).toBe(true);
     expect(thiruppugazh.every((song) => song.audioState === 'NO_APPROVED_AUDIO')).toBe(true);
-    expect(thiruppugazh.at(-1)?.id).toBe('thiruppugazh-0800');
-    expect(thiruppugazh.at(-1)?.openingWords).toBe('சூழ்ந்து ஏன்ற துக்க');
+    expect(thiruppugazh.at(-1)?.id).toBe('thiruppugazh-0825');
+    expect(thiruppugazh.at(-1)?.openingWords).toBe('உரை ஒழிந்து');
   });
 
-  it('distinguishes the 1326-song reference corpus from the 800 source-linked records', () => {
+  it('distinguishes the 1326-song reference corpus from the 825 source-linked records', () => {
     renderAt('/thiruppugazh');
     expect(screen.getByText('1326')).toBeInTheDocument();
-    expect(screen.getByText('800')).toBeInTheDocument();
+    expect(screen.getByText('825')).toBeInTheDocument();
     expect(screen.getByText(/முழு 1,326 பாடல்களும் இத்தளத்தில் வெளியிடப்பட்டதாக/)).toBeInTheDocument();
   });
 
@@ -53,7 +53,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     [400, 'இருவர் மயலோ'], [425, 'செயசெய அருணா'], [450, 'கைத்தருண சோதி'], [475, 'கூந்தலாழ விரிந்து'],
     [500, 'சகுட முந்தும்'], [525, 'சரவண பவநிதி'], [575, 'ஐந்து பூதமும்'], [600, 'அத் துகிரின் நல்'],
     [625, 'கடினதட கும்ப'], [650, 'விலைக்கு மேனியில்'], [675, 'புவிபுனல் காலும்'], [700, 'தலங்களில் வரும்'],
-    [725, 'சீதள வாரிஜ'], [750, 'குடத் தாமரையாம்'], [775, 'பூமாது உரமேயணி'],
+    [725, 'சீதள வாரிஜ'], [750, 'குடத் தாமரையாம்'], [775, 'பூமாது உரமேயணி'], [800, 'சூழ்ந்து ஏன்ற துக்க'],
   ] as const;
 
   for (const [number, opening] of samples) {
@@ -63,35 +63,35 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
       await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), opening);
       const song = screen.getByRole('link', { name: new RegExp(opening) });
       expect(song).toHaveAttribute('href', `/thiruppugazh/thiruppugazh-${String(number).padStart(4, '0')}`);
-      expect(screen.getByText('காட்டப்படுவது 1 / 800')).toBeInTheDocument();
+      expect(screen.getByText('காட்டப்படுவது 1 / 825')).toBeInTheDocument();
     });
   }
 
-  it('publishes validated Part III metadata through song 800 without publishing its body', async () => {
+  it('publishes validated Part III metadata through song 825 without publishing its body', async () => {
     const user = userEvent.setup();
     renderAt('/thiruppugazh');
-    await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'சூழ்ந்து ஏன்ற துக்க');
-    const songEightHundred = screen.getByRole('link', { name: /சூழ்ந்து ஏன்ற துக்க/ });
-    expect(songEightHundred).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0800');
-    expect(screen.getByText('காட்டப்படுவது 1 / 800')).toBeInTheDocument();
+    await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'உரை ஒழிந்து');
+    const songEightHundredTwentyFive = screen.getByRole('link', { name: /உரை ஒழிந்து/ });
+    expect(songEightHundredTwentyFive).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0825');
+    expect(screen.getByText('காட்டப்படுவது 1 / 825')).toBeInTheDocument();
   });
 
   it('exposes exactly the 340 governed Part II records currently promoted', async () => {
     const user = userEvent.setup();
     renderAt('/thiruppugazh');
     await user.selectOptions(screen.getByLabelText('மூல பகுதி'), 'part-2');
-    expect(screen.getByText('காட்டப்படுவது 340 / 800')).toBeInTheDocument();
+    expect(screen.getByText('காட்டப்படுவது 340 / 825')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /அற்றைக் கற்றை/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0331');
     expect(screen.getByRole('link', { name: /நிகரில் பஞ்ச/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0670');
   });
 
-  it('exposes exactly the 130 governed Part III records currently promoted', async () => {
+  it('exposes exactly the 155 governed Part III records currently promoted', async () => {
     const user = userEvent.setup();
     renderAt('/thiruppugazh');
     await user.selectOptions(screen.getByLabelText('மூல பகுதி'), 'part-3');
-    expect(screen.getByText('காட்டப்படுவது 130 / 800')).toBeInTheDocument();
+    expect(screen.getByText('காட்டப்படுவது 155 / 825')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /பரவி உனது/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0671');
-    expect(screen.getByRole('link', { name: /சூழ்ந்து ஏன்ற துக்க/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0800');
+    expect(screen.getByRole('link', { name: /உரை ஒழிந்து/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0825');
   });
 
   it('searches only the verified catalogue and finds முத்தைத்தரு', async () => {
@@ -99,7 +99,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     renderAt('/thiruppugazh');
     await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'முத்தைத்தரு');
     expect(screen.getByRole('link', { name: /முத்தைத்தரு/ })).toBeInTheDocument();
-    expect(screen.getByText('காட்டப்படுவது 1 / 800')).toBeInTheDocument();
+    expect(screen.getByText('காட்டப்படுவது 1 / 825')).toBeInTheDocument();
   });
 
   it('reports zero canonical texts and zero approved audio without hiding the gap', () => {
