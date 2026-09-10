@@ -33,6 +33,7 @@ import thiruppugazhBatch021Raw from './intake/thiruppugazh-batch-021.json';
 import thiruppugazhBatch022Raw from './intake/thiruppugazh-batch-022.json';
 import thiruppugazhBatch023Raw from './intake/thiruppugazh-batch-023.json';
 import thiruppugazhBatch024Raw from './intake/thiruppugazh-batch-024.json';
+import thiruppugazhBatch025Raw from './intake/thiruppugazh-batch-025.json';
 import namesRaw from './murugan-names.json';
 import worksRaw from './works.json';
 import sourcesRaw from './sources.json';
@@ -217,7 +218,6 @@ export interface CompletenessDomain {
   withMeaning?: number;
   withAudio?: number;
 }
-
 export const arupadaiVeedu = (arupadaiRaw as ArupadaiTemple[]).map((t) => ({
   ...t,
   sources: normalizeSources(t.sources),
@@ -254,6 +254,7 @@ const promotedThiruppugazhBatches = [
   ...promoteThiruppugazhMetadataBatch(thiruppugazhBatch022Raw),
   ...promoteThiruppugazhMetadataBatch(thiruppugazhBatch023Raw),
   ...promoteThiruppugazhMetadataBatch(thiruppugazhBatch024Raw),
+  ...promoteThiruppugazhMetadataBatch(thiruppugazhBatch025Raw),
 ];
 
 export const thiruppugazh: ThiruppugazhSong[] = [
