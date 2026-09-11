@@ -46,6 +46,7 @@ import thiruppugazhBatch034Raw from './intake/thiruppugazh-batch-034.json';
 import thiruppugazhBatch035Raw from './intake/thiruppugazh-batch-035.json';
 import thiruppugazhBatch036Raw from './intake/thiruppugazh-batch-036.json';
 import thiruppugazhBatch037Raw from './intake/thiruppugazh-batch-037.json';
+import thiruppugazhBatch038Raw from './intake/thiruppugazh-batch-038.json';
 import namesRaw from './murugan-names.json';
 import worksRaw from './works.json';
 import sourcesRaw from './sources.json';
@@ -279,6 +280,7 @@ const promotedThiruppugazhBatches = [
   ...promoteThiruppugazhMetadataBatch(thiruppugazhBatch035Raw),
   ...promoteThiruppugazhMetadataBatch(thiruppugazhBatch036Raw),
   ...promoteThiruppugazhMetadataBatch(thiruppugazhBatch037Raw),
+  ...promoteThiruppugazhMetadataBatch(thiruppugazhBatch038Raw),
 ];
 
 export const thiruppugazh: ThiruppugazhSong[] = [

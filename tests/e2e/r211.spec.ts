@@ -5,7 +5,7 @@ test.describe('R2.11 Thiruppugazh catalogue browser qualification', () => {
     await page.goto('/thiruppugazh');
     await expect(page.getByRole('heading', { level: 1, name: 'திருப்புகழ்' })).toBeVisible();
     await expect(page.getByText('1326', { exact: true })).toBeVisible();
-    await expect(page.getByText('875', { exact: true })).toBeVisible();
+    await expect(page.getByText('900', { exact: true })).toBeVisible();
     await expect(page.getByText('Project Madurai Part I', { exact: true }).first()).toBeVisible();
     await expect(page.getByText('Project Madurai Part II', { exact: true }).first()).toBeVisible();
     await expect(page.getByText('Project Madurai Part III', { exact: true }).first()).toBeVisible();
@@ -34,7 +34,7 @@ test.describe('R2.11 Thiruppugazh catalogue browser qualification', () => {
     [500, 'சகுட முந்தும்'], [525, 'சரவண பவநிதி'], [575, 'ஐந்து பூதமும்'], [600, 'அத் துகிரின் நல்'],
     [625, 'கடினதட கும்ப'], [650, 'விலைக்கு மேனியில்'], [675, 'புவிபுனல் காலும்'], [700, 'தலங்களில் வரும்'],
     [725, 'சீதள வாரிஜ'], [750, 'குடத் தாமரையாம்'], [775, 'பூமாது உரமேயணி'], [800, 'சூழ்ந்து ஏன்ற துக்க'],
-    [825, 'உரை ஒழிந்து'], [850, 'இதசந்தன புழுகு'],
+    [825, 'உரை ஒழிந்து'], [850, 'இதசந்தன புழுகு'], [875, 'கடகரிம ருப்பிற்க'],
   ] as const;
 
   for (const [number, opening] of samples) {
@@ -43,45 +43,45 @@ test.describe('R2.11 Thiruppugazh catalogue browser qualification', () => {
       await page.getByLabel('திருப்புகழ் தேடல்').fill(opening);
       const song = page.getByRole('link', { name: new RegExp(`${opening}.*${number}`) });
       await expect(song).toBeVisible();
-      await expect(page.getByText('காட்டப்படுவது 1 / 875')).toBeVisible();
+      await expect(page.getByText('காட்டப்படுவது 1 / 900')).toBeVisible();
       await song.click();
       await expect(page).toHaveURL(new RegExp(`thiruppugazh-${String(number).padStart(4, '0')}`));
       await expect(page.getByText(/உரை.*ஏற்றப்படவில்லை|text.*not.*imported/i).first()).toBeVisible();
     });
   }
 
-  test('publishes validated song 875 metadata and keeps its canonical body withheld', async ({ page }) => {
+  test('publishes validated song 900 metadata and keeps its canonical body withheld', async ({ page }) => {
     await page.goto('/thiruppugazh');
-    await page.getByLabel('திருப்புகழ் தேடல்').fill('கடகரிம ருப்பிற்க');
-    const songEightHundredSeventyFive = page.getByRole('link', { name: /கடகரிம ருப்பிற்க.*875/ });
-    await expect(songEightHundredSeventyFive).toBeVisible();
-    await expect(page.getByText('காட்டப்படுவது 1 / 875')).toBeVisible();
-    await songEightHundredSeventyFive.click();
-    await expect(page).toHaveURL(/thiruppugazh-0875/);
+    await page.getByLabel('திருப்புகழ் தேடல்').fill('அரி மருகோனே');
+    const songNineHundred = page.getByRole('link', { name: /அரி மருகோனே.*900/ });
+    await expect(songNineHundred).toBeVisible();
+    await expect(page.getByText('காட்டப்படுவது 1 / 900')).toBeVisible();
+    await songNineHundred.click();
+    await expect(page).toHaveURL(/thiruppugazh-0900/);
     await expect(page.getByText(/உரை.*ஏற்றப்படவில்லை|text.*not.*imported/i).first()).toBeVisible();
   });
 
   test('filters to exactly the 340 governed Part II records', async ({ page }) => {
     await page.goto('/thiruppugazh');
     await page.getByLabel('மூல பகுதி').selectOption('part-2');
-    await expect(page.getByText('காட்டப்படுவது 340 / 875')).toBeVisible();
+    await expect(page.getByText('காட்டப்படுவது 340 / 900')).toBeVisible();
     await expect(page.getByRole('link', { name: /அற்றைக் கற்றை.*331/ })).toBeVisible();
     await expect(page.getByRole('link', { name: /நிகரில் பஞ்ச.*670/ })).toBeVisible();
   });
 
-  test('filters to exactly the 205 governed Part III records', async ({ page }) => {
+  test('filters to exactly the 230 governed Part III records', async ({ page }) => {
     await page.goto('/thiruppugazh');
     await page.getByLabel('மூல பகுதி').selectOption('part-3');
-    await expect(page.getByText('காட்டப்படுவது 205 / 875')).toBeVisible();
+    await expect(page.getByText('காட்டப்படுவது 230 / 900')).toBeVisible();
     await expect(page.getByRole('link', { name: /பரவி உனது.*671/ })).toBeVisible();
-    await expect(page.getByRole('link', { name: /கடகரிம ருப்பிற்க.*875/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: /அரி மருகோனே.*900/ })).toBeVisible();
   });
 
   test('searches verified entries without inventing missing songs', async ({ page }) => {
     await page.goto('/thiruppugazh');
     await page.getByLabel('திருப்புகழ் தேடல்').fill('முத்தைத்தரு');
     await expect(page.getByRole('link', { name: /முத்தைத்தரு/ })).toBeVisible();
-    await expect(page.getByText('காட்டப்படுவது 1 / 875')).toBeVisible();
+    await expect(page.getByText('காட்டப்படுவது 1 / 900')).toBeVisible();
   });
 
   test('keeps corpus-reference links external and source-labelled', async ({ page }) => {
