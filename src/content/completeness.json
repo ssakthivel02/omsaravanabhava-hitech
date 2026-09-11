@@ -5,7 +5,7 @@
   "domains": [
     {"key":"temples","labelTa":"கோயில்கள்","labelEn":"Temples","records":376,"withCoordinates":0,"withHistory":0,"withVisitorInfo":0},
     {"key":"arupadai","labelTa":"அறுபடை வீடு","labelEn":"Arupadai Veedu","records":6,"withCoordinates":0,"withHistory":0,"withVisitorInfo":0},
-    {"key":"thiruppugazh","labelTa":"திருப்புகழ்","labelEn":"Thiruppugazh","records":1275,"withCanonicalText":0,"withMeaning":0,"withAudio":0},
+    {"key":"thiruppugazh","labelTa":"திருப்புகழ்","labelEn":"Thiruppugazh","records":1300,"withCanonicalText":0,"withMeaning":0,"withAudio":0},
     {"key":"works","labelTa":"நூல்கள்","labelEn":"Works","records":10},
     {"key":"names","labelTa":"திருநாமங்கள்","labelEn":"Sacred names","records":7},
     {"key":"prayers","labelTa":"மந்திரம் · துதி","labelEn":"Mantras & prayers","records":12,"withCanonicalText":0,"withMeaning":0,"withAudio":0},
