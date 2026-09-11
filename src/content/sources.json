@@ -102,5 +102,13 @@
     "confidence": "HIGH",
     "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0189.html",
     "rights": "HEADER_PRESERVATION_CONDITION_STATED"
+  },
+  {
+    "id": "MHS14",
+    "reference": "Project Madurai Thiruppugazh Part IV, verses 1001–1326",
+    "type": "PUBLIC_UNICODE_EDITION",
+    "confidence": "HIGH",
+    "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0191.html",
+    "rights": "HEADER_PRESERVATION_CONDITION_STATED"
   }
 ]
