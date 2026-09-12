@@ -73,7 +73,7 @@ test.describe('R2.11 Thiruppugazh catalogue browser qualification', () => {
   test('publishes the terminal 1326 metadata record and keeps the canonical body withheld', async ({ page }) => {
     await page.goto('/thiruppugazh');
     await page.getByLabel('திருப்புகழ் தேடல்').fill('ஓருரு வாகிய');
-    const finalSong = page.getByRole('link', { name: /ஓருரு வாகிய.*1326/ });
+    const finalSong = page.getByRole('link', { name: /ஓருரு வாகி.*1326/ });
     await expect(finalSong).toBeVisible();
     await expect(page.getByText('காட்டப்படுவது 1 / 1326')).toBeVisible();
     await finalSong.click();
@@ -103,7 +103,7 @@ test.describe('R2.11 Thiruppugazh catalogue browser qualification', () => {
     await expect(page.getByText('காட்டப்படுவது 326 / 1326')).toBeVisible();
     await expect(page.getByRole('link', { name: /இலகி யிருகுழை.*1001/ })).toBeVisible();
     await expect(page.getByRole('link', { name: /உரையுஞ் சென்றது.*1325/ })).toBeVisible();
-    await expect(page.getByRole('link', { name: /ஓருரு வாகிய.*1326/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: /ஓருரு வாகி.*1326/ })).toBeVisible();
   });
 
   test('searches verified entries without inventing missing songs', async ({ page }) => {
