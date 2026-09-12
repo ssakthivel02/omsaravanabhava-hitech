@@ -23,10 +23,13 @@ describe('R2.12 temple-detail geographic publication state', () => {
 
     const provenance = screen.getByRole('heading', { name: /மூலமும் நிலையும்|Source and State/ }).closest('section');
     expect(provenance).not.toBeNull();
-    expect(provenance).toHaveAttribute(
+
+    const coordinateState = provenance?.querySelector('[data-coordinate-publication-state]');
+    expect(coordinateState).not.toBeNull();
+    expect(coordinateState).toHaveAttribute(
       'data-coordinate-publication-state',
       'COORDINATES_PENDING_VERIFICATION',
     );
-    expect(provenance).toHaveTextContent(/ஆயத்தொலைவு|Coordinates/);
+    expect(coordinateState).toHaveTextContent(/ஆயத்தொலைவு|Coordinates/);
   });
 });
