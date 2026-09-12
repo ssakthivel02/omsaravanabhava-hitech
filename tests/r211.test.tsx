@@ -90,7 +90,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     const user = userEvent.setup();
     renderAt('/thiruppugazh');
     await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'ஓருரு வாகிய');
-    const finalSong = screen.getByRole('link', { name: /ஓருரு வாகிய/ });
+    const finalSong = screen.getByRole('link', { name: /ஓருரு வாகி/ });
     expect(finalSong).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-1326');
     expect(screen.getByText('காட்டப்படுவது 1 / 1326')).toBeInTheDocument();
   });
@@ -120,7 +120,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     expect(screen.getByText('காட்டப்படுவது 326 / 1326')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /இலகி யிருகுழை/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-1001');
     expect(screen.getByRole('link', { name: /உரையுஞ் சென்றது/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-1325');
-    expect(screen.getByRole('link', { name: /ஓருரு வாகிய/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-1326');
+    expect(screen.getByRole('link', { name: /ஓருரு வாகி/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-1326');
   });
 
   it('searches only the verified catalogue and finds முத்தைத்தரு', async () => {
