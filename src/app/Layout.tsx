@@ -17,7 +17,7 @@ const NAV: ShellItem[] = [
   { href: '/search', ta: 'தேடல்', en: 'Search', te: 'శోధన', ml: 'തിരയുക', kn: 'ಹುಡುಕು', hi: 'खोज' },
 ];
 
-const MORE: ShellItem[] = [
+const MORE: [ShellItem, ShellItem] = [
   { href: '/works', ta: 'நூல்கள்', en: 'Sacred works', te: 'పవిత్ర గ్రంథాలు', ml: 'പവിത്ര ഗ്രന്ഥങ്ങൾ', kn: 'ಪವಿತ್ರ ಗ್ರಂಥಗಳು', hi: 'पवित्र ग्रंथ' },
   { href: '/prayers', ta: 'மந்திரம்', en: 'Prayers', te: 'ప్రార్థనలు', ml: 'പ്രാർത്ഥനകൾ', kn: 'ಪ್ರಾರ್ಥನೆಗಳು', hi: 'प्रार्थनाएँ' },
 ];
@@ -45,7 +45,7 @@ function isNavActive(location: string, href: string) {
 export default function Layout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [location] = useLocation();
-  const { locale, text } = useLocale();
+  const { uiLocale: locale, text } = useLocale();
   useRouteMetadata(location);
 
   useEffect(() => {

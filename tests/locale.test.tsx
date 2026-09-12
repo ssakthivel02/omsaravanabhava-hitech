@@ -5,17 +5,21 @@ import LanguageSwitch from '@/components/LanguageSwitch';
 import { LocaleProvider, useLocale } from '@/lib/locale';
 
 function Probe() {
-  const { locale, text } = useLocale();
+  const { uiLocale, text } = useLocale();
   return (
     <p data-testid="locale-probe">
-      {locale}:{text('தமிழ்', 'English', { te: 'తెలుగు', ml: 'മലയാളം', kn: 'ಕನ್ನಡ', hi: 'हिन्दी' })}
+      {uiLocale}:{text('தமிழ்', 'English', { te: 'తెలుగు', ml: 'മലയാളം', kn: 'ಕನ್ನಡ', hi: 'हिन्दी' })}
     </p>
   );
 }
 
 function FallbackProbe() {
-  const { locale, text } = useLocale();
-  return <p data-testid="fallback-probe">{locale}:{text('தமிழ் மட்டும்', 'Reviewed English fallback')}</p>;
+  const { uiLocale, locale, text } = useLocale();
+  return (
+    <p data-testid="fallback-probe">
+      {uiLocale}:{locale}:{text('தமிழ் மட்டும்', 'Reviewed English fallback')}
+    </p>
+  );
 }
 
 describe('local-first multilingual UI', () => {
@@ -74,13 +78,15 @@ describe('local-first multilingual UI', () => {
     expect(screen.getByTestId('locale-probe')).toHaveTextContent('te:తెలుగు');
   });
 
-  it('falls back to reviewed English copy when a route has not yet completed a new-language translation', () => {
+  it('separates the selected UI locale from the governed content fallback locale', () => {
     localStorage.setItem('omsaravanabhava-hitech-ui-locale-v1', 'ml');
     render(
       <LocaleProvider>
         <FallbackProbe />
       </LocaleProvider>,
     );
-    expect(screen.getByTestId('fallback-probe')).toHaveTextContent('ml:Reviewed English fallback');
+    expect(screen.getByTestId('fallback-probe')).toHaveTextContent(
+      'ml:en:Reviewed English fallback',
+    );
   });
 });

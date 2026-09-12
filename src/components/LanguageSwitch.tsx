@@ -10,16 +10,16 @@ const OPTIONS: Array<{ value: UiLocale; short: string; label: string }> = [
 ];
 
 export default function LanguageSwitch() {
-  const { locale, setLocale } = useLocale();
+  const { uiLocale, setLocale } = useLocale();
 
   return (
     <label className="language-switch">
       <span className="sr-only">Interface language / இடைமுக மொழி</span>
       <select
         className="language-switch-select"
-        value={locale}
+        value={uiLocale}
         aria-label="Interface language / இடைமுக மொழி"
-        lang={locale}
+        lang={uiLocale}
         onChange={(event) => setLocale(event.currentTarget.value as UiLocale)}
       >
         {OPTIONS.map((option) => (

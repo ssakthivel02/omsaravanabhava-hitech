@@ -10,7 +10,8 @@ import {
 
 export const UI_LOCALES = ['ta', 'en', 'te', 'ml', 'kn', 'hi'] as const;
 export type UiLocale = (typeof UI_LOCALES)[number];
-export type LocaleAlternates = Partial<Record<Exclude<UiLocale, 'ta' | 'en'>, string>>;
+export type ContentLocale = 'ta' | 'en';
+export type LocaleAlternates = Partial<Record<Exclude<UiLocale, ContentLocale>, string>>;
 
 const STORAGE_KEY = 'omsaravanabhava-hitech-ui-locale-v1';
 
@@ -39,23 +40,32 @@ function resolveText(
   return alternates?.[locale] ?? en;
 }
 
+function resolveContentLocale(locale: UiLocale): ContentLocale {
+  return locale === 'ta' ? 'ta' : 'en';
+}
+
 type LocaleContextValue = {
-  locale: UiLocale;
+  /** Selected interface language, including the four new R2.13 locales. */
+  uiLocale: UiLocale;
+  /**
+   * Locale safe for governed content that currently has only Tamil/English
+   * labels. New interface languages intentionally fall back to reviewed
+   * English until that content layer receives a reviewed translation.
+   */
+  locale: ContentLocale;
   setLocale: (locale: UiLocale) => void;
   text: (ta: string, en: string, alternates?: LocaleAlternates) => string;
 };
 
-// Tamil remains the deterministic first-run default. Routes that have not yet
-// completed reviewed translations fall back to English rather than presenting
-// machine-generated or unreviewed devotional claims as authoritative copy.
 const LocaleContext = createContext<LocaleContextValue>({
+  uiLocale: 'ta',
   locale: 'ta',
   setLocale: () => undefined,
   text: (ta) => ta,
 });
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<UiLocale>(readStoredLocale);
+  const [uiLocale, setLocaleState] = useState<UiLocale>(readStoredLocale);
 
   const setLocale = useCallback((next: UiLocale) => {
     setLocaleState(next);
@@ -67,18 +77,19 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    document.documentElement.lang = locale;
+    document.documentElement.lang = uiLocale;
     document.documentElement.dir = 'ltr';
-    document.documentElement.dataset.uiLocale = locale;
-  }, [locale]);
+    document.documentElement.dataset.uiLocale = uiLocale;
+  }, [uiLocale]);
 
   const value = useMemo<LocaleContextValue>(
     () => ({
-      locale,
+      uiLocale,
+      locale: resolveContentLocale(uiLocale),
       setLocale,
-      text: (ta, en, alternates) => resolveText(locale, ta, en, alternates),
+      text: (ta, en, alternates) => resolveText(uiLocale, ta, en, alternates),
     }),
-    [locale, setLocale],
+    [uiLocale, setLocale],
   );
 
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
