@@ -4,7 +4,14 @@ test.describe('R2.11 Thiruppugazh catalogue browser qualification', () => {
   test('publishes truthful corpus coverage and source lanes', async ({ page }) => {
     await page.goto('/thiruppugazh');
     await expect(page.getByRole('heading', { level: 1, name: 'திருப்புகழ்' })).toBeVisible();
-    await expect(page.getByText('1326', { exact: true })).toBeVisible();
+    const sourceLinkedMetric = page
+      .getByText('மூல இணைப்புள்ள பதிவுகள்', { exact: true })
+      .locator('..');
+    const referenceCorpusMetric = page
+      .getByText('குறிப்பு பாடல் வரம்பு', { exact: true })
+      .locator('..');
+    await expect(sourceLinkedMetric.getByText('1326', { exact: true })).toBeVisible();
+    await expect(referenceCorpusMetric.getByText('1326', { exact: true })).toBeVisible();
     await expect(page.getByText('Project Madurai Part I', { exact: true }).first()).toBeVisible();
     await expect(page.getByText('Project Madurai Part II', { exact: true }).first()).toBeVisible();
     await expect(page.getByText('Project Madurai Part III', { exact: true }).first()).toBeVisible();
