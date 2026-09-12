@@ -48,15 +48,15 @@ test.describe('R2.13 local-first multilingual interface', () => {
     await page.goto('/');
 
     const cases = [
-      { locale: 'te' as const, nav: 'దేవాలయాలు' },
-      { locale: 'ml' as const, nav: 'ക്ഷേത്രങ്ങൾ' },
-      { locale: 'kn' as const, nav: 'ದೇವಾಲಯಗಳು' },
-      { locale: 'hi' as const, nav: 'मंदिर' },
+      { locale: 'te' as const, home: 'ఓం శరవణభవ — హోమ్' },
+      { locale: 'ml' as const, home: 'ഓം ശരവണഭവ — ഹോം' },
+      { locale: 'kn' as const, home: 'ಓಂ ಶರವಣಭವ — ಮುಖಪುಟ' },
+      { locale: 'hi' as const, home: 'ॐ सरवणभव — मुखपृष्ठ' },
     ];
 
     for (const item of cases) {
       await switchLocale(page, item.locale);
-      await expect(page.getByRole('link', { name: item.nav }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: item.home })).toBeVisible();
       const stored = await page.evaluate((key) => localStorage.getItem(key), STORAGE_KEY);
       expect(stored).toBe(item.locale);
     }
