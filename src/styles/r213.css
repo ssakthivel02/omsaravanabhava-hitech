@@ -1,0 +1,61 @@
+.language-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.language-switch::after {
+  content: '⌄';
+  position: absolute;
+  inset-inline-end: 0.65rem;
+  top: 50%;
+  transform: translateY(-54%);
+  color: var(--ink-faint);
+  pointer-events: none;
+  font-size: 0.72rem;
+}
+
+.language-switch-select {
+  appearance: none;
+  min-height: 44px;
+  max-width: 8.5rem;
+  padding: 0.52rem 1.75rem 0.52rem 0.75rem;
+  border: 1px solid var(--sanctum-edge);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sanctum) 94%, var(--gold) 6%);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--t-xs);
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.language-switch-select:hover,
+.language-switch-select:focus-visible {
+  border-color: var(--gold);
+  color: var(--gold-soft);
+  outline: none;
+}
+
+.language-switch-select option {
+  background: var(--sanctum);
+  color: var(--ink);
+}
+
+@media (max-width: 31rem) {
+  .brand-text small {
+    display: none;
+  }
+
+  .language-switch-select {
+    max-width: 6.7rem;
+    padding-inline-start: 0.6rem;
+  }
+}
+
+@media (min-width: 72rem) {
+  .language-switch {
+    margin-inline-start: 0.2rem;
+  }
+}

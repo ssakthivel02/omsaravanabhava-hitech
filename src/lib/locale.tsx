@@ -8,28 +8,46 @@ import {
   type ReactNode,
 } from 'react';
 
-export type UiLocale = 'ta' | 'en';
+export const UI_LOCALES = ['ta', 'en', 'te', 'ml', 'kn', 'hi'] as const;
+export type UiLocale = (typeof UI_LOCALES)[number];
+export type LocaleAlternates = Partial<Record<Exclude<UiLocale, 'ta' | 'en'>, string>>;
 
 const STORAGE_KEY = 'omsaravanabhava-hitech-ui-locale-v1';
+
+export function isUiLocale(value: unknown): value is UiLocale {
+  return typeof value === 'string' && (UI_LOCALES as readonly string[]).includes(value);
+}
 
 function readStoredLocale(): UiLocale {
   if (typeof window === 'undefined') return 'ta';
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    return stored === 'en' ? 'en' : 'ta';
+    return isUiLocale(stored) ? stored : 'ta';
   } catch {
     return 'ta';
   }
 }
 
+function resolveText(
+  locale: UiLocale,
+  ta: string,
+  en: string,
+  alternates?: LocaleAlternates,
+): string {
+  if (locale === 'ta') return ta;
+  if (locale === 'en') return en;
+  return alternates?.[locale] ?? en;
+}
+
 type LocaleContextValue = {
   locale: UiLocale;
   setLocale: (locale: UiLocale) => void;
-  text: (ta: string, en: string) => string;
+  text: (ta: string, en: string, alternates?: LocaleAlternates) => string;
 };
 
-// A Tamil fallback keeps independently-rendered route components and tests
-// deterministic. The production application is always wrapped by LocaleProvider.
+// Tamil remains the deterministic first-run default. Routes that have not yet
+// completed reviewed translations fall back to English rather than presenting
+// machine-generated or unreviewed devotional claims as authoritative copy.
 const LocaleContext = createContext<LocaleContextValue>({
   locale: 'ta',
   setLocale: () => undefined,
@@ -50,6 +68,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = locale;
+    document.documentElement.dir = 'ltr';
     document.documentElement.dataset.uiLocale = locale;
   }, [locale]);
 
@@ -57,7 +76,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     () => ({
       locale,
       setLocale,
-      text: (ta, en) => (locale === 'ta' ? ta : en),
+      text: (ta, en, alternates) => resolveText(locale, ta, en, alternates),
     }),
     [locale, setLocale],
   );

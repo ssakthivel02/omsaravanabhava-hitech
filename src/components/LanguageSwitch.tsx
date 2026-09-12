@@ -2,27 +2,32 @@ import { useLocale, type UiLocale } from '@/lib/locale';
 
 const OPTIONS: Array<{ value: UiLocale; short: string; label: string }> = [
   { value: 'ta', short: 'தமிழ்', label: 'தமிழ் இடைமுகம்' },
-  { value: 'en', short: 'EN', label: 'English interface' },
+  { value: 'en', short: 'English', label: 'English interface' },
+  { value: 'te', short: 'తెలుగు', label: 'తెలుగు ఇంటర్‌ఫేస్' },
+  { value: 'ml', short: 'മലയാളം', label: 'മലയാളം ഇന്റർഫേസ്' },
+  { value: 'kn', short: 'ಕನ್ನಡ', label: 'ಕನ್ನಡ ಇಂಟರ್ಫೇಸ್' },
+  { value: 'hi', short: 'हिन्दी', label: 'हिन्दी इंटरफ़ेस' },
 ];
 
 export default function LanguageSwitch() {
   const { locale, setLocale } = useLocale();
 
   return (
-    <div className="language-switch" role="group" aria-label="Interface language / இடைமுக மொழி">
-      {OPTIONS.map((option) => (
-        <button
-          key={option.value}
-          type="button"
-          className="language-switch-option"
-          aria-pressed={locale === option.value}
-          aria-label={option.label}
-          lang={option.value}
-          onClick={() => setLocale(option.value)}
-        >
-          {option.short}
-        </button>
-      ))}
-    </div>
+    <label className="language-switch">
+      <span className="sr-only">Interface language / இடைமுக மொழி</span>
+      <select
+        className="language-switch-select"
+        value={locale}
+        aria-label="Interface language / இடைமுக மொழி"
+        lang={locale}
+        onChange={(event) => setLocale(event.currentTarget.value as UiLocale)}
+      >
+        {OPTIONS.map((option) => (
+          <option key={option.value} value={option.value} lang={option.value}>
+            {option.short}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }
