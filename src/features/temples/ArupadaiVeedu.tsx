@@ -3,6 +3,7 @@ import { arupadaiVeedu, describeSourceConfidence } from '@/content';
 import ArupadaiVelMap from '@/components/ArupadaiVelMap';
 import StateBadge, { StateBadgeResolved } from '@/components/StateBadge';
 import { useLocale } from '@/lib/locale';
+import { evaluateCoordinatePublication } from '@/lib/geographicProvenance';
 
 export default function ArupadaiVeedu() {
   const { locale, text } = useLocale();
@@ -32,12 +33,17 @@ export default function ArupadaiVeedu() {
       <ol className="pilgrimage">
         {arupadaiVeedu.map((t) => {
           const primarySource = t.sources[0];
+          const coordinateDecision = evaluateCoordinatePublication(t);
           const literary = t.literaryRelationships[0] as
             | { work_id?: string; assertion_status?: string }
             | undefined;
           const showEnglishFirst = locale === 'en' && Boolean(t.nameEn);
           return (
-            <li key={t.id} className="pilgrimage-stop">
+            <li
+              key={t.id}
+              className="pilgrimage-stop"
+              data-coordinate-publication-state={coordinateDecision.state}
+            >
               <Link href={`/temples/${t.id}`} className="stop-link">
                 <span className="stop-num" aria-hidden="true">
                   {String(t.pilgrimageOrder).padStart(2, '0')}
@@ -60,7 +66,7 @@ export default function ArupadaiVeedu() {
                     </>
                   )}
                   <span className="state-row">
-                    <StateBadge state={t.coordinateConfidence} dimension={text('ஆயத்தொலைவு', 'Coordinates')} />
+                    <StateBadge state={coordinateDecision.state} dimension={text('ஆயத்தொலைவு', 'Coordinates')} />
                     {primarySource &&
                       (() => {
                         const { label, tone } = describeSourceConfidence(
