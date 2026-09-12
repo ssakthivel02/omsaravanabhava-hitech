@@ -2,17 +2,20 @@ import { test, expect } from '@playwright/test';
 
 const STORAGE_KEY = 'omsaravanabhava-hitech-ui-locale-v1';
 
+async function switchLocale(page: import('@playwright/test').Page, locale: 'ta' | 'en' | 'te' | 'ml' | 'kn' | 'hi') {
+  await page.getByRole('combobox', { name: 'Interface language / இடைமுக மொழி' }).selectOption(locale);
+  await expect(page.locator('html')).toHaveAttribute('lang', locale);
+}
+
 async function switchToEnglish(page: import('@playwright/test').Page) {
-  await page.getByRole('button', { name: 'English interface' }).click();
-  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await switchLocale(page, 'en');
 }
 
 async function switchToTamil(page: import('@playwright/test').Page) {
-  await page.getByRole('button', { name: 'தமிழ் இடைமுகம்' }).click();
-  await expect(page.locator('html')).toHaveAttribute('lang', 'ta');
+  await switchLocale(page, 'ta');
 }
 
-test.describe('R2.8 local-first Tamil / English interface', () => {
+test.describe('R2.13 local-first multilingual interface', () => {
   test('defaults to Tamil and switches the shared shell to English', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('html')).toHaveAttribute('lang', 'ta');
@@ -39,6 +42,24 @@ test.describe('R2.8 local-first Tamil / English interface', () => {
     await switchToTamil(page);
     await expect(page.getByRole('heading', { level: 1 })).toContainText('முருகன் அறிவுக் களம்');
     await expect(page).toHaveTitle(/முருகன் அறிவுக் களம்/);
+  });
+
+  test('switches the shared shell across the four added Indian languages', async ({ page }) => {
+    await page.goto('/');
+
+    const cases = [
+      { locale: 'te' as const, nav: 'దేవాలయాలు' },
+      { locale: 'ml' as const, nav: 'ക്ഷേത്രങ്ങൾ' },
+      { locale: 'kn' as const, nav: 'ದೇವಾಲಯಗಳು' },
+      { locale: 'hi' as const, nav: 'मंदिर' },
+    ];
+
+    for (const item of cases) {
+      await switchLocale(page, item.locale);
+      await expect(page.getByRole('link', { name: item.nav }).first()).toBeVisible();
+      const stored = await page.evaluate((key) => localStorage.getItem(key), STORAGE_KEY);
+      expect(stored).toBe(item.locale);
+    }
   });
 
   test('localizes route metadata when language changes', async ({ page }) => {
