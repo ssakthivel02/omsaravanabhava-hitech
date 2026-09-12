@@ -36,6 +36,7 @@ export interface CoordinatePublicationDecision {
     | 'MISSING_SOURCE_AUTHORITY'
     | 'INVALID_SOURCE_URL'
     | 'INVALID_EVIDENCE_TIMESTAMPS'
+    | 'INVALID_EVIDENCE_TIMESTAMP_ORDER'
     | 'COORDINATE_CONFIDENCE_NOT_AUTHORITATIVE'
     | 'AUTHORITATIVE_EVIDENCE_COMPLETE';
 }
@@ -126,6 +127,14 @@ export function evaluateCoordinatePublication(
       publishable: false,
       state: 'COORDINATES_PENDING_VERIFICATION',
       reason: 'INVALID_EVIDENCE_TIMESTAMPS',
+    };
+  }
+
+  if (Date.parse(evidence.lastVerifiedAt as string) < Date.parse(evidence.retrievedAt as string)) {
+    return {
+      publishable: false,
+      state: 'COORDINATES_PENDING_VERIFICATION',
+      reason: 'INVALID_EVIDENCE_TIMESTAMP_ORDER',
     };
   }
 

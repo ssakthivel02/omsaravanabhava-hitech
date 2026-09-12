@@ -93,6 +93,20 @@ describe('R2.12 geographic provenance gate', () => {
     expect(decision.reason).toBe('MISSING_OR_INVALID_COORDINATES');
   });
 
+  it('rejects evidence when verification predates retrieval', () => {
+    const decision = evaluateCoordinatePublication({
+      ...verifiedCandidate,
+      geographicEvidence: {
+        ...verifiedEvidence,
+        retrievedAt: '2026-09-12T12:00:00+05:30',
+        lastVerifiedAt: '2026-09-12T11:59:59+05:30',
+      },
+    });
+
+    expect(decision.publishable).toBe(false);
+    expect(decision.reason).toBe('INVALID_EVIDENCE_TIMESTAMP_ORDER');
+  });
+
   it('allows publication only when coordinate data and authoritative evidence are both complete', () => {
     expect(evaluateCoordinatePublication(verifiedCandidate)).toEqual({
       publishable: true,
