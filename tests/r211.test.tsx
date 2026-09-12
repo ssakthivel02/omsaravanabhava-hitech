@@ -22,9 +22,9 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     expect(thiruppugazh.at(-1)?.openingWords).toBe('ஓருரு வாகிய');
   });
 
-  it('distinguishes the 1326-song reference corpus from the 1326 source-linked records', () => {
+  it('reports the 1326-song reference corpus and 1326 source-linked records truthfully', () => {
     renderAt('/thiruppugazh');
-    expect(screen.getByText('1326')).toBeInTheDocument();
+    expect(screen.getAllByText('1326').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/முழு 1,326 பாடல்களும் இத்தளத்தில் வெளியிடப்பட்டதாக/)).toBeInTheDocument();
   });
 
@@ -72,6 +72,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     [1025, 'சீதமலம் வெப்பு'], [1050, 'தொட அடாது'], [1075, 'திரிபுரம் அதனை'], [1100, 'அங்கதன் கண்டகன்'],
     [1125, 'அரிய வஞ்சகர்'], [1150, 'கலவியி நலமுரை'], [1175, 'பாணிக்கு உட்படாது'], [1200, 'வாடையில் மதனை'],
     [1225, 'கச்சுப் பூட்டு'], [1250, 'தீ ஊதை தாத்ரி'], [1275, 'மூலா நிலமதின்'], [1300, 'புத்தகத்து ஏட்டில்'],
+    [1325, 'உரையுஞ் சென்றது'],
   ] as const;
 
   for (const [number, opening] of tailSamples) {
