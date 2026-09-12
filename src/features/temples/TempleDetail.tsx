@@ -7,6 +7,7 @@ import ReadAloud from '@/components/ReadAloud';
 import { useEntityMeta } from '@/lib/routeMeta';
 import { useRecentItem } from '@/lib/useRecent';
 import { useLocale } from '@/lib/locale';
+import { evaluateCoordinatePublication } from '@/lib/geographicProvenance';
 
 export default function TempleDetail() {
   const params = useParams<{ id: string }>();
@@ -47,6 +48,11 @@ export default function TempleDetail() {
   const officialSourceState = pilgrimageStop?.officialCurrentSource
     ? resolveOfficialSourceState(pilgrimageStop.officialCurrentSource)
     : null;
+  const coordinateDecision = evaluateCoordinatePublication({
+    latitude: temple.latitude,
+    longitude: temple.longitude,
+    coordinateConfidence: temple.coordinateConfidence,
+  });
   const showEnglishFirst = locale === 'en' && Boolean(temple.nameEn);
 
   // Field labels are UI chrome and are localized. Governed values are not
@@ -160,7 +166,6 @@ export default function TempleDetail() {
           {populatedProse.map((f) => (
             <div className="temple-prose" key={f.key}>
               <h3 lang={locale}>{text(f.labelTa, f.labelEn)}</h3>
-              {/* Governed prose content: always Tamil, never machine-translated. */}
               <p lang={contentLang(f.value)}>{f.value}</p>
             </div>
           ))}
@@ -192,12 +197,12 @@ export default function TempleDetail() {
             'Each state below represents one distinct dimension; one is never generalized to imply another.',
           )}
         </p>
-        <p className="state-row">
+        <p className="state-row" data-coordinate-publication-state={coordinateDecision.state}>
           <span className={`state state-${sourceConfidence.tone}`}>
             <span className="state-dot" aria-hidden="true" />
             <span lang={locale}>{sourceConfidence.label}</span>
           </span>
-          <StateBadge state={temple.coordinateConfidence} dimension={text('ஆயத்தொலைவு', 'Coordinates')} />
+          <StateBadge state={coordinateDecision.state} dimension={text('ஆயத்தொலைவு', 'Coordinates')} />
           <StateBadge state={temple.imageStatus} dimension={text('படம்', 'Image')} />
         </p>
         <p className="note" lang={locale}>
@@ -249,7 +254,6 @@ export default function TempleDetail() {
           {pilgrimageStop.officialCurrentSource.publishedScheduleNote && (
             <div className="official-current-row">
               <b lang={locale}>{text('தரிசன நேரம்', 'Darshan timings')}</b>
-              {/* Verbatim official-source text: always Tamil, never translated. */}
               <p lang="ta">{pilgrimageStop.officialCurrentSource.publishedScheduleNote}</p>
               {pilgrimageStop.officialCurrentSource.festivalVariation && (
                 <small lang={locale}>{text('திருவிழா நாட்களில் நேரம் மாறுபடலாம்.', 'Timings may vary on festival days.')}</small>
