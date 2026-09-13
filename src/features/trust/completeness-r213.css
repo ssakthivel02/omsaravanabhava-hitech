@@ -1,0 +1,232 @@
+/* R2.13 Content Completeness refinement. Route-scoped only. */
+.completeness-page {
+  max-width: 82rem;
+}
+
+.completeness-hero {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(2.6rem, 7vw, 5rem) clamp(1.25rem, 5vw, 3.25rem);
+  border-block: 1px solid var(--sanctum-edge);
+  background:
+    radial-gradient(70% 120% at 95% 5%, color-mix(in srgb, var(--gold) 11%, transparent), transparent 70%),
+    linear-gradient(140deg, color-mix(in srgb, var(--sanctum-raised) 96%, var(--gold) 4%), var(--sanctum));
+}
+
+.completeness-hero-copy {
+  max-width: 52rem;
+}
+
+.completeness-eyebrow,
+.completeness-section-kicker {
+  margin: 0 0 0.55rem;
+  color: var(--gold-soft);
+  font-size: var(--t-sm);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.completeness-hero h1 {
+  max-width: 12ch;
+  color: var(--gold-soft);
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  letter-spacing: -0.025em;
+}
+
+.completeness-hero-copy > p:last-child,
+.completeness-section-head > p:last-child {
+  color: var(--ink-muted);
+}
+
+.completeness-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.completeness-summary div {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--sanctum-edge);
+  background: color-mix(in srgb, var(--sanctum) 88%, var(--gold) 12%);
+}
+
+.completeness-summary dt {
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+}
+
+.completeness-summary dd {
+  margin: 0.35rem 0 0;
+  color: var(--gold-soft);
+  font-size: clamp(1.8rem, 4vw, 2.65rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.completeness-section {
+  margin-top: clamp(2.2rem, 6vw, 4.5rem);
+}
+
+.completeness-section-head {
+  max-width: 52rem;
+}
+
+.completeness-section-head h2 {
+  color: var(--gold-soft);
+}
+
+.completeness-legend {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1.35rem 0;
+}
+
+.completeness-legend p {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0;
+  color: var(--ink-muted);
+}
+
+.legend-chip {
+  display: inline-grid;
+  min-width: 3rem;
+  min-height: 2rem;
+  place-items: center;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--sanctum-edge);
+  font-size: var(--t-sm);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.legend-na {
+  color: var(--ink-muted);
+  background: var(--sanctum-raised);
+}
+
+.legend-zero {
+  color: var(--gold-soft);
+  background: color-mix(in srgb, var(--sanctum-raised) 88%, var(--gold) 12%);
+}
+
+.completeness-table-shell {
+  border: 1px solid var(--sanctum-edge);
+  background: color-mix(in srgb, var(--sanctum-raised) 97%, var(--gold) 3%);
+}
+
+.completeness-matrix {
+  margin: 0;
+}
+
+.completeness-matrix th,
+.completeness-matrix td {
+  font-variant-numeric: tabular-nums;
+}
+
+.completeness-matrix thead th {
+  color: var(--gold-soft);
+  background: color-mix(in srgb, var(--sanctum) 90%, var(--gold) 10%);
+}
+
+.completeness-matrix tbody th {
+  color: var(--ink);
+}
+
+.completeness-matrix .matrix-na {
+  color: var(--ink-muted);
+}
+
+.completeness-matrix .matrix-zero {
+  color: var(--gold-soft);
+  font-weight: 700;
+}
+
+.completeness-research {
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid var(--sanctum-edge);
+  background: color-mix(in srgb, var(--sanctum-raised) 96%, var(--gold) 4%);
+}
+
+.completeness-dataset-status {
+  color: var(--ink-muted);
+}
+
+.completeness-research-grid {
+  display: grid;
+  gap: 0.85rem;
+  margin: 1.4rem 0 0;
+}
+
+.completeness-research-item {
+  display: grid;
+  gap: 0.65rem;
+  padding: 1rem;
+  border: 1px solid var(--sanctum-edge);
+  background: var(--sanctum);
+}
+
+.completeness-research-item dt {
+  color: var(--gold-soft);
+  font-weight: 700;
+}
+
+.completeness-research-item dd {
+  margin: 0;
+}
+
+.completeness-policy,
+.completeness-technical-note {
+  margin: 1rem 0 0;
+  color: var(--ink-muted);
+}
+
+.completeness-provenance {
+  padding-block: 0 1rem;
+}
+
+.completeness-hash {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 1rem;
+  border: 1px solid var(--sanctum-edge);
+  background: var(--sanctum-raised);
+  color: var(--ink-muted);
+}
+
+.completeness-hash span {
+  color: var(--gold-soft);
+  font-size: var(--t-sm);
+  font-weight: 700;
+}
+
+.completeness-hash code {
+  overflow-wrap: anywhere;
+  color: var(--ink);
+}
+
+@media (min-width: 48rem) {
+  .completeness-hero {
+    grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+    align-items: end;
+  }
+
+  .completeness-research-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .completeness-hero {
+    padding-inline: clamp(1rem, 5vw, 1.4rem);
+  }
+
+  .completeness-summary {
+    grid-template-columns: 1fr;
+  }
+}

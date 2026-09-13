@@ -2,6 +2,7 @@ import { completeness, namavali } from '@/content';
 import type { CompletenessDomain } from '@/content';
 import StateBadge, { StateBadgeResolved } from '@/components/StateBadge';
 import { useLocale, type UiLocale } from '@/lib/locale';
+import './completeness-r213.css';
 
 /**
  * Every column below is one independent dimension. R2-CODE-004: the previous
@@ -57,68 +58,101 @@ const RESEARCH_STATE_LABELS: Record<string, { ta: string; en: string }> = {
 export default function Completeness() {
   const { policy, ...researchItems } = namavali.researchState;
   const { locale, text } = useLocale();
+  const totalRecords = completeness.domains.reduce((sum, domain) => sum + domain.records, 0);
 
   return (
-    <article className="page">
-      <header className="page-head">
-        <h1 lang={locale}>{text('உள்ளடக்க நிலை', 'Content Status')}</h1>
-        <p lang={locale}>
-          {text(
-            'இத்தளத்தில் உண்மையில் உள்ள பதிவுகளின் எண்ணிக்கை. எதிர்பார்ப்பு அல்ல. ஒவ்வொரு நெடுவரிசையும் ஒரு தனித்தன்மையைக் குறிக்கிறது — "பொருந்தாது" என்பது அந்தப் பிரிவுக்கு அந்த நெடுவரிசை பொருந்தாது என்பதைக் குறிக்கும்; "0" என்பது அந்தப் புலம் பொருந்தும், ஆனால் இதுவரை எதுவும் வெளியிடப்படவில்லை என்பதைக் குறிக்கும்.',
-            'The count of records that actually exist on this site — not an aspiration. Each column represents one independent dimension — "N/A" means that column does not apply to that domain; "0" means the field applies, but nothing has been published yet.',
-          )}
-        </p>
+    <article className="page completeness-page">
+      <header className="completeness-hero">
+        <div className="completeness-hero-copy">
+          <p className="completeness-eyebrow" lang={locale}>
+            {text('வெளியீட்டு வெளிப்படைமை', 'Publication transparency')}
+          </p>
+          <h1 lang={locale}>{text('உள்ளடக்க நிலை', 'Content Status')}</h1>
+          <p lang={locale}>
+            {text(
+              'இத்தளத்தில் உண்மையில் உள்ள பதிவுகளின் எண்ணிக்கை. எதிர்பார்ப்பு அல்ல. ஒவ்வொரு நெடுவரிசையும் ஒரு தனித்தன்மையைக் குறிக்கிறது.',
+              'The count of records that actually exist on this site — not an aspiration. Each column represents one independent publication dimension.',
+            )}
+          </p>
+        </div>
+        <dl className="completeness-summary" aria-label={text('உள்ளடக்க நிலை சுருக்கம்', 'Content status summary')}>
+          <div>
+            <dt lang={locale}>{text('பிரிவுகள்', 'Domains')}</dt>
+            <dd>{completeness.domains.length}</dd>
+          </div>
+          <div>
+            <dt lang={locale}>{text('பதிவுகள்', 'Records')}</dt>
+            <dd>{totalRecords}</dd>
+          </div>
+          <div>
+            <dt lang={locale}>{text('அளவுகள்', 'Dimensions')}</dt>
+            <dd>{COLUMNS.length}</dd>
+          </div>
+        </dl>
       </header>
 
-      <div className="table-scroll">
-        <table className="matrix">
-          <caption className="sr-only">
+      <section className="completeness-section" aria-labelledby="matrix-h">
+        <div className="completeness-section-head">
+          <p className="completeness-section-kicker" lang={locale}>
+            {text('வெளியீட்டு அணி', 'Publication matrix')}
+          </p>
+          <h2 id="matrix-h" lang={locale}>{text('எது வெளியிடப்பட்டுள்ளது', 'What is actually published')}</h2>
+          <p lang={locale}>
             {text(
-              'உள்ளடக்க முழுமை அட்டவணை — நெடுவரிசைக்கு நெடுவரிசை தனித்தன்மை',
-              'Content completeness table — each column is an independent dimension',
+              '“பொருந்தாது” என்பது அந்த அளவு அந்தப் பிரிவுக்கு பொருந்தாது என்பதைக் குறிக்கும். “0” என்பது அது பொருந்தும், ஆனால் இதுவரை எதுவும் வெளியிடப்படவில்லை என்பதைக் குறிக்கும்.',
+              '“N/A” means the dimension does not apply to that domain. “0” means it does apply, but nothing has been published yet.',
             )}
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col" lang={locale}>
-                {text('பிரிவு', 'Domain')}
-              </th>
-              <th scope="col" lang={locale}>
-                {text('பதிவுகள்', 'Records')}
-              </th>
-              {COLUMNS.map((c) => (
-                <th key={c.key} scope="col" lang={locale}>
-                  {text(c.labelTa, c.labelEn)}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {completeness.domains.map((d) => (
-              <tr key={d.key}>
-                <th scope="row" lang={locale}>
-                  {text(d.labelTa, d.labelEn)}
-                </th>
-                <td>{d.records}</td>
+          </p>
+        </div>
+
+        <div className="completeness-legend" aria-label={text('அணி குறியீடு', 'Matrix legend')}>
+          <p><span className="legend-chip legend-na" aria-hidden="true">N/A</span><span lang={locale}>{text('இந்தப் பிரிவுக்கு பொருந்தாது', 'Not applicable to this domain')}</span></p>
+          <p><span className="legend-chip legend-zero" aria-hidden="true">0</span><span lang={locale}>{text('பொருந்தும்; இன்னும் வெளியிடப்படவில்லை', 'Applicable; nothing published yet')}</span></p>
+        </div>
+
+        <div className="table-scroll completeness-table-shell">
+          <table className="matrix completeness-matrix">
+            <caption className="sr-only">
+              {text(
+                'உள்ளடக்க முழுமை அட்டவணை — நெடுவரிசைக்கு நெடுவரிசை தனித்தன்மை',
+                'Content completeness table — each column is an independent dimension',
+              )}
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" lang={locale}>{text('பிரிவு', 'Domain')}</th>
+                <th scope="col" lang={locale}>{text('பதிவுகள்', 'Records')}</th>
                 {COLUMNS.map((c) => (
-                  <Cell key={c.key} value={d[c.key] as number | undefined} locale={locale} />
+                  <th key={c.key} scope="col" lang={locale}>{text(c.labelTa, c.labelEn)}</th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {completeness.domains.map((d) => (
+                <tr key={d.key}>
+                  <th scope="row" lang={locale}>{text(d.labelTa, d.labelEn)}</th>
+                  <td>{d.records}</td>
+                  {COLUMNS.map((c) => (
+                    <Cell key={c.key} value={d[c.key] as number | undefined} locale={locale} />
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-      <section className="layers" aria-labelledby="namavali-h">
-        <h2 id="namavali-h" lang={locale}>
-          {text('நாமாவளி — ஆய்வு நிலை', 'Namavali — Research State')}
-        </h2>
-        <p className="note" lang={locale}>
-          {text('தொகுப்பு நிலை:', 'Dataset status:')} <StateBadge state={namavali.datasetStatus} />
-        </p>
-        <dl className="fields">
+      <section className="completeness-section completeness-research" aria-labelledby="namavali-h">
+        <div className="completeness-section-head">
+          <p className="completeness-section-kicker" lang={locale}>{text('ஆய்வு எல்லை', 'Research boundary')}</p>
+          <h2 id="namavali-h" lang={locale}>{text('நாமாவளி — ஆய்வு நிலை', 'Namavali — Research State')}</h2>
+          <p className="completeness-dataset-status" lang={locale}>
+            {text('தொகுப்பு நிலை:', 'Dataset status:')} <StateBadge state={namavali.datasetStatus} />
+          </p>
+        </div>
+        <dl className="completeness-research-grid">
           {Object.entries(researchItems).map(([k, v]) => (
-            <div className="field" key={k}>
+            <div className="completeness-research-item" key={k}>
               <dt lang={locale}>{text(RESEARCH_ITEM_LABELS[k]?.ta ?? k, RESEARCH_ITEM_LABELS[k]?.en ?? k)}</dt>
               <dd>
                 <StateBadgeResolved
@@ -132,22 +166,22 @@ export default function Completeness() {
             </div>
           ))}
         </dl>
-        {typeof policy === 'string' && (
-          <p className="note" lang="en">
-            {policy}
-          </p>
-        )}
+        {typeof policy === 'string' && <p className="completeness-policy" lang="en">{policy}</p>}
       </section>
 
-      {/* Technical/methodological release notes: governed English-only
-          fields (no Tamil counterpart exists), shown as-is regardless of UI
-          language rather than fabricating a translation. */}
-      <p className="note" lang="en">
-        {completeness.note}
-      </p>
-      <p className="note" lang="en">
-        Source archive SHA-256: <code>{completeness.sourceArchiveSha256}</code>
-      </p>
+      <section className="completeness-section completeness-provenance" aria-labelledby="provenance-h">
+        <div className="completeness-section-head">
+          <p className="completeness-section-kicker" lang={locale}>{text('ஆதார சான்று', 'Provenance evidence')}</p>
+          <h2 id="provenance-h" lang={locale}>{text('வெளியீட்டு குறிப்புகள்', 'Release evidence')}</h2>
+        </div>
+        {/* Technical/methodological release notes are governed English-only
+            fields. They are shown as-is rather than fabricating a translation. */}
+        <p className="completeness-technical-note" lang="en">{completeness.note}</p>
+        <p className="completeness-hash" lang="en">
+          <span>Source archive SHA-256</span>
+          <code>{completeness.sourceArchiveSha256}</code>
+        </p>
+      </section>
     </article>
   );
 }
