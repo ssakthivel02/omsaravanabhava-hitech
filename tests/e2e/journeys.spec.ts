@@ -35,7 +35,7 @@ test.describe('accessibility', () => {
     const input = page.getByRole('searchbox', { name: /தேடல் சொல்|Search term/ });
     await expect(input).toBeVisible();
     await input.fill('Palani');
-    await expect(page.getByText(/Showing \d+ of \d+ results/)).toBeVisible();
+    await expect(page.getByText(/Showing \d+ of \d+ results|காட்டப்படுவது \d+ \/ மொத்தம் \d+ முடிவுகள்/)).toBeVisible();
     await expect(page.getByRole('button', { name: /Clear search|தேடலை அழி/ })).toBeVisible();
     const templeFacet = page.getByRole('button', { name: /Temples \d+|கோயில்கள் \d+/ });
     await expect(templeFacet).toBeVisible();
