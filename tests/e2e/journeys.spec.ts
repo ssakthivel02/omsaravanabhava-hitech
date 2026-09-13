@@ -65,6 +65,20 @@ test.describe('accessibility', () => {
     await expect(savedSection.getByText(/இன்னும் எந்தப் பதிவும் சேமிக்கப்படவில்லை|No records have been saved yet/)).toBeVisible();
   });
 
+  test('local library records and clears recent temple history', async ({ page }) => {
+    await page.goto('/temples/ctm-tirupparankundram');
+    await page.evaluate(() => localStorage.clear());
+    await page.reload();
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+
+    await page.goto('/library');
+    const recentSection = page.locator('section[aria-labelledby="recent-h"]');
+    await expect(recentSection.locator('a[href="/temples/ctm-tirupparankundram"]')).toBeVisible();
+
+    await recentSection.getByRole('button', { name: /சமீபத்தை அழி|Clear recent/ }).click();
+    await expect(recentSection.getByText(/சமீபப் பதிவுகள் இன்னும் இல்லை|No recent records yet/)).toBeVisible();
+  });
+
   test('skip link is reachable and moves focus to main', async ({ page }) => {
     await page.goto('/');
     await page.keyboard.press('Tab');
