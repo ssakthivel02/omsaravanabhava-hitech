@@ -102,7 +102,7 @@ describe('R2.6 governed product routes', () => {
     renderAt('/search');
     const input = await screen.findByLabelText('தேடல் சொல்');
     await user.type(input, 'முருக');
-    await user.click(screen.getByRole('button', { name: 'முருகன் பெயர்கள்' }));
+    await user.click(screen.getByRole('button', { name: /^முருகன் பெயர்கள்/ }));
     expect(screen.getByText(/இத்தளம் இல்லாத உள்ளடக்கத்தை உருவாக்காது/)).toBeInTheDocument();
     expect(screen.queryByText('முருகன் பெயர்')).not.toBeInTheDocument();
   });
