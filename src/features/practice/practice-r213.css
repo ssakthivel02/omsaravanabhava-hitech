@@ -108,6 +108,7 @@
 
 .practice-note {
   margin-top: 1.25rem;
+  color: var(--ink-muted);
   border-inline-start: 3px solid color-mix(in srgb, var(--gold) 55%, var(--sanctum-edge));
   background: color-mix(in srgb, var(--sanctum) 92%, var(--gold) 8%);
 }
