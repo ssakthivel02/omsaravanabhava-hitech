@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const ROUTES = ['/', '/arupadai-veedu', '/temples', '/temples/ctm-tirupparankundram', '/thiruppugazh', '/thiruppugazh/thiruppugazh-0006', '/works', '/prayers', '/practice', '/search', '/sources', '/content-completeness', '/about', '/privacy', '/terms', '/disclaimer', '/accessibility', '/contact'];
+const ROUTES = ['/', '/arupadai-veedu', '/temples', '/temples/ctm-tirupparankundram', '/thiruppugazh', '/thiruppugazh/thiruppugazh-0006', '/works', '/prayers', '/practice', '/knowledge', '/library', '/search', '/sources', '/content-completeness', '/about', '/privacy', '/terms', '/disclaimer', '/accessibility', '/contact'];
 
 test.describe('critical journeys', () => {
   for (const route of ROUTES) {
@@ -22,7 +22,7 @@ test.describe('critical journeys', () => {
 });
 
 test.describe('accessibility', () => {
-  for (const route of ['/', '/arupadai-veedu', '/temples', '/search', '/practice', '/prayers', '/works', '/sources', '/content-completeness']) {
+  for (const route of ['/', '/arupadai-veedu', '/temples', '/knowledge', '/library', '/search', '/practice', '/prayers', '/works', '/sources', '/content-completeness']) {
     test(`axe finds no violations on ${route}`, async ({ page }) => {
       await page.goto(route);
       const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
