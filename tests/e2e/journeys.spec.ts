@@ -101,6 +101,24 @@ test.describe('accessibility', () => {
     await expect(recentSection.getByText(/சமீபப் பதிவுகள் இன்னும் இல்லை|No recent records yet/)).toBeVisible();
   });
 
+  test('interface locale switch updates and persists across reload', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => localStorage.removeItem('omsaravanabhava-hitech-ui-locale-v1'));
+    await page.reload();
+
+    const language = page.getByRole('combobox', { name: 'Interface language / இடைமுக மொழி' });
+    await expect(language).toHaveValue('ta');
+
+    await language.selectOption('te');
+    await expect(language).toHaveValue('te');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'te');
+    await expect(page.getByRole('link', { name: 'దేవాలయాలు' }).first()).toBeVisible();
+
+    await page.reload();
+    await expect(page.getByRole('combobox', { name: 'Interface language / இடைமுக மொழி' })).toHaveValue('te');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'te');
+  });
+
   test('skip link is reachable and moves focus to main', async ({ page }) => {
     await page.goto('/');
     await page.keyboard.press('Tab');
