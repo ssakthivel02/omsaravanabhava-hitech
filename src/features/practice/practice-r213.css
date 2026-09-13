@@ -106,7 +106,10 @@
   min-width: 8.5rem;
 }
 
-.practice-note {
+/* The global .note rule is bundled after this route stylesheet, so use
+   deliberate route-level specificity to keep this safety copy at the
+   WCAG-AA-safe --ink-muted token instead of falling back to --ink-faint. */
+.practice-page .note.practice-note {
   margin-top: 1.25rem;
   color: var(--ink-muted);
   border-inline-start: 3px solid color-mix(in srgb, var(--gold) 55%, var(--sanctum-edge));
