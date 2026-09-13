@@ -49,6 +49,152 @@
   min-height: 44px;
 }
 
+/* R2.13 visitor-facing Thiruppugazh discovery pass. The content model remains
+   unchanged: 1,326 means source-linked catalogue records, not published song
+   bodies. This layer improves hierarchy without manufacturing content. */
+.thiruppugazh-page {
+  max-width: 78rem;
+}
+
+.thiruppugazh-page > .page-head {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(2.75rem, 8vw, 5.75rem) clamp(1.25rem, 5vw, 3.25rem);
+  border-block: 1px solid var(--sanctum-edge);
+  background:
+    radial-gradient(70% 120% at 88% 12%, color-mix(in srgb, var(--gold) 17%, transparent), transparent 63%),
+    radial-gradient(55% 90% at 18% 100%, color-mix(in srgb, var(--copper) 13%, transparent), transparent 70%),
+    linear-gradient(135deg, color-mix(in srgb, var(--sanctum-raised) 94%, var(--gold) 6%), var(--sanctum));
+}
+
+.thiruppugazh-page > .page-head::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset-block: 10%;
+  inset-inline-end: clamp(1rem, 7vw, 5rem);
+  width: clamp(4rem, 12vw, 8rem);
+  border-inline-start: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  border-inline-end: 1px solid color-mix(in srgb, var(--copper) 32%, transparent);
+  transform: skew(-10deg);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.thiruppugazh-page > .page-head h1 {
+  max-width: 12ch;
+  color: var(--gold-soft);
+  font-size: clamp(2.8rem, 8vw, 5.25rem);
+  letter-spacing: -0.025em;
+}
+
+.thiruppugazh-page > .page-head p {
+  max-width: 60ch;
+  margin-top: 1.25rem;
+  color: var(--ink-muted);
+  font-size: clamp(var(--t-base), 1rem + 0.35vw, var(--t-md));
+}
+
+.thiruppugazh-page .corpus-summary {
+  margin-top: 0;
+  padding: clamp(1.4rem, 4vw, 2.25rem) 0;
+  border-inline-start: 0;
+  border-inline-end: 0;
+  background: transparent;
+}
+
+.thiruppugazh-page .corpus-summary .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.thiruppugazh-page .corpus-counts {
+  gap: 0;
+  border-block: 1px solid var(--sanctum-edge);
+}
+
+.thiruppugazh-page .corpus-counts div {
+  min-width: 0;
+  padding: 1rem 0.85rem;
+  border-top: 0;
+}
+
+.thiruppugazh-page .corpus-counts div + div {
+  border-inline-start: 1px solid var(--sanctum-edge);
+}
+
+.thiruppugazh-page .corpus-counts dd {
+  font-size: clamp(var(--t-lg), 1.5rem + 1vw, var(--t-2xl));
+}
+
+.thiruppugazh-page .corpus-parts {
+  padding-top: clamp(2rem, 5vw, 3.5rem);
+  border-top: 1px solid var(--sanctum-edge);
+}
+
+.thiruppugazh-page .corpus-part-grid {
+  gap: 0;
+  border-inline: 0;
+}
+
+.thiruppugazh-page .corpus-part {
+  min-height: 12rem;
+  padding: 1.35rem;
+  border: 1px solid var(--sanctum-edge);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--sanctum-raised) 88%, var(--gold) 12%),
+    var(--sanctum)
+  );
+}
+
+.thiruppugazh-page .catalog-controls {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding: clamp(1.35rem, 3vw, 2rem);
+  border-block: 1px solid var(--sanctum-edge);
+  background:
+    radial-gradient(70% 130% at 100% 0%, color-mix(in srgb, var(--vel) 8%, transparent), transparent 68%),
+    color-mix(in srgb, var(--sanctum-raised) 92%, var(--gold) 8%);
+}
+
+.thiruppugazh-page .catalog-filter-row input,
+.thiruppugazh-page .catalog-filter-row select {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sanctum-raised) 88%, var(--gold) 12%);
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.thiruppugazh-page .catalog-filter-row input:hover,
+.thiruppugazh-page .catalog-filter-row select:hover {
+  border-color: color-mix(in srgb, var(--gold) 65%, var(--sanctum-edge));
+}
+
+.thiruppugazh-page .song-list {
+  margin-top: 1.5rem;
+}
+
+.thiruppugazh-page .song-row {
+  min-height: 5.25rem;
+  padding-block: 1rem;
+  transition: background 160ms ease, padding-inline 160ms ease, border-color 160ms ease;
+}
+
+.thiruppugazh-page .song-row:hover,
+.thiruppugazh-page .song-row:focus-visible {
+  padding-inline: 0.8rem;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--gold) 9%, transparent),
+    transparent 72%
+  );
+}
+
+.thiruppugazh-page .song-row b {
+  font-size: clamp(var(--t-base), 0.95rem + 0.4vw, var(--t-md));
+  color: var(--ink);
+}
+
 @media (max-width: 31rem) {
   .brand-text small {
     display: none;
@@ -57,6 +203,41 @@
   .language-switch-select {
     max-width: 6.7rem;
     padding-inline-start: 0.6rem;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .thiruppugazh-page > .page-head {
+    padding-inline: clamp(1rem, 5vw, 1.4rem);
+  }
+
+  .thiruppugazh-page .corpus-counts {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .thiruppugazh-page .corpus-counts div:nth-child(3) {
+    border-inline-start: 0;
+    border-top: 1px solid var(--sanctum-edge);
+  }
+
+  .thiruppugazh-page .corpus-counts div:nth-child(4) {
+    border-top: 1px solid var(--sanctum-edge);
+  }
+
+  .thiruppugazh-page .catalog-controls {
+    padding-inline: 1rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .thiruppugazh-page > .page-head {
+    min-height: 27rem;
+    display: grid;
+    align-content: center;
+  }
+
+  .thiruppugazh-page .corpus-counts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
