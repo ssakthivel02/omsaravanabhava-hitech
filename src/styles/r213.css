@@ -312,6 +312,152 @@
   background: color-mix(in srgb, var(--sanctum-raised) 92%, var(--gold) 8%);
 }
 
+/* R2.13 Songs & Sacred Works discovery pass. It uses only catalogue metadata
+   already governed by the route and makes publication state more legible. */
+.works-page {
+  max-width: 78rem;
+}
+
+.works-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(2.5rem, 7vw, 5rem) clamp(1.25rem, 5vw, 3.25rem);
+  border-block: 1px solid var(--sanctum-edge);
+  background:
+    radial-gradient(65% 110% at 92% 15%, color-mix(in srgb, var(--copper) 12%, transparent), transparent 68%),
+    radial-gradient(55% 90% at 8% 100%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 72%),
+    linear-gradient(140deg, color-mix(in srgb, var(--sanctum-raised) 95%, var(--gold) 5%), var(--sanctum));
+}
+
+.works-hero .eyebrow,
+.works-catalogue .eyebrow {
+  margin-bottom: 0.6rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: var(--t-xs);
+}
+
+.works-hero h1 {
+  max-width: 13ch;
+  color: var(--gold-soft);
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  letter-spacing: -0.025em;
+}
+
+.works-hero > p:not(.eyebrow) {
+  max-width: 60ch;
+  color: var(--ink-muted);
+  font-size: clamp(var(--t-base), 1rem + 0.25vw, var(--t-md));
+}
+
+.works-trust-note {
+  margin-top: 1.25rem;
+  padding: 0.9rem 1rem;
+  border-inline-start: 3px solid color-mix(in srgb, var(--gold) 60%, var(--sanctum-edge));
+  background: color-mix(in srgb, var(--sanctum-raised) 92%, var(--gold) 8%);
+}
+
+.works-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  border-block: 1px solid var(--sanctum-edge);
+}
+
+.works-summary div {
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.works-summary div + div {
+  border-inline-start: 1px solid var(--sanctum-edge);
+}
+
+.works-summary dt {
+  color: var(--ink-faint);
+  font-size: var(--t-xs);
+  line-height: 1.4;
+}
+
+.works-summary dd {
+  margin: 0.35rem 0 0;
+  color: var(--gold-soft);
+  font-size: clamp(var(--t-lg), 1.45rem + 0.8vw, var(--t-2xl));
+  font-weight: 700;
+}
+
+.works-catalogue {
+  margin-top: clamp(2.75rem, 7vw, 5rem);
+  padding-top: clamp(1.75rem, 4vw, 2.75rem);
+  border-top: 1px solid var(--sanctum-edge);
+}
+
+.works-catalogue-head {
+  max-width: 48rem;
+  margin-bottom: 1.35rem;
+}
+
+.works-catalogue-head > p:last-child {
+  color: var(--ink-muted);
+}
+
+.works-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.works-entry {
+  border: 1px solid var(--sanctum-edge);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--sanctum-raised) 95%, var(--gold) 5%), var(--sanctum));
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.works-entry:hover {
+  border-color: color-mix(in srgb, var(--gold) 48%, var(--sanctum-edge));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--sanctum-raised) 90%, var(--gold) 10%), var(--sanctum));
+}
+
+.works-entry-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  min-height: 5.25rem;
+  padding: 1rem 1.1rem;
+}
+
+.works-index {
+  color: var(--ink-faint);
+  font-size: var(--t-xs);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+
+.works-entry-copy {
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.works-entry-copy b {
+  color: var(--ink);
+  font-size: clamp(var(--t-base), 0.98rem + 0.3vw, var(--t-md));
+}
+
+.works-entry-copy small {
+  color: var(--ink-faint);
+}
+
+.works-entry-actions {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 31rem) {
   .brand-text small {
     display: none;
@@ -325,7 +471,8 @@
 
 @media (max-width: 47.99rem) {
   .thiruppugazh-page > .page-head,
-  .prayers-hero {
+  .prayers-hero,
+  .works-hero {
     padding-inline: clamp(1rem, 5vw, 1.4rem);
   }
 
@@ -349,6 +496,24 @@
   .prayers-kumarastavam {
     padding-inline: 1rem;
   }
+
+  .works-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .works-summary div + div {
+    border-inline-start: 0;
+    border-top: 1px solid var(--sanctum-edge);
+  }
+
+  .works-entry-row {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .works-entry-actions {
+    grid-column: 2;
+    justify-content: flex-start;
+  }
 }
 
 @media (min-width: 48rem) {
@@ -370,6 +535,12 @@
 
   .prayers-hero {
     min-height: 30rem;
+  }
+
+  .works-hero {
+    min-height: 26rem;
+    display: grid;
+    align-content: center;
   }
 }
 
