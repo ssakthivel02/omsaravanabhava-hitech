@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { arupadaiVeedu } from '@/content';
 import { localDayIndex } from '@/lib/localDay';
 import { useLocale } from '@/lib/locale';
+import './practice-r213.css';
 
 const KEY = 'omsaravanabhava-hitech.practice.count';
 
@@ -43,59 +44,65 @@ export default function Practice() {
   const focus = arupadaiVeedu[dayIndex];
 
   return (
-    <article className="page">
-      <header className="page-head">
-        <h1 lang={locale}>{text('தினசரி வழிபாடு', 'Daily Practice')}</h1>
-        <p lang={locale}>
-          {text(
-            'எண்ணிக்கை இந்த உலாவியில் மட்டுமே சேமிக்கப்படுகிறது. கணக்கு தேவையில்லை.',
-            'The count is saved only in this browser. No account needed.',
-          )}
-        </p>
+    <article className="page practice-page">
+      <header className="page-head practice-hero">
+        <div className="practice-hero-copy">
+          <h1 lang={locale}>{text('தினசரி வழிபாடு', 'Daily Practice')}</h1>
+          <p lang={locale}>
+            {text(
+              'எண்ணிக்கை இந்த உலாவியில் மட்டுமே சேமிக்கப்படுகிறது. கணக்கு தேவையில்லை.',
+              'The count is saved only in this browser. No account needed.',
+            )}
+          </p>
+        </div>
       </header>
 
-      {focus && (
-        <section aria-labelledby="focus-h">
-          <h2 id="focus-h" lang={locale}>
-            {text('இன்றைய நினைவு', "Today's Focus")}
+      <div className="practice-grid">
+        {focus && (
+          <section className="practice-card practice-focus" aria-labelledby="focus-h">
+            <h2 id="focus-h" lang={locale}>
+              {text('இன்றைய நினைவு', "Today's Focus")}
+            </h2>
+            {/* Canonical Tamil name on the devotional reading surface: always Tamil. */}
+            <p className="canonical practice-focus-name" lang="ta">
+              {focus.nameTa}
+            </p>
+          </section>
+        )}
+
+        <section className="practice-card practice-counter-card" aria-labelledby="count-h">
+          <h2 id="count-h" lang={locale}>
+            {text('ஜப எண்ணிக்கை', 'Japa Count')}
           </h2>
-          {/* Canonical Tamil name on the parchment reading surface: always Tamil. */}
-          <p className="canonical" lang="ta">
-            {focus.nameTa}
+          <div className="practice-counter-shell">
+            <p className="counter" aria-live="polite">
+              <span className="counter-value">{count}</span>
+            </p>
+          </div>
+          <div className="hero-actions practice-actions">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => persist(count + 1)}
+            >
+              <span lang={locale}>{text('ஒன்று சேர்', 'Add one')}</span>
+            </button>
+            <button
+              type="button"
+              className="btn btn-quiet"
+              onClick={() => persist(0)}
+            >
+              <span lang={locale}>{text('மீட்டமை', 'Reset')}</span>
+            </button>
+          </div>
+          <p className="note practice-note" lang={locale}>
+            {text(
+              'இத்தளம் எந்த வாக்குறுதியையும் அளிக்கவில்லை. இது ஒரு தனிப்பட்ட எண்ணிக்கைக் கருவி மட்டுமே.',
+              'This site makes no promises. This is only a private counting tool.',
+            )}
           </p>
         </section>
-      )}
-
-      <section aria-labelledby="count-h">
-        <h2 id="count-h" lang={locale}>
-          {text('ஜப எண்ணிக்கை', 'Japa Count')}
-        </h2>
-        <p className="counter" aria-live="polite">
-          <span className="counter-value">{count}</span>
-        </p>
-        <div className="hero-actions">
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => persist(count + 1)}
-          >
-            <span lang={locale}>{text('ஒன்று சேர்', 'Add one')}</span>
-          </button>
-          <button
-            type="button"
-            className="btn btn-quiet"
-            onClick={() => persist(0)}
-          >
-            <span lang={locale}>{text('மீட்டமை', 'Reset')}</span>
-          </button>
-        </div>
-        <p className="note" lang={locale}>
-          {text(
-            'இத்தளம் எந்த வாக்குறுதியையும் அளிக்கவில்லை. இது ஒரு தனிப்பட்ட எண்ணிக்கைக் கருவி மட்டுமே.',
-            'This site makes no promises. This is only a private counting tool.',
-          )}
-        </p>
-      </section>
+      </div>
     </article>
   );
 }
