@@ -128,7 +128,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-.completeness-matrix thead th {
+.completeness-page .completeness-matrix thead th {
   color: var(--gold-soft);
   background: color-mix(in srgb, var(--sanctum) 90%, var(--gold) 10%);
 }

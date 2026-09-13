@@ -110,7 +110,15 @@ export default function Completeness() {
           <p><span className="legend-chip legend-zero" aria-hidden="true">0</span><span lang={locale}>{text('பொருந்தும்; இன்னும் வெளியிடப்படவில்லை', 'Applicable; nothing published yet')}</span></p>
         </div>
 
-        <div className="table-scroll completeness-table-shell">
+        <div
+          className="table-scroll completeness-table-shell"
+          role="region"
+          tabIndex={0}
+          aria-label={text(
+            'உள்ளடக்க முழுமை அட்டவணை — கிடைமட்டமாக உருட்டலாம்',
+            'Content completeness table — horizontally scrollable',
+          )}
+        >
           <table className="matrix completeness-matrix">
             <caption className="sr-only">
               {text(
