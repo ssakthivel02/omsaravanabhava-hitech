@@ -61,7 +61,7 @@ test.describe('accessibility', () => {
     const savedSection = page.locator('section[aria-labelledby="saved-h"]');
     await expect(savedSection.locator('a[href="/temples/ctm-tirupparankundram"]')).toBeVisible();
 
-    await savedSection.getByRole('button', { name: /நீக்கு|Remove/ }).click();
+    await savedSection.getByRole('button', { name: /^(நீக்கு|Remove)$/ }).click();
     await expect(savedSection.getByText(/இன்னும் எந்தப் பதிவும் சேமிக்கப்படவில்லை|No records have been saved yet/)).toBeVisible();
   });
 
