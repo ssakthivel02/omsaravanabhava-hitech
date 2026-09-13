@@ -112,7 +112,7 @@ test.describe('accessibility', () => {
     await language.selectOption('te');
     await expect(language).toHaveValue('te');
     await expect(page.locator('html')).toHaveAttribute('lang', 'te');
-    await expect(page.getByRole('link', { name: 'దేవాలయాలు' }).first()).toBeVisible();
+    await expect(page.getByText('మురుగన్ భక్తి జ్ఞాన వేదిక', { exact: true })).toBeVisible();
 
     await page.reload();
     await expect(page.getByRole('combobox', { name: 'Interface language / இடைமுக மொழி' })).toHaveValue('te');
