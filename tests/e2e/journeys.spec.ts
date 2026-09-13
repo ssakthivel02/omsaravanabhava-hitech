@@ -46,6 +46,25 @@ test.describe('accessibility', () => {
     await expect(page.getByRole('button', { name: /All \d+|அனைத்தும் \d+/ })).toHaveAttribute('aria-pressed', 'true');
   });
 
+  test('local library saves and removes a temple record', async ({ page }) => {
+    await page.goto('/temples/ctm-tirupparankundram');
+    await page.evaluate(() => localStorage.clear());
+    await page.reload();
+
+    const save = page.getByRole('button', { name: /சேமி|Save/ }).first();
+    await expect(save).toBeVisible();
+    await expect(save).toHaveAttribute('aria-pressed', 'false');
+    await save.click();
+    await expect(save).toHaveAttribute('aria-pressed', 'true');
+
+    await page.goto('/library');
+    const savedSection = page.locator('section[aria-labelledby="saved-h"]');
+    await expect(savedSection.locator('a[href="/temples/ctm-tirupparankundram"]')).toBeVisible();
+
+    await savedSection.getByRole('button', { name: /நீக்கு|Remove/ }).click();
+    await expect(savedSection.getByText(/இன்னும் எந்தப் பதிவும் சேமிக்கப்படவில்லை|No records have been saved yet/)).toBeVisible();
+  });
+
   test('skip link is reachable and moves focus to main', async ({ page }) => {
     await page.goto('/');
     await page.keyboard.press('Tab');
