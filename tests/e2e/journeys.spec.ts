@@ -79,6 +79,28 @@ test.describe('accessibility', () => {
     await expect(recentSection.getByText(/சமீபப் பதிவுகள் இன்னும் இல்லை|No recent records yet/)).toBeVisible();
   });
 
+  test('local library clears saved and recent data together', async ({ page }) => {
+    await page.goto('/temples/ctm-tirupparankundram');
+    await page.evaluate(() => localStorage.clear());
+    await page.reload();
+
+    const save = page.getByRole('button', { name: /சேமி|Save/ }).first();
+    await save.click();
+
+    await page.goto('/library');
+    const savedSection = page.locator('section[aria-labelledby="saved-h"]');
+    const recentSection = page.locator('section[aria-labelledby="recent-h"]');
+    const templeLink = 'a[href="/temples/ctm-tirupparankundram"]';
+
+    await expect(savedSection.locator(templeLink)).toBeVisible();
+    await expect(recentSection.locator(templeLink)).toBeVisible();
+
+    await page.getByRole('button', { name: /எல்லா உள்ளூர் தரவையும் அழி|Clear all local data/ }).click();
+
+    await expect(savedSection.getByText(/இன்னும் எந்தப் பதிவும் சேமிக்கப்படவில்லை|No records have been saved yet/)).toBeVisible();
+    await expect(recentSection.getByText(/சமீபப் பதிவுகள் இன்னும் இல்லை|No recent records yet/)).toBeVisible();
+  });
+
   test('skip link is reachable and moves focus to main', async ({ page }) => {
     await page.goto('/');
     await page.keyboard.press('Tab');
