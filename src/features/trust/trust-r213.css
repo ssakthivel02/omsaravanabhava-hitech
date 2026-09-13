@@ -1,0 +1,201 @@
+/* R2.13 Trust-layer refinement. Scoped to Sources & Method only. */
+.trust-page {
+  max-width: 78rem;
+}
+
+.trust-hero {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(2.6rem, 7vw, 5rem) clamp(1.25rem, 5vw, 3.25rem);
+  border-block: 1px solid var(--sanctum-edge);
+  background:
+    radial-gradient(70% 120% at 95% 5%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 70%),
+    linear-gradient(140deg, color-mix(in srgb, var(--sanctum-raised) 96%, var(--gold) 4%), var(--sanctum));
+}
+
+.trust-hero-copy {
+  max-width: 48rem;
+}
+
+.trust-eyebrow,
+.trust-section-kicker {
+  margin: 0 0 0.55rem;
+  color: var(--gold-soft);
+  font-size: var(--t-sm);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.trust-hero h1 {
+  max-width: 12ch;
+  color: var(--gold-soft);
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  letter-spacing: -0.025em;
+}
+
+.trust-hero-copy > p:last-child {
+  max-width: 62ch;
+  margin-top: 1.15rem;
+  color: var(--ink-muted);
+  font-size: clamp(var(--t-base), 1rem + 0.25vw, var(--t-md));
+}
+
+.trust-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.trust-summary div {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--sanctum-edge);
+  background: color-mix(in srgb, var(--sanctum) 88%, var(--gold) 12%);
+}
+
+.trust-summary dt {
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+}
+
+.trust-summary dd {
+  margin: 0.35rem 0 0;
+  color: var(--gold-soft);
+  font-size: clamp(1.8rem, 4vw, 2.65rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.trust-section {
+  margin-top: clamp(2.2rem, 6vw, 4.5rem);
+}
+
+.trust-section-head {
+  max-width: 48rem;
+}
+
+.trust-section-head h2 {
+  color: var(--gold-soft);
+}
+
+.trust-section-head > p:last-child {
+  color: var(--ink-muted);
+}
+
+.trust-principles,
+.trust-work-grid,
+.trust-ledger-list {
+  list-style: none;
+  padding: 0;
+}
+
+.trust-principles {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1.4rem 0 0;
+}
+
+.trust-principles li {
+  position: relative;
+  padding: 1rem 1rem 1rem 2.8rem;
+  border: 1px solid var(--sanctum-edge);
+  background: var(--sanctum-raised);
+  color: var(--ink-muted);
+}
+
+.trust-principles li::before {
+  content: '✓';
+  position: absolute;
+  inset-inline-start: 1rem;
+  color: var(--gold-soft);
+  font-weight: 800;
+}
+
+.trust-work-grid {
+  display: grid;
+  gap: 0.85rem;
+  margin: 1.4rem 0 0;
+}
+
+.trust-work-grid li {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+  border: 1px solid var(--sanctum-edge);
+  background: color-mix(in srgb, var(--sanctum-raised) 96%, var(--gold) 4%);
+}
+
+.trust-work-grid strong {
+  color: var(--gold-soft);
+}
+
+.trust-work-grid span {
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+}
+
+.trust-ledger-list {
+  display: grid;
+  gap: 0;
+  margin: 1.4rem 0 0;
+  border-block: 1px solid var(--sanctum-edge);
+}
+
+.trust-ledger-list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--sanctum-edge);
+}
+
+.trust-ledger-list li:last-child {
+  border-bottom: 0;
+}
+
+.trust-ledger-index {
+  min-width: 2.25rem;
+  color: var(--gold-soft);
+  font-size: var(--t-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.trust-ledger-list a,
+.trust-ledger-list li > div > span {
+  overflow-wrap: anywhere;
+  color: var(--ink-muted);
+}
+
+.trust-ledger-list a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.trust-ledger-list a:hover {
+  color: var(--gold-soft);
+}
+
+@media (min-width: 48rem) {
+  .trust-hero {
+    grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+    align-items: end;
+  }
+
+  .trust-principles,
+  .trust-work-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .trust-hero {
+    padding-inline: clamp(1rem, 5vw, 1.4rem);
+  }
+
+  .trust-summary {
+    grid-template-columns: 1fr;
+  }
+}

@@ -29,7 +29,7 @@ test.describe('critical journeys', () => {
 });
 
 test.describe('accessibility', () => {
-  for (const route of ['/', '/arupadai-veedu', '/temples', '/search', '/practice', '/prayers', '/works']) {
+  for (const route of ['/', '/arupadai-veedu', '/temples', '/search', '/practice', '/prayers', '/works', '/sources']) {
     test(`axe finds no violations on ${route}`, async ({ page }) => {
       await page.goto(route);
       // R2-CODE-021: the installed axe-core release also ships WCAG 2.2
