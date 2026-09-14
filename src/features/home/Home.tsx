@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import { Link } from 'wouter';
-import { arupadaiVeedu, completeness } from '@/content';
+import arupadaiVeedu from '@/content/arupadai-veedu.json';
+import completeness from '@/content/completeness.json';
 import { localDayIndex } from '@/lib/localDay';
 import { useLocale } from '@/lib/locale';
 
