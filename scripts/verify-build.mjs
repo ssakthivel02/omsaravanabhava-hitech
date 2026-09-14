@@ -8,9 +8,12 @@
  */
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, extname, basename, sep } from 'node:path';
+import { gzipSync } from 'node:zlib';
 
 const DIST = 'dist';
 const REPOSITORY = 'ssakthivel02/omsaravanabhava-hitech';
+const HOME_INITIAL_JS_GZIP_MAX = 110 * 1024;
+const HOME_INITIAL_CSS_GZIP_MAX = 45 * 1024;
 
 const failures = [];
 const fail = (m) => failures.push(m);
@@ -24,6 +27,26 @@ const walk = (dir, acc = []) => {
   }
   return acc;
 };
+
+const localDistAsset = (url) => {
+  if (!url || /^(?:https?:)?\/\//i.test(url)) return null;
+  const clean = url.split(/[?#]/, 1)[0].replace(/^\//, '');
+  return clean ? join(DIST, ...clean.split('/')) : null;
+};
+
+const gzipBytes = (paths) => {
+  let total = 0;
+  for (const p of new Set(paths.filter(Boolean))) {
+    if (!existsSync(p)) {
+      fail(`initial payload reference missing from dist/: ${p}`);
+      continue;
+    }
+    total += gzipSync(readFileSync(p)).length;
+  }
+  return total;
+};
+
+const kib = (bytes) => (bytes / 1024).toFixed(2);
 
 if (!existsSync(DIST)) {
   console.error('FATAL: no dist/ — build did not run');
@@ -124,6 +147,39 @@ if (existsSync(html)) {
   } else ok('index.html loads a module entry');
   if (!/id="root"/.test(src)) fail('dist/index.html missing #root mount point');
   if (/src="\/app\.js"/.test(src)) fail('dist/index.html loads legacy /app.js');
+
+  // R2.13: enforce the measured Home initial-transfer budgets. Only assets
+  // referenced directly by index.html count here: the module entry, its Vite
+  // modulepreloads, and initial stylesheets. Lazy route chunks are intentionally
+  // excluded because they are not part of the Home initial applicable payload.
+  const moduleEntries = [...src.matchAll(/<script[^>]*type="module"[^>]*src="([^"]+)"[^>]*>/g)]
+    .map((m) => localDistAsset(m[1]));
+  const modulePreloads = [...src.matchAll(/<link[^>]*rel="modulepreload"[^>]*href="([^"]+)"[^>]*>/g)]
+    .map((m) => localDistAsset(m[1]));
+  const stylesheets = [...src.matchAll(/<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g)]
+    .map((m) => localDistAsset(m[1]));
+
+  if (moduleEntries.length === 0) {
+    fail('cannot measure initial JS budget — no module entry found in index.html');
+  } else {
+    const initialJsGzip = gzipBytes([...moduleEntries, ...modulePreloads]);
+    if (initialJsGzip > HOME_INITIAL_JS_GZIP_MAX) {
+      fail(`Home initial JS gzip ${kib(initialJsGzip)} KiB exceeds 110 KiB budget`);
+    } else {
+      ok(`Home initial JS gzip = ${kib(initialJsGzip)} KiB (<= 110 KiB)`);
+    }
+  }
+
+  if (stylesheets.length === 0) {
+    fail('cannot measure initial CSS budget — no stylesheet found in index.html');
+  } else {
+    const initialCssGzip = gzipBytes(stylesheets);
+    if (initialCssGzip > HOME_INITIAL_CSS_GZIP_MAX) {
+      fail(`Home initial CSS gzip ${kib(initialCssGzip)} KiB exceeds 45 KiB budget`);
+    } else {
+      ok(`Home initial CSS gzip = ${kib(initialCssGzip)} KiB (<= 45 KiB)`);
+    }
+  }
 }
 
 // 5 ------------------------------------------- stray legacy HTML page dump
