@@ -2,28 +2,29 @@ import { lazy, Suspense } from 'react';
 import { Route, Switch } from 'wouter';
 import Layout from './Layout';
 import Home from '@/features/home/Home';
-import ArupadaiVeedu from '@/features/temples/ArupadaiVeedu';
 import { useLocale } from '@/lib/locale';
 
-// The temple corpus is the largest content chunk. Split it out so it is
-// fetched only when a temple/search route is actually visited.
+// Keep the first Home payload deliberately small. Every secondary route is a
+// lazy boundary so governed corpora and route-specific UI do not inflate the
+// initial application chunk.
+const ArupadaiVeedu = lazy(() => import('@/features/temples/ArupadaiVeedu'));
 const Temples = lazy(() => import('@/features/temples/Temples'));
 const TempleExperience = lazy(() => import('@/features/library/TempleExperience'));
+const Thiruppugazh = lazy(() => import('@/features/thiruppugazh/Thiruppugazh'));
 const SongExperience = lazy(() => import('@/features/library/SongExperience'));
+const Works = lazy(() => import('@/features/works/Works'));
+const Prayers = lazy(() => import('@/features/prayers/Prayers'));
+const Practice = lazy(() => import('@/features/practice/Practice'));
 const Search = lazy(() => import('@/features/search/Search'));
 const Knowledge = lazy(() => import('@/features/knowledge/Knowledge'));
 const Library = lazy(() => import('@/features/library/Library'));
-import Thiruppugazh from '@/features/thiruppugazh/Thiruppugazh';
-import Works from '@/features/works/Works';
-import Prayers from '@/features/prayers/Prayers';
-import Practice from '@/features/practice/Practice';
-import Completeness from '@/features/trust/Completeness';
-import Sources from '@/features/trust/Sources';
-import NotFound from '@/features/trust/NotFound';
+const Completeness = lazy(() => import('@/features/trust/Completeness'));
+const Sources = lazy(() => import('@/features/trust/Sources'));
+const NotFound = lazy(() => import('@/features/trust/NotFound'));
+
 // Legal/public-information pages are valid direct routes but are rarely part
 // of a first Home visit. Keep the shared Doc implementation in one module and
-// lazy-load each named export so Legal.tsx no longer inflates the eager Home
-// application chunk. Vite may coalesce these into one shared legal chunk.
+// lazy-load each named export so Legal.tsx stays out of the eager Home chunk.
 const About = lazy(() => import('@/features/legal/Legal').then((module) => ({ default: module.About })));
 const Privacy = lazy(() => import('@/features/legal/Legal').then((module) => ({ default: module.Privacy })));
 const Terms = lazy(() => import('@/features/legal/Legal').then((module) => ({ default: module.Terms })));
