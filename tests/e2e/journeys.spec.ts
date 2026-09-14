@@ -146,14 +146,14 @@ test.describe('accessibility', () => {
   test('missing temple and song detail routes fail gracefully with catalogue recovery links', async ({ page }) => {
     await page.goto('/temples/not-a-real-temple');
     await expect(page.getByRole('heading', { level: 1, name: /பதிவு காணப்படவில்லை|Record not found/ })).toBeVisible();
-    const templeBack = page.locator('a[href="/temples"]');
+    const templeBack = page.getByRole('link', { name: /கோயில் பட்டியலுக்குத் திரும்பு|Back to temple catalogue/ });
     await expect(templeBack).toBeVisible();
     await templeBack.click();
     await expect(page).toHaveURL(/\/temples$/);
 
     await page.goto('/thiruppugazh/not-a-real-song');
     await expect(page.getByRole('heading', { level: 1, name: /பாடல் காணப்படவில்லை|Song not found/ })).toBeVisible();
-    const songBack = page.locator('a[href="/thiruppugazh"]');
+    const songBack = page.getByRole('link', { name: /திருப்புகழ் பட்டியலுக்குத் திரும்பு|Back to Thiruppugazh catalogue/ });
     await expect(songBack).toBeVisible();
     await songBack.click();
     await expect(page).toHaveURL(/\/thiruppugazh$/);
