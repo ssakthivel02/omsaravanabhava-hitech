@@ -1,0 +1,70 @@
+/* R2.13 ultra-narrow reflow hardening.
+ *
+ * This layer exists for browser zoom/reflow acceptance where the effective
+ * CSS-pixel content budget can drop below a normal 320px mobile viewport.
+ * It does not change the regular 320px+ design. */
+@media (max-width: 20rem) {
+  .topbar-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .brand,
+  .language-switch,
+  .menu-toggle {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .brand {
+    margin-inline-end: 0;
+  }
+
+  .brand-text,
+  .brand-text b,
+  .brand-text small {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .language-switch {
+    display: flex;
+  }
+
+  .language-switch-select {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .menu-toggle {
+    justify-content: center;
+  }
+
+  .mobile-nav,
+  .mobile-nav .nav-link,
+  .mobile-nav-trust-link,
+  .site-footer,
+  .footer-inner,
+  .site-footer nav,
+  .footer-link,
+  .footer-note,
+  .footer-legal {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .mobile-nav .nav-link,
+  .mobile-nav-trust-link,
+  .footer-link,
+  .footer-note,
+  .footer-legal {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .site-footer {
+    padding-inline: 0.75rem;
+  }
+}
