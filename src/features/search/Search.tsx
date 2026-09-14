@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { Link } from 'wouter';
 import {
   arupadaiVeedu,
@@ -20,6 +20,23 @@ const ARUPADAI_IDS = new Set(arupadaiVeedu.map((item) => item.id));
 const devotionalIds = new Set(devotionalWorks.map((item) => item.id));
 const workCatalogue = [...devotionalWorks, ...works.filter((item) => !item.id || !devotionalIds.has(item.id))];
 const normalizeSearch = (value: string) => value.normalize('NFKC').toLocaleLowerCase('ta-IN').replace(/\s+/g, ' ').trim();
+const VALID_FACETS: readonly Facet[] = ['all', 'temple', 'arupadai', 'thiruppugazh', 'work', 'name'];
+const isFacet = (value: string | null): value is Facet => Boolean(value && VALID_FACETS.includes(value as Facet));
+const readUrlState = (): { q: string; facet: Facet } => {
+  if (typeof window === 'undefined') return { q: '', facet: 'all' };
+  const params = new URLSearchParams(window.location.search);
+  const rawFacet = params.get('type');
+  return { q: params.get('q') ?? '', facet: isFacet(rawFacet) ? rawFacet : 'all' };
+};
+const writeUrlState = (q: string, facet: Facet) => {
+  const params = new URLSearchParams(window.location.search);
+  const trimmed = q.trim();
+  if (trimmed) params.set('q', trimmed); else params.delete('q');
+  if (facet === 'all') params.delete('type'); else params.set('type', facet);
+  const search = params.toString();
+  const next = `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`;
+  window.history.replaceState(window.history.state, '', next);
+};
 const INDEX: Hit[] = [
   ...temples.map((temple) => { const arupadai = ARUPADAI_IDS.has(temple.id); return { href: `/temples/${temple.id}`, titleTa: temple.nameTa, titleEn: temple.nameEn, kind: arupadai ? ('arupadai' as const) : ('temple' as const), kindTa: arupadai ? 'அறுபடை வீடு' : 'கோயில்', kindEn: arupadai ? 'Arupadai Veedu' : 'Temple', aliases: [...temple.alternateNames, temple.transliteration].filter((value): value is string => Boolean(value)), metadata: [temple.deity, temple.muruganForm, temple.district, temple.state, ...temple.classification].filter((value): value is string => Boolean(value)), state: temple.coordinateConfidence, sourceConfidence: temple.sources[0]?.confidence }; }),
   ...thiruppugazh.map((song) => ({ href: `/thiruppugazh/${song.id}`, titleTa: song.titleTa ?? song.openingWords, titleEn: null, kind: 'thiruppugazh' as const, kindTa: 'திருப்புகழ்', kindEn: 'Thiruppugazh', aliases: [song.openingWords].filter((value): value is string => Boolean(value)), metadata: [song.attribution, song.edition].filter((value): value is string => Boolean(value)), state: song.canonicalTextStatus })),
@@ -34,17 +51,23 @@ const FACETS: Array<{ value: Facet; labelTa: string; labelEn: string }> = [
 const FACET_COUNTS = FACETS.reduce<Record<Facet, number>>((counts, item) => { counts[item.value] = item.value === 'all' ? INDEX.length : INDEX.filter((hit) => hit.kind === item.value).length; return counts; }, { all: 0, temple: 0, arupadai: 0, thiruppugazh: 0, work: 0, name: 0 });
 
 export default function Search() {
-  const [q, setQ] = useState(''); const [facet, setFacet] = useState<Facet>('all'); const [shown, setShown] = useState(PAGE_SIZE);
+  const initial = readUrlState();
+  const [q, setQ] = useState(initial.q); const [facet, setFacet] = useState<Facet>(initial.facet); const [shown, setShown] = useState(PAGE_SIZE);
   const inputId = useId(); const resultsId = useId(); const { locale, text } = useLocale();
+  useEffect(() => {
+    const syncFromUrl = () => { const next = readUrlState(); setQ(next.q); setFacet(next.facet); setShown(PAGE_SIZE); };
+    window.addEventListener('popstate', syncFromUrl);
+    return () => window.removeEventListener('popstate', syncFromUrl);
+  }, []);
   const allHits = useMemo(() => { const needle = q.trim(); if (normalizeSearch(needle).length < 2) return []; return INDEX.map((hit) => ({ hit, score: scoreHit(hit, needle) })).filter(({ hit, score }) => score > 0 && (facet === 'all' || hit.kind === facet)).sort((a, b) => b.score - a.score || (a.hit.titleTa ?? a.hit.titleEn ?? '').localeCompare(b.hit.titleTa ?? b.hit.titleEn ?? '', 'ta')).map(({ hit }) => hit); }, [q, facet]);
   const hits = allHits.slice(0, shown); const normalizedLength = normalizeSearch(q).length;
-  const clearSearch = () => { setQ(''); setFacet('all'); setShown(PAGE_SIZE); };
+  const clearSearch = () => { setQ(''); setFacet('all'); setShown(PAGE_SIZE); writeUrlState('', 'all'); };
 
   return (
     <article className="page search-page">
       <header className="page-head"><p className="hero-eyebrow" lang={locale}>{text('உள்ளூர் · தீர்மானிக்கத்தக்க தேடல்', 'Local · Deterministic Search')}</p><h1 lang={locale}>{text('தேடல்', 'Search')}</h1><p lang={locale}>{text('தமிழ், ஆங்கிலம் மற்றும் பதிவிலுள்ள மாற்றுப்பெயர்களில் தேடலாம். முடிவுகள் ஆளுகைப் பதிவுகளிலிருந்து மட்டுமே வருகின்றன; இத்தளம் தேடல் பதிலை உருவாக்காது.', 'You can search in Tamil, English, and any alternate names in the registry. Results come only from governed records; this site never generates a search answer.')}</p></header>
-      <div className="filter search-filter"><label htmlFor={inputId} lang={locale}>{text('தேடல் சொல்', 'Search term')}</label><input id={inputId} type="search" value={q} onChange={(event) => { setQ(event.target.value); setShown(PAGE_SIZE); }} placeholder="பழனி / Palani / முத்தைத்தரு" autoComplete="off" />{q.length > 0 && <button type="button" className="btn btn-quiet" onClick={clearSearch} aria-label={text('தேடலை அழி', 'Clear search')}>{text('அழி', 'Clear')}</button>}</div>
-      <div className="search-facets" role="group" aria-label={text('உள்ளடக்க வகை', 'Content type')}>{FACETS.map((item) => <button key={item.value} type="button" className={`search-facet${facet === item.value ? ' is-active' : ''}`} aria-pressed={facet === item.value} aria-label={text(`${item.labelTa} ${FACET_COUNTS[item.value]}`, `${item.labelEn} ${FACET_COUNTS[item.value]}`)} onClick={() => { setFacet(item.value); setShown(PAGE_SIZE); }}><span lang={locale}>{text(item.labelTa, item.labelEn)}</span><small aria-hidden="true">{FACET_COUNTS[item.value]}</small></button>)}</div>
+      <div className="filter search-filter"><label htmlFor={inputId} lang={locale}>{text('தேடல் சொல்', 'Search term')}</label><input id={inputId} type="search" value={q} onChange={(event) => { const next = event.target.value; setQ(next); setShown(PAGE_SIZE); writeUrlState(next, facet); }} placeholder="பழனி / Palani / முத்தைத்தரு" autoComplete="off" />{q.length > 0 && <button type="button" className="btn btn-quiet" onClick={clearSearch} aria-label={text('தேடலை அழி', 'Clear search')}>{text('அழி', 'Clear')}</button>}</div>
+      <div className="search-facets" role="group" aria-label={text('உள்ளடக்க வகை', 'Content type')}>{FACETS.map((item) => <button key={item.value} type="button" className={`search-facet${facet === item.value ? ' is-active' : ''}`} aria-pressed={facet === item.value} aria-label={text(`${item.labelTa} ${FACET_COUNTS[item.value]}`, `${item.labelEn} ${FACET_COUNTS[item.value]}`)} onClick={() => { setFacet(item.value); setShown(PAGE_SIZE); writeUrlState(q, item.value); }}><span lang={locale}>{text(item.labelTa, item.labelEn)}</span><small aria-hidden="true">{FACET_COUNTS[item.value]}</small></button>)}</div>
       <p className="result-count" aria-live="polite" lang={locale}>{normalizedLength < 2 ? text('குறைந்தது இரண்டு எழுத்துகள்', 'At least two characters') : allHits.length === 0 ? text('0 முடிவுகள்', '0 results') : text(`காட்டப்படுவது ${hits.length} / மொத்தம் ${allHits.length} முடிவுகள்`, `Showing ${hits.length} of ${allHits.length} results`)}</p>
       {normalizedLength >= 2 && allHits.length === 0 && <div className="empty search-zero" lang={locale}><p>{text('இந்தச் சொல்லுக்கு தற்போதைய ஆளுகைப் பதிவுகளில் முடிவு இல்லை. இத்தளம் இல்லாத உள்ளடக்கத்தை உருவாக்காது.', 'There is no result for this term in the current governed records. This site does not invent content that does not exist.')}</p><div className="band-links"><Link href="/knowledge">{text('அறிவுக் களம்', 'Knowledge')}</Link><Link href="/temples">{text('கோயில் அடைவு', 'Temple directory')}</Link><Link href="/sources">{text('மூலங்கள்', 'Sources')}</Link></div></div>}
       {q.trim().length === 0 && <nav className="search-starters" aria-label={text('தேடலைத் தொடங்க', 'Start a search')}><Link href="/knowledge" className="search-starter"><b lang={locale}>{text('முருகன் அறிவுக் களம்', 'Murugan Knowledge Hub')}</b><small lang={locale}>{text('பெயர்கள், படைவீடுகள், நூல்கள்', 'Names, abodes, works')}</small></Link><Link href="/arupadai-veedu" className="search-starter"><b lang={locale}>{text('அறுபடை வீடு', 'Six Abodes')}</b><small lang={locale}>{text('ஆறு படைவீடுகளும் ஒரே இடத்தில்', 'All six abodes in one place')}</small></Link><Link href="/temples" className="search-starter"><b lang={locale}>{text('கோயில் அடைவு', 'Temple directory')}</b><small lang={locale}>{text('376 ஆளுகைப் பதிவுகள்', '376 governed records')}</small></Link><Link href="/content-completeness" className="search-starter"><b lang={locale}>{text('உள்ளடக்க நிலை', 'Content status')}</b><small lang={locale}>{text('எது தயார், எது நிலுவையில்', "What's ready, what's pending")}</small></Link></nav>}
