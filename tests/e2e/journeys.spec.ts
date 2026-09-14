@@ -125,7 +125,7 @@ test.describe('accessibility', () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
 
-    const toggle = page.getByRole('button', { name: /பட்டி|Menu/ });
+    const toggle = page.locator('.menu-toggle');
     await expect(toggle).toBeVisible();
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
