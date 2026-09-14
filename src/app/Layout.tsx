@@ -109,7 +109,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <span className="menu-toggle-label" lang={locale}>
               {open
                 ? shellText('மூடு', 'Close', 'మూసివేయి', 'അടയ്ക്കുക', 'ಮುಚ್ಚಿ', 'बंद करें')
-                : shellText('பட்டி', 'Menu', 'మెను', 'മെനു', 'मेनू')}
+                : shellText('பட்டி', 'Menu', 'మెను', 'മെനു', 'ಮೆನು', 'मेनू')}
             </span>
           </button>
         </div>
