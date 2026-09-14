@@ -54,8 +54,8 @@ export function About() {
               en: 'Tamil is the primary language; English is a secondary UI language.',
             },
             {
-              ta: 'சரிபார்க்கப்படாத தகவலை வெளியிடாமல் இருத்தல்.',
-              en: 'To avoid publishing unverified information.',
+              ta: 'பொதுக் காட்சி, மூல இணைப்பு, முழுமை/சரிபார்ப்பு மற்றும் வெளியீட்டு உரிமை ஆகியவை தனித்தனி நிலைகள்; பகுதியளவு நிர்வகிக்கப்பட்ட பதிவுகள் அவற்றின் உண்மையான நிலையுடன் காட்டப்படலாம், ஆனால் முழுமையாகச் சரிபார்க்கப்பட்டதாகக் கருதப்படமாட்டாது.',
+              en: 'Public visibility, source linkage, completeness/verification, and publication rights are independent states; partial governed records may be shown with their actual state, without implying that they are fully verified.',
             },
           ],
         },
