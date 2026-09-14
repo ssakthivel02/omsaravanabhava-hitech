@@ -121,6 +121,28 @@ test.describe('accessibility', () => {
     await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), localeStorageKey)).toBe('te');
   });
 
+  test('mobile navigation opens, exposes routes, navigates, and closes', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+
+    const toggle = page.getByRole('button', { name: /பட்டி|Menu/ });
+    await expect(toggle).toBeVisible();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+
+    const mobileNav = page.locator('#mobile-nav');
+    await expect(mobileNav).toBeVisible();
+    const templesLink = mobileNav.locator('a[href="/temples"]');
+    await expect(templesLink).toBeVisible();
+
+    await templesLink.click();
+    await expect(page).toHaveURL(/\/temples$/);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(page.locator('#mobile-nav')).toHaveCount(0);
+  });
+
   test('skip link is reachable and moves focus to main', async ({ page }) => {
     await page.goto('/');
     await page.keyboard.press('Tab');
