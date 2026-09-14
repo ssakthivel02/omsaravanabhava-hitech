@@ -169,11 +169,19 @@ describe('truthful content states', () => {
     expect(screen.getAllByText(/மூல அடையாளம்/).length).toBeGreaterThan(0);
   });
 
-  it('never publishes a Namavali collection while rights are unresolved', () => {
+  it('publishes the sourced Vinayaka set while unresolved Namavali stays in research state', () => {
     renderAt('/prayers');
     expect(
-      screen.getByText(/வெளியிடத்தக்க நாமாவளித் தொகுப்பு எதுவும் இல்லை/),
+      screen.getByRole('heading', { name: 'ஸ்ரீ விநாயகர் ஷோடச நாமாவளி' }),
     ).toBeInTheDocument();
+    expect(screen.getByText('ஓம் சுமுகாய நம:')).toBeInTheDocument();
+    expect(screen.getByText('ஓம் ஸ்கந்தபூர்வஜாய நம:')).toBeInTheDocument();
+    expect(
+      screen.getByText(/மற்ற நாமாவளித் தொகுப்புகள் தனித்தனி மூலச் சரிபார்ப்பு முடியும் வரை ஆய்வு நிலையில் தொடர்கின்றன/),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(/வெளியிடத்தக்க நாமாவளித் தொகுப்பு எதுவும் இல்லை/),
+    ).not.toBeInTheDocument();
   });
 
   it('states that the platform does not take temple donations', () => {
