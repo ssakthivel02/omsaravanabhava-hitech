@@ -54,10 +54,10 @@ describe('routing and deep links', () => {
     ).toBeInTheDocument();
   });
 
-  it('shows a useful page for an unknown route rather than a blank screen', () => {
+  it('shows a useful page for an unknown route rather than a blank screen', async () => {
     renderAt('/no-such-page');
     expect(
-      screen.getByRole('heading', { level: 1, name: /காணப்படவில்லை/ }),
+      await screen.findByRole('heading', { level: 1, name: /காணப்படவில்லை/ }),
     ).toBeInTheDocument();
     // An empty screen is an invitation to act: offer real ways onward.
     expect(screen.getByRole('link', { name: 'முகப்பு' })).toBeInTheDocument();
@@ -122,15 +122,16 @@ describe('landmarks and keyboard access', () => {
 });
 
 describe('Tamil rendering', () => {
-  it('sets Tamil script content with an explicit lang attribute', () => {
+  it('sets Tamil script content with an explicit lang attribute', async () => {
     renderAt('/arupadai-veedu');
-    const heading = screen.getByRole('heading', { level: 1 });
+    const heading = await screen.findByRole('heading', { level: 1 });
     expect(heading).toHaveAttribute('lang', 'ta');
     expect(heading.textContent).toBe('அறுபடை வீடு');
   });
 
-  it('lists the six abodes in traditional pilgrimage order', () => {
+  it('lists the six abodes in traditional pilgrimage order', async () => {
     renderAt('/arupadai-veedu');
+    await screen.findByRole('heading', { level: 1, name: 'அறுபடை வீடு' });
     const items = screen.getAllByRole('listitem');
     expect(items).toHaveLength(6);
     expect(items[0]).toHaveTextContent('திருப்பரங்குன்றம்');
@@ -139,9 +140,9 @@ describe('Tamil rendering', () => {
 });
 
 describe('truthful content states', () => {
-  it('does not print verse text when the registry has none', () => {
+  it('does not print verse text when the registry has none', async () => {
     renderAt('/thiruppugazh/thiruppugazh-0006');
-    expect(screen.getByText(/மூலத் தமிழ்\s*உரை இன்னும் ஏற்றப்படவில்லை/)).toBeInTheDocument();
+    expect(await screen.findByText(/மூலத் தமிழ்\s*உரை இன்னும் ஏற்றப்படவில்லை/)).toBeInTheDocument();
     expect(document.querySelector('.canonical')).toBeNull();
   });
 
@@ -169,10 +170,10 @@ describe('truthful content states', () => {
     expect(screen.getAllByText(/மூல அடையாளம்/).length).toBeGreaterThan(0);
   });
 
-  it('never publishes a Namavali collection while rights are unresolved', () => {
+  it('never publishes a Namavali collection while rights are unresolved', async () => {
     renderAt('/prayers');
     expect(
-      screen.getByText(/வெளியிடத்தக்க நாமாவளித் தொகுப்பு எதுவும் இல்லை/),
+      await screen.findByText(/வெளியிடத்தக்க நாமாவளித் தொகுப்பு எதுவும் இல்லை/),
     ).toBeInTheDocument();
   });
 
@@ -240,7 +241,7 @@ describe('daily practice', () => {
   it('counts repetitions locally and can be reset', async () => {
     const user = userEvent.setup();
     renderAt('/practice');
-    const add = screen.getByRole('button', { name: 'ஒன்று சேர்' });
+    const add = await screen.findByRole('button', { name: 'ஒன்று சேர்' });
     await user.click(add);
     await user.click(add);
     expect(screen.getByText('2')).toBeInTheDocument();
@@ -248,8 +249,8 @@ describe('daily practice', () => {
     expect(screen.getByText('0')).toBeInTheDocument();
   });
 
-  it('makes no claim of guaranteed benefit', () => {
+  it('makes no claim of guaranteed benefit', async () => {
     renderAt('/practice');
-    expect(screen.getByText(/எந்த வாக்குறுதியையும் அளிக்கவில்லை/)).toBeInTheDocument();
+    expect(await screen.findByText(/எந்த வாக்குறுதியையும் அளிக்கவில்லை/)).toBeInTheDocument();
   });
 });
