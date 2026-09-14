@@ -1,0 +1,117 @@
+{
+  "id": "vinayaka-shodasha-nama",
+  "titleTa": "ஸ்ரீ விநாயகர் ஷோடச நாமாவளி",
+  "titleEn": "Sri Vinayaka Shodasha Namavali",
+  "descriptionTa": "விநாயகரின் பதினாறு திருநாமங்களை ‘ஓம் … நம:’ வடிவில் பாராயணம் செய்யும் சரிபார்க்கப்பட்ட வரிசை.",
+  "descriptionEn": "A verified sequence of sixteen names of Lord Vinayaka, presented in the ‘Om … Namah’ invocation form.",
+  "language": "Sanskrit",
+  "displayScript": "Tamil",
+  "invocationCount": 16,
+  "publicationState": "PUBLISHED_VERIFIED_SOURCE",
+  "verificationState": "VERIFIED_AGAINST_IDENTIFIED_SOURCE",
+  "source": {
+    "title": "Balabodha Sangraham — Sixteen names of Vinayaka",
+    "publisher": "SanskritDocuments.org",
+    "url": "https://sanskritdocuments.org/sites/prkannan/Balabodha%20Sangraham%20-%201.pdf",
+    "retrievedAt": "2026-09-14",
+    "note": "The source gives the traditional sixteen-name sequence in Sanskrit. Tamil-script invocations below are a direct transliteration layer, not a replacement claim about the Sanskrit source text."
+  },
+  "invocations": [
+    {
+      "order": 1,
+      "name": "Sumukha",
+      "tamil": "ஓம் சுமுகாய நம:",
+      "transliteration": "Om Sumukhaya Namah"
+    },
+    {
+      "order": 2,
+      "name": "Ekadanta",
+      "tamil": "ஓம் ஏகதந்தாய நம:",
+      "transliteration": "Om Ekadantaya Namah"
+    },
+    {
+      "order": 3,
+      "name": "Kapila",
+      "tamil": "ஓம் கபிலாய நம:",
+      "transliteration": "Om Kapilaya Namah"
+    },
+    {
+      "order": 4,
+      "name": "Gajakarnaka",
+      "tamil": "ஓம் கஜகர்ணகாய நம:",
+      "transliteration": "Om Gajakarnakaya Namah"
+    },
+    {
+      "order": 5,
+      "name": "Lambodara",
+      "tamil": "ஓம் லம்போதராய நம:",
+      "transliteration": "Om Lambodaraya Namah"
+    },
+    {
+      "order": 6,
+      "name": "Vikata",
+      "tamil": "ஓம் விகடாய நம:",
+      "transliteration": "Om Vikataya Namah"
+    },
+    {
+      "order": 7,
+      "name": "Vighnaraja",
+      "tamil": "ஓம் விக்னராஜாய நம:",
+      "transliteration": "Om Vighnarajaya Namah"
+    },
+    {
+      "order": 8,
+      "name": "Vinayaka",
+      "tamil": "ஓம் விநாயகாய நம:",
+      "transliteration": "Om Vinayakaya Namah"
+    },
+    {
+      "order": 9,
+      "name": "Dhumaketu",
+      "tamil": "ஓம் தூமகேதவே நம:",
+      "transliteration": "Om Dhumaketave Namah"
+    },
+    {
+      "order": 10,
+      "name": "Ganadhyaksha",
+      "tamil": "ஓம் கணாத்யக்ஷாய நம:",
+      "transliteration": "Om Ganadhyakshaya Namah"
+    },
+    {
+      "order": 11,
+      "name": "Phalachandra",
+      "tamil": "ஓம் பாலசந்த்ராய நம:",
+      "transliteration": "Om Phalachandraya Namah"
+    },
+    {
+      "order": 12,
+      "name": "Gajanana",
+      "tamil": "ஓம் கஜானனாய நம:",
+      "transliteration": "Om Gajananaya Namah"
+    },
+    {
+      "order": 13,
+      "name": "Vakratunda",
+      "tamil": "ஓம் வக்ரதுண்டாய நம:",
+      "transliteration": "Om Vakratundaya Namah"
+    },
+    {
+      "order": 14,
+      "name": "Shurpakarna",
+      "tamil": "ஓம் சூர்ப்பகர்ணாய நம:",
+      "transliteration": "Om Shurpakarnaya Namah"
+    },
+    {
+      "order": 15,
+      "name": "Heramba",
+      "tamil": "ஓம் ஹேரம்பாய நம:",
+      "transliteration": "Om Herambaya Namah"
+    },
+    {
+      "order": 16,
+      "name": "Skandapurvaja",
+      "tamil": "ஓம் ஸ்கந்தபூர்வஜாய நம:",
+      "transliteration": "Om Skandapurvajaya Namah"
+    }
+  ]
+}

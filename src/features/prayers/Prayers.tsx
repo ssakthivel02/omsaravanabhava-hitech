@@ -1,16 +1,45 @@
 import { Link } from 'wouter';
 import { devotionalWorks, kumarastavam } from '@/content';
+import vinayakaShodashaRaw from '@/content/vinayaka-shodasha-nama.json';
 import StateBadge from '@/components/StateBadge';
 import SaveControl from '@/components/SaveControl';
 import { useLocale } from '@/lib/locale';
 
+interface VinayakaInvocation {
+  order: number;
+  name: string;
+  tamil: string;
+  transliteration: string;
+}
+
+interface VinayakaShodashaNama {
+  id: string;
+  titleTa: string;
+  titleEn: string;
+  descriptionTa: string;
+  descriptionEn: string;
+  invocationCount: number;
+  publicationState: string;
+  verificationState: string;
+  source: {
+    title: string;
+    publisher: string;
+    url: string;
+    retrievedAt: string;
+    note: string;
+  };
+  invocations: VinayakaInvocation[];
+}
+
+const vinayakaShodasha = vinayakaShodashaRaw as VinayakaShodashaNama;
+
 /**
  * Mantras, prayers and Namavali.
  *
- * Every record in the governed registry is PUBLIC_METADATA_ONLY with an
- * unresolved rights state. This page therefore publishes the work, its author,
- * its source edition and its real rights state — and no verse text at all.
- * That is a deliberate rights decision, not an unfinished page.
+ * Every work remains governed by its own source and publication state. Legacy
+ * devotional-work records stay metadata-only while rights are unresolved; a
+ * text is rendered only when an identified source has passed the publication
+ * gate for that specific record.
  */
 export default function Prayers() {
   const { locale, text } = useLocale();
@@ -20,8 +49,8 @@ export default function Prayers() {
         <h1 lang={locale}>{text('மந்திரம், துதி, நாமாவளி', 'Mantras, Prayers, Namavali')}</h1>
         <p lang={locale}>
           {text(
-            'இப்பகுதியில் உள்ள நூல்களின் விவரங்களும் மூலங்களும் மட்டுமே வெளியிடப்படுகின்றன. உரிமை உறுதிசெய்யப்படாத உரைகளை இத்தளம் மறுவெளியிடாது.',
-            'Only the details and sources of the works in this section are published. This site does not republish texts whose rights have not been confirmed.',
+            'ஒவ்வொரு உரையும் தனித்தனி மூலச் சரிபார்ப்பு மற்றும் வெளியீட்டு நிலையின் அடிப்படையில் மட்டுமே வெளியிடப்படுகிறது. உரிமை அல்லது மூலம் உறுதிசெய்யப்படாத உரைகளை இத்தளம் மறுவெளியிடாது.',
+            'Each text is published only according to its own source-verification and publication state. This site does not republish texts whose source or reuse status has not been cleared.',
           )}
         </p>
       </header>
@@ -100,10 +129,62 @@ export default function Prayers() {
 
       <section aria-labelledby="nam-h">
         <h2 id="nam-h" lang={locale}>{text('நாமாவளி', 'Namavali')}</h2>
-        <p className="empty" lang={locale}>
+
+        <div className="kumarastavam" aria-labelledby="vinayaka-shodasha-h">
+          <header className="kumarastavam-head">
+            <div>
+              <h3 id="vinayaka-shodasha-h" lang={locale}>
+                {text(vinayakaShodasha.titleTa, vinayakaShodasha.titleEn)}
+              </h3>
+              <p lang={locale}>
+                {text(vinayakaShodasha.descriptionTa, vinayakaShodasha.descriptionEn)}
+              </p>
+            </div>
+            <SaveControl
+              item={{
+                type: 'prayer',
+                id: vinayakaShodasha.id,
+                titleTa: vinayakaShodasha.titleTa,
+                titleEn: vinayakaShodasha.titleEn,
+              }}
+            />
+          </header>
+
+          <p className="state-row">
+            <StateBadge
+              state={vinayakaShodasha.verificationState}
+              dimension={text('மூலச் சரிபார்ப்பு', 'Source verification')}
+            />
+          </p>
+
+          <ol className="temple-list">
+            {vinayakaShodasha.invocations.map((invocation) => (
+              <li key={invocation.order}>
+                <div className="temple-row">
+                  <div>
+                    <b lang="ta">{invocation.tamil}</b>
+                    {locale === 'en' && (
+                      <small className="latin-name" lang="sa-Latn">{invocation.transliteration}</small>
+                    )}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          <p className="note" lang={locale}>
+            {text('சரிபார்க்கப்பட்ட மூலம்:', 'Verified source:')}{' '}
+            <a href={vinayakaShodasha.source.url} target="_blank" rel="noreferrer">
+              {vinayakaShodasha.source.publisher}
+            </a>{' '}
+            · {vinayakaShodasha.source.retrievedAt}
+          </p>
+        </div>
+
+        <p className="note" lang={locale}>
           {text(
-            'தற்போது வெளியிடத்தக்க நாமாவளித் தொகுப்பு எதுவும் இல்லை. படங்கள், சுவரொட்டிகள் அல்லது சரிபார்க்கப்படாத இணையப் பட்டியல்களிலிருந்து திருநாமங்களை இத்தளம் வெளியிடாது. ஆய்வு நிலையின் விரிவான குறிப்புகள்',
-            'There is currently no publishable Namavali set. This site does not publish holy names taken from images, posters, or unverified web lists. Detailed research-state notes are on the',
+            'மற்ற நாமாவளித் தொகுப்புகள் தனித்தனி மூலச் சரிபார்ப்பு முடியும் வரை ஆய்வு நிலையில் தொடர்கின்றன. விரிவான குறிப்புகள்',
+            'Other Namavali collections remain in research state until their own source verification is complete. Detailed notes are on the',
           )}{' '}
           <Link href="/content-completeness" lang={locale}>{text('உள்ளடக்க நிலை', 'Content status')}</Link>{' '}
           {text('பக்கத்தில் உள்ளன.', 'page.')}
