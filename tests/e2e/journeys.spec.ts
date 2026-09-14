@@ -143,6 +143,22 @@ test.describe('accessibility', () => {
     await expect(page.locator('#mobile-nav')).toHaveCount(0);
   });
 
+  test('missing temple and song detail routes fail gracefully with catalogue recovery links', async ({ page }) => {
+    await page.goto('/temples/not-a-real-temple');
+    await expect(page.getByRole('heading', { level: 1, name: /பதிவு காணப்படவில்லை|Record not found/ })).toBeVisible();
+    const templeBack = page.locator('a[href="/temples"]');
+    await expect(templeBack).toBeVisible();
+    await templeBack.click();
+    await expect(page).toHaveURL(/\/temples$/);
+
+    await page.goto('/thiruppugazh/not-a-real-song');
+    await expect(page.getByRole('heading', { level: 1, name: /பாடல் காணப்படவில்லை|Song not found/ })).toBeVisible();
+    const songBack = page.locator('a[href="/thiruppugazh"]');
+    await expect(songBack).toBeVisible();
+    await songBack.click();
+    await expect(page).toHaveURL(/\/thiruppugazh$/);
+  });
+
   test('skip link is reachable and moves focus to main', async ({ page }) => {
     await page.goto('/');
     await page.keyboard.press('Tab');
