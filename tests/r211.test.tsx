@@ -11,6 +11,11 @@ function renderAt(path: string) {
   return render(<Router hook={hook}><App /></Router>);
 }
 
+async function renderCatalogue() {
+  renderAt('/thiruppugazh');
+  await screen.findByLabelText('திருப்புகழ் தேடல்');
+}
+
 beforeEach(cleanup);
 
 describe('R2.11 Thiruppugazh corpus catalogue', () => {
@@ -22,14 +27,14 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     expect(thiruppugazh.at(-1)?.openingWords).toBe('ஓருரு வாகிய');
   });
 
-  it('reports the 1326-song reference corpus and 1326 source-linked records truthfully', () => {
-    renderAt('/thiruppugazh');
+  it('reports the 1326-song reference corpus and 1326 source-linked records truthfully', async () => {
+    await renderCatalogue();
     expect(screen.getAllByText('1326').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/முழு 1,326 பாடல்களும் இத்தளத்தில் வெளியிடப்பட்டதாக/)).toBeInTheDocument();
   });
 
-  it('shows all four governed Project Madurai source parts', () => {
-    renderAt('/thiruppugazh');
+  it('shows all four governed Project Madurai source parts', async () => {
+    await renderCatalogue();
     expect(screen.getAllByText('Project Madurai Part I').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Project Madurai Part II').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Project Madurai Part III').length).toBeGreaterThan(0);
@@ -37,8 +42,8 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
     expect(screen.getByText('1001–1326')).toBeInTheDocument();
   });
 
-  it('publishes the validated song 1 metadata without confusing duplicate source titles', () => {
-    renderAt('/thiruppugazh');
+  it('publishes the validated song 1 metadata without confusing duplicate source titles', async () => {
+    await renderCatalogue();
     const songOneLink = screen.getAllByRole('link', { name: /விநாயகர் துதி/ })
       .find((link) => link.getAttribute('href') === '/thiruppugazh/thiruppugazh-0001');
     expect(songOneLink).toBeInTheDocument();
@@ -60,7 +65,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
   for (const [number, opening] of samples) {
     it(`publishes validated metadata through song ${number}`, async () => {
       const user = userEvent.setup();
-      renderAt('/thiruppugazh');
+      await renderCatalogue();
       await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), opening);
       const song = screen.getByRole('link', { name: new RegExp(opening) });
       expect(song).toHaveAttribute('href', `/thiruppugazh/thiruppugazh-${String(number).padStart(4, '0')}`);
@@ -78,7 +83,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
   for (const [number, opening] of tailSamples) {
     it(`publishes validated Part IV metadata through song ${number}`, async () => {
       const user = userEvent.setup();
-      renderAt('/thiruppugazh');
+      await renderCatalogue();
       await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), opening);
       const song = screen.getByRole('link', { name: new RegExp(opening) });
       expect(song).toHaveAttribute('href', `/thiruppugazh/thiruppugazh-${String(number).padStart(4, '0')}`);
@@ -88,7 +93,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
 
   it('publishes validated final song 1326 metadata without publishing its canonical body', async () => {
     const user = userEvent.setup();
-    renderAt('/thiruppugazh');
+    await renderCatalogue();
     await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'ஓருரு வாகிய');
     const finalSong = screen.getByRole('link', { name: /ஓருரு வாகி/ });
     expect(finalSong).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-1326');
@@ -97,7 +102,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
 
   it('exposes exactly the 340 governed Part II records currently promoted', async () => {
     const user = userEvent.setup();
-    renderAt('/thiruppugazh');
+    await renderCatalogue();
     await user.selectOptions(screen.getByLabelText('மூல பகுதி'), 'part-2');
     expect(screen.getByText('காட்டப்படுவது 340 / 1326')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /அற்றைக் கற்றை/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0331');
@@ -106,7 +111,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
 
   it('exposes exactly the 330 governed Part III records currently promoted', async () => {
     const user = userEvent.setup();
-    renderAt('/thiruppugazh');
+    await renderCatalogue();
     await user.selectOptions(screen.getByLabelText('மூல பகுதி'), 'part-3');
     expect(screen.getByText('காட்டப்படுவது 330 / 1326')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /பரவி உனது/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0671');
@@ -115,7 +120,7 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
 
   it('exposes exactly the 326 governed Part IV records currently promoted', async () => {
     const user = userEvent.setup();
-    renderAt('/thiruppugazh');
+    await renderCatalogue();
     await user.selectOptions(screen.getByLabelText('மூல பகுதி'), 'part-4');
     expect(screen.getByText('காட்டப்படுவது 326 / 1326')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /இலகி யிருகுழை/ })).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-1001');
@@ -125,14 +130,14 @@ describe('R2.11 Thiruppugazh corpus catalogue', () => {
 
   it('searches only the verified catalogue and finds முத்தைத்தரு', async () => {
     const user = userEvent.setup();
-    renderAt('/thiruppugazh');
+    await renderCatalogue();
     await user.type(screen.getByLabelText('திருப்புகழ் தேடல்'), 'முத்தைத்தரு');
     expect(screen.getByRole('link', { name: /முத்தைத்தரு/ })).toBeInTheDocument();
     expect(screen.getByText('காட்டப்படுவது 1 / 1326')).toBeInTheDocument();
   });
 
-  it('reports zero canonical texts and zero approved audio without hiding the gap', () => {
-    renderAt('/thiruppugazh');
+  it('reports zero canonical texts and zero approved audio without hiding the gap', async () => {
+    await renderCatalogue();
     const canonicalLabel = screen.getByText('முழு மூல உரை வெளியீடு');
     const audioLabel = screen.getByText('அங்கீகரிக்கப்பட்ட ஒலி');
     expect(canonicalLabel.parentElement).toHaveTextContent('0');
