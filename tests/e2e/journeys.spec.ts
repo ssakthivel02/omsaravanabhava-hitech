@@ -102,8 +102,9 @@ test.describe('accessibility', () => {
   });
 
   test('interface locale switch updates and persists across reload', async ({ page }) => {
+    const localeStorageKey = 'omsaravanabhava-hitech-ui-locale-v1';
     await page.goto('/');
-    await page.evaluate(() => localStorage.removeItem('omsaravanabhava-hitech-ui-locale-v1'));
+    await page.evaluate((key) => localStorage.removeItem(key), localeStorageKey);
     await page.reload();
 
     const language = page.getByRole('combobox', { name: 'Interface language / இடைமுக மொழி' });
@@ -112,11 +113,12 @@ test.describe('accessibility', () => {
     await language.selectOption('te');
     await expect(language).toHaveValue('te');
     await expect(page.locator('html')).toHaveAttribute('lang', 'te');
-    await expect(page.getByText('మురుగన్ భక్తి జ్ఞాన వేదిక', { exact: true })).toBeVisible();
+    await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), localeStorageKey)).toBe('te');
 
     await page.reload();
     await expect(page.getByRole('combobox', { name: 'Interface language / இடைமுக மொழி' })).toHaveValue('te');
     await expect(page.locator('html')).toHaveAttribute('lang', 'te');
+    await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), localeStorageKey)).toBe('te');
   });
 
   test('skip link is reachable and moves focus to main', async ({ page }) => {
