@@ -1,15 +1,38 @@
-import { useMemo, useState, useId } from 'react';
+import { useMemo, useState, useId, useEffect } from 'react';
 import { Link } from 'wouter';
 import { temples } from '@/content/temples';
 import { useLocale } from '@/lib/locale';
 
 const PAGE_SIZE = 200;
+const QUERY_PARAM = 'q';
+
+function readTempleQuery(): string {
+  if (typeof window === 'undefined') return '';
+  return new URLSearchParams(window.location.search).get(QUERY_PARAM) ?? '';
+}
+
+function syncTempleQuery(value: string) {
+  if (typeof window === 'undefined') return;
+  const url = new URL(window.location.href);
+  if (value.trim()) url.searchParams.set(QUERY_PARAM, value);
+  else url.searchParams.delete(QUERY_PARAM);
+  window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+}
 
 export default function Temples() {
-  const [q, setQ] = useState('');
+  const [q, setQ] = useState(readTempleQuery);
   const [shown, setShown] = useState(PAGE_SIZE);
   const inputId = useId();
   const { locale, text } = useLocale();
+
+  useEffect(() => {
+    const restoreFromUrl = () => {
+      setQ(readTempleQuery());
+      setShown(PAGE_SIZE);
+    };
+    window.addEventListener('popstate', restoreFromUrl);
+    return () => window.removeEventListener('popstate', restoreFromUrl);
+  }, []);
 
   const results = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -44,8 +67,10 @@ export default function Temples() {
           type="search"
           value={q}
           onChange={(e) => {
-            setQ(e.target.value);
+            const next = e.target.value;
+            setQ(next);
             setShown(PAGE_SIZE);
+            syncTempleQuery(next);
           }}
           placeholder="திருச்செந்தூர் / Palani"
         />
