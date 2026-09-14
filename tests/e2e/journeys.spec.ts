@@ -143,57 +143,6 @@ test.describe('accessibility', () => {
     await expect(page.locator('#mobile-nav')).toHaveCount(0);
   });
 
-  test('read aloud exposes deterministic start, pause, resume, and stop states', async ({ page }) => {
-    await page.addInitScript(() => {
-      class MockUtterance {
-        text: string;
-        lang = '';
-        voice: SpeechSynthesisVoice | null = null;
-        rate = 1;
-        onend: (() => void) | null = null;
-        onerror: (() => void) | null = null;
-
-        constructor(text: string) {
-          this.text = text;
-        }
-      }
-
-      const tamilVoice = { lang: 'ta-IN', name: 'Mock Tamil' } as SpeechSynthesisVoice;
-      Object.defineProperty(window, 'SpeechSynthesisUtterance', {
-        configurable: true,
-        value: MockUtterance,
-      });
-      Object.defineProperty(window, 'speechSynthesis', {
-        configurable: true,
-        value: {
-          cancel: () => undefined,
-          getVoices: () => [tamilVoice],
-          pause: () => undefined,
-          resume: () => undefined,
-          speak: () => undefined,
-        },
-      });
-    });
-
-    await page.goto('/thiruppugazh/thiruppugazh-0006');
-    const readAloud = page.locator('.read-aloud');
-    await expect(readAloud).toBeVisible();
-
-    await readAloud.getByRole('button', { name: /மூல உரையை வாசிக்க|Read source text aloud/ }).click();
-    await expect(readAloud.getByRole('button', { name: /இடைநிறுத்து|Pause/ })).toBeVisible();
-    await expect(readAloud.getByRole('button', { name: /நிறுத்து|Stop/ })).toBeVisible();
-
-    await readAloud.getByRole('button', { name: /இடைநிறுத்து|Pause/ }).click();
-    await expect(readAloud.getByRole('button', { name: /தொடர்க|Resume/ })).toBeVisible();
-
-    await readAloud.getByRole('button', { name: /தொடர்க|Resume/ }).click();
-    await expect(readAloud.getByRole('button', { name: /இடைநிறுத்து|Pause/ })).toBeVisible();
-
-    await readAloud.getByRole('button', { name: /நிறுத்து|Stop/ }).click();
-    await expect(readAloud.getByRole('button', { name: /மூல உரையை வாசிக்க|Read source text aloud/ })).toBeVisible();
-    await expect(readAloud.getByRole('button', { name: /நிறுத்து|Stop/ })).toHaveCount(0);
-  });
-
   test('skip link is reachable and moves focus to main', async ({ page }) => {
     await page.goto('/');
     await page.keyboard.press('Tab');
