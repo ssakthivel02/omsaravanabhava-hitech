@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { cleanup, render } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import { Router } from 'wouter';
 import { memoryLocation } from 'wouter/memory-location';
 import App from '@/app/App';
@@ -16,8 +16,9 @@ function renderAt(path: string) {
 beforeEach(cleanup);
 
 describe('R2.12 geographic provenance UI integration', () => {
-  it('renders all six Arupadai Veedu records fail-closed until authoritative coordinates are verified', () => {
+  it('renders all six Arupadai Veedu records fail-closed until authoritative coordinates are verified', async () => {
     const { container } = renderAt('/arupadai-veedu');
+    await screen.findByRole('heading', { level: 1, name: 'அறுபடை வீடு' });
 
     expect(
       container.querySelectorAll(
