@@ -3,7 +3,7 @@
  * This layer exists for browser zoom/reflow acceptance where the effective
  * CSS-pixel content budget can drop below a normal 320px mobile viewport.
  * It does not change the regular 320px+ design. */
-@media (max-width: 20rem) {
+@media (max-width: 18rem) {
   .topbar-inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -40,6 +40,55 @@
 
   .menu-toggle {
     justify-content: center;
+  }
+
+  /* Reflow must be allowed to beat intrinsic min-content sizing. Long Tamil
+     and English labels inside flex/grid children otherwise keep the document
+     wider than the viewport even after the shell itself has stacked. */
+  main,
+  main *,
+  .site-footer,
+  .site-footer *,
+  .mobile-nav,
+  .mobile-nav * {
+    min-width: 0;
+  }
+
+  main a,
+  main b,
+  main dd,
+  main dt,
+  main p,
+  main span,
+  .mobile-nav a,
+  .site-footer a,
+  .site-footer p {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .hero-actions,
+  .band-links {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .btn,
+  .band-links a {
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .abode {
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .abode-body {
+    min-width: 0;
   }
 
   .mobile-nav,
