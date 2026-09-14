@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'wouter';
 import VelMark from '@/components/VelMark';
 import ConnectionStatus from '@/components/ConnectionStatus';
@@ -44,6 +44,7 @@ function isNavActive(location: string, href: string) {
 
 export default function Layout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [location] = useLocation();
   const { uiLocale: locale, text } = useLocale();
   useRouteMetadata(location);
@@ -55,6 +56,11 @@ export default function Layout({ children }: { children: ReactNode }) {
   const itemText = (item: ShellItem) => item[locale];
   const shellText = (ta: string, en: string, te: string, ml: string, kn: string, hi: string) =>
     text(ta, en, { te, ml, kn, hi });
+
+  const closeMobileNav = () => {
+    setOpen(false);
+    window.requestAnimationFrame(() => menuButtonRef.current?.focus());
+  };
 
   return (
     <>
@@ -92,7 +98,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
           <LanguageSwitch />
 
-          <button type="button" className="menu-toggle" aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen((v) => !v)}>
+          <button ref={menuButtonRef} type="button" className="menu-toggle" aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen((v) => !v)}>
             <svg className="menu-toggle-icon" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
               {open ? (
                 <path d="M4 4 L16 16 M16 4 L4 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -103,7 +109,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <span className="menu-toggle-label" lang={locale}>
               {open
                 ? shellText('மூடு', 'Close', 'మూసివేయి', 'അടയ്ക്കുക', 'ಮುಚ್ಚಿ', 'बंद करें')
-                : shellText('பட்டி', 'Menu', 'మెను', 'മെനു', 'ಮೆನು', 'मेनू')}
+                : shellText('பட்டி', 'Menu', 'మెను', 'മെനു', 'मेनू')}
             </span>
           </button>
         </div>
@@ -111,13 +117,13 @@ export default function Layout({ children }: { children: ReactNode }) {
         {open && (
           <nav id="mobile-nav" className="mobile-nav" aria-label={shellText('முதன்மை வழிசெலுத்தல்', 'Primary navigation', 'ప్రధాన నావిగేషన్', 'പ്രധാന നാവിഗേഷൻ', 'ಮುಖ್ಯ ನ್ಯಾವಿಗೇಶನ್', 'मुख्य नेविगेशन')}>
             {[...NAV, ...MORE, LIBRARY, SOURCES].map((n) => (
-              <Link key={n.href} href={n.href} className="nav-link" aria-current={isNavActive(location, n.href) ? 'page' : undefined} onClick={() => setOpen(false)}>
+              <Link key={n.href} href={n.href} className="nav-link" aria-current={isNavActive(location, n.href) ? 'page' : undefined} onClick={closeMobileNav}>
                 <span lang={locale}>{itemText(n)}</span>
               </Link>
             ))}
             <div className="mobile-nav-trust">
               {TRUST.filter((t) => !['/sources', '/works', '/library'].includes(t.href)).map((t) => (
-                <Link key={t.href} href={t.href} className="mobile-nav-trust-link" onClick={() => setOpen(false)}>
+                <Link key={t.href} href={t.href} className="mobile-nav-trust-link" aria-current={isNavActive(location, t.href) ? 'page' : undefined} onClick={closeMobileNav}>
                   <span lang={locale}>{itemText(t)}</span>
                 </Link>
               ))}
