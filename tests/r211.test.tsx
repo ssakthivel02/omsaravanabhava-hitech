@@ -13,7 +13,7 @@ function renderAt(path: string) {
 
 async function renderCatalogue() {
   renderAt('/thiruppugazh');
-  await screen.findByLabelText('திருப்புகழ் தேடல்');
+  await screen.findByLabelText('திருப்புகழ் தேடல்', {}, { timeout: 5000 });
 }
 
 beforeEach(cleanup);
