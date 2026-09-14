@@ -153,7 +153,7 @@ test.describe('accessibility', () => {
 
     await page.goto('/thiruppugazh/not-a-real-song');
     await expect(page.getByRole('heading', { level: 1, name: /பாடல் காணப்படவில்லை|Song not found/ })).toBeVisible();
-    const songBack = page.getByRole('link', { name: /திருப்புகழ் பட்டியலுக்குத் திரும்பு|Back to Thiruppugazh catalogue/ });
+    const songBack = page.getByRole('link', { name: /திருப்புகழ் பட்டியல்|Thiruppugazh list/ });
     await expect(songBack).toBeVisible();
     await songBack.click();
     await expect(page).toHaveURL(/\/thiruppugazh$/);
