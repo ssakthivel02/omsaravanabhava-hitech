@@ -48,11 +48,17 @@ function syncTempleFilters(filters: TempleFilterState) {
   if (filters.q.trim()) url.searchParams.set(QUERY_PARAM, filters.q.trim());
   else url.searchParams.delete(QUERY_PARAM);
 
-  if (filters.district) url.searchParams.set(DISTRICT_PARAM, filters.district);
-  else url.searchParams.delete(DISTRICT_PARAM);
+  if (filters.district && districts.includes(filters.district)) {
+    url.searchParams.set(DISTRICT_PARAM, filters.district);
+  } else {
+    url.searchParams.delete(DISTRICT_PARAM);
+  }
 
-  if (filters.state) url.searchParams.set(STATE_PARAM, filters.state);
-  else url.searchParams.delete(STATE_PARAM);
+  if (filters.state && states.includes(filters.state)) {
+    url.searchParams.set(STATE_PARAM, filters.state);
+  } else {
+    url.searchParams.delete(STATE_PARAM);
+  }
 
   if (filters.arupadaiOnly) url.searchParams.set(ARUPADAI_PARAM, '1');
   else url.searchParams.delete(ARUPADAI_PARAM);
@@ -127,8 +133,8 @@ export default function Temples() {
         <h1 lang={locale}>{text('முருகன் கோயில்கள்', 'Murugan Temples')}</h1>
         <p lang={locale}>
           {text(
-            `${temples.length} பதிவுகள். பெயர், மாவட்டம், மாநிலம் அல்லது அறுபடை வீடு நிலையால் வடிகட்டவும்.`,
-            `${temples.length} records. Filter by name, district, state, or Six Abodes status.`,
+            `${temples.length} பதிவுகள். கிடைக்கும் ஆளுமைத் தரவின் அடிப்படையில் பெயர், இடம் அல்லது அறுபடை வீடு நிலையால் வடிகட்டவும்.`,
+            `${temples.length} records. Filter by name, location, or Six Abodes status where governed location data is available.`,
           )}
         </p>
       </header>
@@ -148,37 +154,45 @@ export default function Temples() {
           placeholder="திருச்செந்தூர் / Palani"
         />
 
-        <label htmlFor={districtId} lang={locale}>
-          {text('மாவட்டம்', 'District')}
-        </label>
-        <select
-          id={districtId}
-          value={district}
-          onChange={(event) => applyFilters({ ...currentFilters(), district: event.target.value })}
-        >
-          <option value="">{text('அனைத்து மாவட்டங்களும்', 'All districts')}</option>
-          {districts.map((value) => (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          ))}
-        </select>
+        {districts.length > 0 && (
+          <>
+            <label htmlFor={districtId} lang={locale}>
+              {text('மாவட்டம்', 'District')}
+            </label>
+            <select
+              id={districtId}
+              value={district}
+              onChange={(event) => applyFilters({ ...currentFilters(), district: event.target.value })}
+            >
+              <option value="">{text('அனைத்து மாவட்டங்களும்', 'All districts')}</option>
+              {districts.map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
 
-        <label htmlFor={stateId} lang={locale}>
-          {text('மாநிலம்', 'State')}
-        </label>
-        <select
-          id={stateId}
-          value={state}
-          onChange={(event) => applyFilters({ ...currentFilters(), state: event.target.value })}
-        >
-          <option value="">{text('அனைத்து மாநிலங்களும்', 'All states')}</option>
-          {states.map((value) => (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          ))}
-        </select>
+        {states.length > 0 && (
+          <>
+            <label htmlFor={stateId} lang={locale}>
+              {text('மாநிலம்', 'State')}
+            </label>
+            <select
+              id={stateId}
+              value={state}
+              onChange={(event) => applyFilters({ ...currentFilters(), state: event.target.value })}
+            >
+              <option value="">{text('அனைத்து மாநிலங்களும்', 'All states')}</option>
+              {states.map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
 
         <label htmlFor={arupadaiId} lang={locale}>
           <input
