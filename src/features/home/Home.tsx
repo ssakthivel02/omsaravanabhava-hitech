@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { Link } from 'wouter';
-import { arupadaiVeedu, completeness, thiruppugazh } from '@/content';
+import { arupadaiVeedu, completeness } from '@/content';
 import { localDayIndex } from '@/lib/localDay';
 import { useLocale } from '@/lib/locale';
 
@@ -51,7 +51,7 @@ export default function Home() {
   const templeDomain = completeness.domains.find((d) => d.key === 'temples');
   const templeCount = templeDomain?.records ?? 0;
   const thiruppugazhDomain = completeness.domains.find((d) => d.key === 'thiruppugazh');
-  const songCount = thiruppugazh.length;
+  const songCount = thiruppugazhDomain?.records ?? 0;
   const songsWithCanonicalText = thiruppugazhDomain?.withCanonicalText ?? 0;
   const worksDomain = completeness.domains.find((d) => d.key === 'works');
   const namesDomain = completeness.domains.find((d) => d.key === 'names');
