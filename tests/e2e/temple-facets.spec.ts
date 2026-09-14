@@ -32,7 +32,7 @@ test('temple discovery facets persist in URL and restore through navigation', as
     await district.selectOption({ index: 1 });
     const selectedDistrict = await district.inputValue();
     expect(selectedDistrict).not.toBe('');
-    await expect(page).toHaveURL(new RegExp(`district=${encodeURIComponent(selectedDistrict)}`));
+    await expect.poll(() => new URL(page.url()).searchParams.get('district')).toBe(selectedDistrict);
     await expect(page.locator('.temple-list a').first()).toBeVisible();
     await district.selectOption('');
   }
@@ -44,7 +44,7 @@ test('temple discovery facets persist in URL and restore through navigation', as
     await state.selectOption({ index: 1 });
     const selectedState = await state.inputValue();
     expect(selectedState).not.toBe('');
-    await expect(page).toHaveURL(new RegExp(`state=${encodeURIComponent(selectedState)}`));
+    await expect.poll(() => new URL(page.url()).searchParams.get('state')).toBe(selectedState);
     await expect(page.locator('.temple-list a').first()).toBeVisible();
     await state.selectOption('');
   }
