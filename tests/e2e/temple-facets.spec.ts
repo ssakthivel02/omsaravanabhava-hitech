@@ -15,29 +15,32 @@ test('temple discovery facets persist in URL and restore through navigation', as
   await expect(firstArupadai).toBeVisible();
   await expect(firstArupadai.getByText(/அறுபடை வீடு|Six Abodes/)).toBeVisible();
 
+  // Exercise district persistence independently so the test never assumes
+  // that an arbitrary district intersects the Six Abodes subset.
+  await arupadai.uncheck();
   await district.selectOption({ index: 1 });
   const selectedDistrict = await district.inputValue();
   expect(selectedDistrict).not.toBe('');
   await expect(page).toHaveURL(new RegExp(`district=${encodeURIComponent(selectedDistrict)}`));
-  await expect(arupadai).toBeChecked();
+  await expect(page).not.toHaveURL(/arupadai=1/);
+  await expect(page.locator('.temple-list a').first()).toBeVisible();
 
+  // Exercise state persistence independently for the same reason.
   await district.selectOption('');
   await state.selectOption({ index: 1 });
   const selectedState = await state.inputValue();
   expect(selectedState).not.toBe('');
   await expect(page).toHaveURL(new RegExp(`state=${encodeURIComponent(selectedState)}`));
-  await expect(page).toHaveURL(/arupadai=1/);
+  await expect(page.locator('.temple-list a').first()).toBeVisible();
 
   const firstFiltered = page.locator('.temple-list a').first();
-  await expect(firstFiltered).toBeVisible();
   await firstFiltered.click();
   await expect(page).toHaveURL(/\/temples\//);
 
   await page.goBack();
   await expect(state).toHaveValue(selectedState);
-  await expect(arupadai).toBeChecked();
+  await expect(arupadai).not.toBeChecked();
   await expect(page).toHaveURL(new RegExp(`state=${encodeURIComponent(selectedState)}`));
-  await expect(page).toHaveURL(/arupadai=1/);
 
   await search.fill('Palani');
   await expect(page).toHaveURL(/q=Palani/);
