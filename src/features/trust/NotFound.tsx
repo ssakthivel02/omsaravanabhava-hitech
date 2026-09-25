@@ -2,11 +2,11 @@ import { Link } from 'wouter';
 import { useLocale } from '@/lib/locale';
 
 export default function NotFound() {
-  const { locale, text } = useLocale();
+  const { uiLocale, text } = useLocale();
 
   return (
     <article className="page">
-      <h1 lang={locale}>
+      <h1 lang={uiLocale}>
         {text('பக்கம் காணப்படவில்லை', 'Page not found', {
           te: 'పేజీ కనబడలేదు',
           ml: 'പേജ് കണ്ടെത്തിയില്ല',
@@ -14,7 +14,7 @@ export default function NotFound() {
           hi: 'पृष्ठ नहीं मिला',
         })}
       </h1>
-      <p lang={locale}>
+      <p lang={uiLocale}>
         {text(
           'இந்த முகவரிக்குப் பக்கம் இல்லை. கீழ்க்கண்ட வழிகளில் தொடரலாம்.',
           'There is no page at this address. You can continue from the links below.',
@@ -27,7 +27,7 @@ export default function NotFound() {
         )}
       </p>
       <p className="band-links">
-        <Link href="/" lang={locale}>
+        <Link href="/" lang={uiLocale}>
           {text('முகப்பு', 'Home', {
             te: 'హోమ్',
             ml: 'ഹോം',
@@ -35,7 +35,7 @@ export default function NotFound() {
             hi: 'मुखपृष्ठ',
           })}
         </Link>
-        <Link href="/arupadai-veedu" lang={locale}>
+        <Link href="/arupadai-veedu" lang={uiLocale}>
           {text('அறுபடை வீடு', 'Six Abodes', {
             te: 'ఆరు పవిత్ర క్షేత్రాలు',
             ml: 'ആറ് പുണ്യസ്ഥാനങ്ങൾ',
@@ -43,7 +43,7 @@ export default function NotFound() {
             hi: 'छह पवित्र धाम',
           })}
         </Link>
-        <Link href="/search" lang={locale}>
+        <Link href="/search" lang={uiLocale}>
           {text('தேடல்', 'Search', {
             te: 'శోధన',
             ml: 'തിരയുക',
