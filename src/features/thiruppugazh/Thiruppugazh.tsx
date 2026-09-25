@@ -10,7 +10,7 @@ import StateBadge from '@/components/StateBadge';
 import { useLocale } from '@/lib/locale';
 
 export default function Thiruppugazh() {
-  const { locale, text } = useLocale();
+  const { locale, uiLocale, text } = useLocale();
   const [query, setQuery] = useState('');
   const [partFilter, setPartFilter] = useState('all');
 
@@ -22,7 +22,7 @@ export default function Thiruppugazh() {
     kn: string,
     hi: string,
   ) => {
-    switch (locale) {
+    switch (uiLocale) {
       case 'te': return te;
       case 'ml': return ml;
       case 'kn': return kn;
