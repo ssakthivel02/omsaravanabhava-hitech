@@ -102,39 +102,41 @@ const ui = {
 
 /** Devotional works / song corpus. Metadata and rights state only. */
 export default function Works() {
-  const { locale } = useLocale();
-  const t = <K extends keyof typeof ui>(key: K) => ui[key][locale] ?? ui[key].en;
+  const { locale, uiLocale } = useLocale();
+  // Generic interface copy follows the six-language UI selector. Governed work
+  // titles continue to use the Tamil/English content fallback via `locale`.
+  const t = <K extends keyof typeof ui>(key: K) => ui[key][uiLocale] ?? ui[key].en;
   const otherGovernedCount = Math.max(0, catalogue.length - devotionalWorks.length);
 
   return (
     <article className="page works-page">
       <header className="page-head works-hero">
-        <p className="eyebrow" lang={locale}>{t('eyebrow')}</p>
-        <h1 lang={locale}>{t('title')}</h1>
-        <p lang={locale}>{t('intro')}</p>
-        <p className="works-trust-note" lang={locale}>{t('trust')}</p>
+        <p className="eyebrow" lang={uiLocale}>{t('eyebrow')}</p>
+        <h1 lang={uiLocale}>{t('title')}</h1>
+        <p lang={uiLocale}>{t('intro')}</p>
+        <p className="works-trust-note" lang={uiLocale}>{t('trust')}</p>
       </header>
 
       <dl className="works-summary" aria-label={t('summary')}>
         <div>
-          <dt lang={locale}>{t('total')}</dt>
+          <dt lang={uiLocale}>{t('total')}</dt>
           <dd>{catalogue.length}</dd>
         </div>
         <div>
-          <dt lang={locale}>{t('devotional')}</dt>
+          <dt lang={uiLocale}>{t('devotional')}</dt>
           <dd>{devotionalWorks.length}</dd>
         </div>
         <div>
-          <dt lang={locale}>{t('other')}</dt>
+          <dt lang={uiLocale}>{t('other')}</dt>
           <dd>{otherGovernedCount}</dd>
         </div>
       </dl>
 
       <section className="works-catalogue" aria-labelledby="works-catalogue-h">
         <header className="works-catalogue-head">
-          <p className="eyebrow" lang={locale}>{t('sourceState')}</p>
-          <h2 id="works-catalogue-h" lang={locale}>{t('catalogue')}</h2>
-          <p lang={locale}>{t('catalogueHelp')}</p>
+          <p className="eyebrow" lang={uiLocale}>{t('sourceState')}</p>
+          <h2 id="works-catalogue-h" lang={uiLocale}>{t('catalogue')}</h2>
+          <p lang={uiLocale}>{t('catalogueHelp')}</p>
         </header>
 
         <ol className="temple-list works-list">
