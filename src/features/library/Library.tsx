@@ -93,7 +93,7 @@ function ItemTitle({ item, locale }: { item: ResolvedItem; locale: UiLocale }) {
 export default function Library() {
   const [state, setState] = useState<LocalLibraryState>(() => readLibrary());
   const [notice, setNotice] = useState('');
-  const { locale, text } = useLocale();
+  const { locale, uiLocale, text } = useLocale();
 
   const ui = (
     ta: string,
@@ -131,13 +131,13 @@ export default function Library() {
   return (
     <article className="page library-page">
       <header className="page-head library-head">
-        <p className="hero-eyebrow" lang={locale}>
+        <p className="hero-eyebrow" lang={uiLocale}>
           {ui('இந்த சாதனத்தில் மட்டும்', 'Only on this device', 'ఈ పరికరంలో మాత్రమే', 'ഈ ഉപകരണത്തിൽ മാത്രം', 'ಈ ಸಾಧನದಲ್ಲೇ ಮಾತ್ರ', 'केवल इस डिवाइस पर')}
         </p>
-        <h1 lang={locale}>
+        <h1 lang={uiLocale}>
           {ui('என் சேமிப்புகள்', 'My Library', 'నా గ్రంథాలయం', 'എന്റെ ലൈബ്രറി', 'ನನ್ನ ಗ್ರಂಥಾಲಯ', 'मेरी लाइब्रेरी')}
         </h1>
-        <p lang={locale}>
+        <p lang={uiLocale}>
           {ui(
             'நீங்கள் சேமித்த பதிவுகளும் சமீபத்தில் திறந்த பதிவுகளும் இந்த உலாவியின் உள்ளூர் சேமிப்பில் மட்டுமே இருக்கும். கணக்கு, மேக ஒத்திசைவு அல்லது பகுப்பாய்வு இல்லை.',
             "Records you save and records you recently opened live only in this browser's local storage. No account, cloud sync, or analytics.",
@@ -147,12 +147,12 @@ export default function Library() {
             'आपके सहेजे और हाल में खोले गए रिकॉर्ड केवल इस ब्राउज़र के स्थानीय संग्रहण में रहते हैं। कोई खाता, क्लाउड सिंक या एनालिटिक्स नहीं है।',
           )}
         </p>
-        <p className="latin-name" lang={locale}>
+        <p className="latin-name" lang={uiLocale}>
           {ui('என் சேமிப்புகள் · இந்த உலாவியில் மட்டும்', 'My Library · local to this browser', 'నా గ్రంథాలయం · ఈ బ్రౌజర్‌లో మాత్రమే', 'എന്റെ ലൈബ്രറി · ഈ ബ്രൗസറിൽ മാത്രം', 'ನನ್ನ ಗ್ರಂಥಾಲಯ · ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಮಾತ್ರ', 'मेरी लाइब्रेरी · केवल इस ब्राउज़र में')}
         </p>
       </header>
 
-      <p className="library-privacy" lang={locale}>
+      <p className="library-privacy" lang={uiLocale}>
         {ui(
           'இந்தத் தரவு சேவையகத்துக்கு அனுப்பப்படாது. கீழே உள்ள கட்டுப்பாடுகள் மூலம் எப்போது வேண்டுமானாலும் நீக்கலாம்.',
           'This data is never sent to a server. You can remove it at any time using the controls below.',
@@ -166,10 +166,10 @@ export default function Library() {
       <section className="library-section" aria-labelledby="saved-h">
         <div className="library-section-head">
           <div>
-            <h2 id="saved-h" lang={locale}>
+            <h2 id="saved-h" lang={uiLocale}>
               {ui('சேமிக்கப்பட்டவை', 'Saved', 'సేవ్ చేసినవి', 'സംരക്ഷിച്ചവ', 'ಉಳಿಸಿದವು', 'सहेजे गए')}
             </h2>
-            <p lang={locale}>
+            <p lang={uiLocale}>
               {ui(`${saved.length} பதிவு`, `${saved.length} records`, `${saved.length} నమోదులు`, `${saved.length} രേഖകൾ`, `${saved.length} ದಾಖಲೆಗಳು`, `${saved.length} रिकॉर्ड`)}
             </p>
           </div>
@@ -188,7 +188,7 @@ export default function Library() {
                 ])
               }
             >
-              <span lang={locale}>
+              <span lang={uiLocale}>
                 {ui('அனைத்தையும் நீக்கு', 'Remove all', 'అన్నింటినీ తొలగించు', 'എല്ലാം നീക്കം ചെയ്യുക', 'ಎಲ್ಲವನ್ನೂ ತೆಗೆದುಹಾಕಿ', 'सभी हटाएँ')}
               </span>
             </button>
@@ -197,14 +197,14 @@ export default function Library() {
 
         {saved.length === 0 ? (
           <div className="library-empty">
-            <p lang={locale}>
+            <p lang={uiLocale}>
               {ui('இன்னும் எந்தப் பதிவும் சேமிக்கப்படவில்லை.', 'No records have been saved yet.', 'ఇంకా ఏ నమోదు సేవ్ కాలేదు.', 'ഇതുവരെ രേഖകളൊന്നും സംരക്ഷിച്ചിട്ടില്ല.', 'ಇನ್ನೂ ಯಾವುದೇ ದಾಖಲೆ ಉಳಿಸಲಾಗಿಲ್ಲ.', 'अभी तक कोई रिकॉर्ड सहेजा नहीं गया है।')}
             </p>
             <div className="band-links">
-              <Link href="/knowledge" lang={locale}>
+              <Link href="/knowledge" lang={uiLocale}>
                 {ui('அறிவுக் களத்தைத் திற', 'Open the Knowledge hub', 'జ్ఞాన కేంద్రాన్ని తెరువు', 'ജ്ഞാനകേന്ദ്രം തുറക്കുക', 'ಜ್ಞಾನ ಕೇಂದ್ರವನ್ನು ತೆರೆಯಿರಿ', 'ज्ञान केंद्र खोलें')}
               </Link>
-              <Link href="/temples" lang={locale}>
+              <Link href="/temples" lang={uiLocale}>
                 {ui('கோயில்களைப் பார்க்க', 'View temples', 'దేవాలయాలను చూడండి', 'ക്ഷേത്രങ്ങൾ കാണുക', 'ದೇವಾಲಯಗಳನ್ನು ನೋಡಿ', 'मंदिर देखें')}
               </Link>
             </div>
@@ -214,10 +214,10 @@ export default function Library() {
             {saved.map((item) => (
               <li key={item.key} className={item.missing ? 'is-missing' : undefined}>
                 <Link href={item.href}>
-                  <span className="tag" lang={locale}>{itemType(item)}</span>
+                  <span className="tag" lang={uiLocale}>{itemType(item)}</span>
                   <ItemTitle item={item} locale={locale} />
                   {item.missing && (
-                    <em lang={locale}>
+                    <em lang={uiLocale}>
                       {ui('இந்த வெளியீட்டில் பதிவு இல்லை', 'Not in this release', 'ఈ విడుదలలో లేదు', 'ഈ പതിപ്പിൽ ഇല്ല', 'ಈ ಬಿಡುಗಡೆಯಲ್ಲಿ ಇಲ್ಲ', 'इस रिलीज़ में नहीं है')}
                     </em>
                   )}
@@ -239,7 +239,7 @@ export default function Library() {
                     )
                   }
                 >
-                  <span lang={locale}>
+                  <span lang={uiLocale}>
                     {ui('நீக்கு', 'Remove', 'తొలగించు', 'നീക്കം ചെയ്യുക', 'ತೆಗೆದುಹಾಕಿ', 'हटाएँ')}
                   </span>
                 </button>
@@ -252,10 +252,10 @@ export default function Library() {
       <section className="library-section" aria-labelledby="recent-h">
         <div className="library-section-head">
           <div>
-            <h2 id="recent-h" lang={locale}>
+            <h2 id="recent-h" lang={uiLocale}>
               {ui('சமீபத்தில் பார்த்தவை', 'Recently Viewed', 'ఇటీవల చూసినవి', 'അടുത്തിടെ കണ്ടത്', 'ಇತ್ತೀಚೆಗೆ ವೀಕ್ಷಿಸಿದವು', 'हाल में देखे गए')}
             </h2>
-            <p lang={locale}>
+            <p lang={uiLocale}>
               {ui(
                 'அதிகபட்சம் 20 பதிவு · தேடல் சொற்கள் சேமிக்கப்படாது',
                 'Up to 20 records · search terms are not saved',
@@ -281,14 +281,14 @@ export default function Library() {
                 ])
               }
             >
-              <span lang={locale}>
+              <span lang={uiLocale}>
                 {ui('சமீபத்தை அழி', 'Clear recent', 'ఇటీవలి వాటిని తొలగించు', 'അടുത്തകാല രേഖകൾ മായ്ക്കുക', 'ಇತ್ತೀಚಿನವುಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ', 'हाल का इतिहास साफ़ करें')}
               </span>
             </button>
           )}
         </div>
         {recent.length === 0 ? (
-          <p className="library-empty" lang={locale}>
+          <p className="library-empty" lang={uiLocale}>
             {ui('சமீபப் பதிவுகள் இன்னும் இல்லை.', 'No recent records yet.', 'ఇంకా ఇటీవలి నమోదులు లేవు.', 'ഇതുവരെ അടുത്തകാല രേഖകളില്ല.', 'ಇನ್ನೂ ಇತ್ತೀಚಿನ ದಾಖಲೆಗಳಿಲ್ಲ.', 'अभी हाल के कोई रिकॉर्ड नहीं हैं।')}
           </p>
         ) : (
@@ -296,7 +296,7 @@ export default function Library() {
             {recent.map((item) => (
               <li key={item.key}>
                 <Link href={item.href}>
-                  <span className="tag" lang={locale}>{itemType(item)}</span>
+                  <span className="tag" lang={uiLocale}>{itemType(item)}</span>
                   <ItemTitle item={item} locale={locale} />
                 </Link>
               </li>
@@ -306,10 +306,10 @@ export default function Library() {
       </section>
 
       <section className="library-danger" aria-labelledby="clear-h">
-        <h2 id="clear-h" lang={locale}>
+        <h2 id="clear-h" lang={uiLocale}>
           {ui('உள்ளூர் தரவை அழி', 'Clear Local Data', 'స్థానిక డేటాను తొలగించు', 'ലോക്കൽ ഡാറ്റ മായ്ക്കുക', 'ಸ್ಥಳೀಯ ಡೇಟಾವನ್ನು ತೆರವುಗೊಳಿಸಿ', 'स्थानीय डेटा साफ़ करें')}
         </h2>
-        <p lang={locale}>
+        <p lang={uiLocale}>
           {ui(
             'சேமிப்பு மற்றும் சமீபப் பதிவுகள் இரண்டையும் இந்த உலாவியில் இருந்து நீக்கும்.',
             'Removes both saved and recent records from this browser.',
@@ -333,13 +333,13 @@ export default function Library() {
             ])
           }
         >
-          <span lang={locale}>
+          <span lang={uiLocale}>
             {ui('எல்லா உள்ளூர் தரவையும் அழி', 'Clear all local data', 'అన్ని స్థానిక డేటాను తొలగించు', 'എല്ലാ ലോക്കൽ ഡാറ്റയും മായ്ക്കുക', 'ಎಲ್ಲಾ ಸ್ಥಳೀಯ ಡೇಟಾವನ್ನು ತೆರವುಗೊಳಿಸಿ', 'सारा स्थानीय डेटा साफ़ करें')}
           </span>
         </button>
       </section>
 
-      <p className="sr-only" aria-live="polite" lang={locale}>{notice}</p>
+      <p className="sr-only" aria-live="polite" lang={uiLocale}>{notice}</p>
     </article>
   );
 }
