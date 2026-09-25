@@ -26,7 +26,7 @@ const readStoredCount = (): number => {
  */
 export default function Practice() {
   const [count, setCount] = useState<number>(readStoredCount);
-  const { locale, text } = useLocale();
+  const { uiLocale, text } = useLocale();
 
   const persist = useCallback((n: number) => {
     setCount(n);
@@ -47,7 +47,7 @@ export default function Practice() {
     <article className="page practice-page">
       <header className="page-head practice-hero">
         <div className="practice-hero-copy">
-          <h1 lang={locale}>
+          <h1 lang={uiLocale}>
             {text('தினசரி வழிபாடு', 'Daily Practice', {
               te: 'రోజువారీ ఆరాధన',
               ml: 'ദൈനംദിന ആരാധന',
@@ -55,7 +55,7 @@ export default function Practice() {
               hi: 'दैनिक साधना',
             })}
           </h1>
-          <p lang={locale}>
+          <p lang={uiLocale}>
             {text(
               'எண்ணிக்கை இந்த உலாவியில் மட்டுமே சேமிக்கப்படுகிறது. கணக்கு தேவையில்லை.',
               'The count is saved only in this browser. No account needed.',
@@ -73,7 +73,7 @@ export default function Practice() {
       <div className="practice-grid">
         {focus && (
           <section className="practice-card practice-focus" aria-labelledby="focus-h">
-            <h2 id="focus-h" lang={locale}>
+            <h2 id="focus-h" lang={uiLocale}>
               {text('இன்றைய நினைவு', "Today's Focus", {
                 te: 'ఈరోజు ధ్యానం',
                 ml: 'ഇന്നത്തെ ശ്രദ്ധ',
@@ -89,7 +89,7 @@ export default function Practice() {
         )}
 
         <section className="practice-card practice-counter-card" aria-labelledby="count-h">
-          <h2 id="count-h" lang={locale}>
+          <h2 id="count-h" lang={uiLocale}>
             {text('ஜப எண்ணிக்கை', 'Japa Count', {
               te: 'జప సంఖ్య',
               ml: 'ജപ എണ്ണം',
@@ -108,7 +108,7 @@ export default function Practice() {
               className="btn btn-primary"
               onClick={() => persist(count + 1)}
             >
-              <span lang={locale}>
+              <span lang={uiLocale}>
                 {text('ஒன்று சேர்', 'Add one', {
                   te: 'ఒకటి జోడించు',
                   ml: 'ഒന്ന് ചേർക്കുക',
@@ -122,7 +122,7 @@ export default function Practice() {
               className="btn btn-quiet"
               onClick={() => persist(0)}
             >
-              <span lang={locale}>
+              <span lang={uiLocale}>
                 {text('மீட்டமை', 'Reset', {
                   te: 'రీసెట్ చేయి',
                   ml: 'പുനഃസജ്ജമാക്കുക',
@@ -132,7 +132,7 @@ export default function Practice() {
               </span>
             </button>
           </div>
-          <p className="note practice-note" lang={locale}>
+          <p className="note practice-note" lang={uiLocale}>
             {text(
               'இத்தளம் எந்த வாக்குறுதியையும் அளிக்கவில்லை. இது ஒரு தனிப்பட்ட எண்ணிக்கைக் கருவி மட்டுமே.',
               'This site makes no promises. This is only a private counting tool.',
