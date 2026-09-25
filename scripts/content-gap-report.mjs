@@ -23,6 +23,17 @@ const sources = read('sources.json');
 
 const pct = (n, d) => (d === 0 ? '—' : `${Math.round((n / d) * 100)}%`);
 const has = (arr, f) => arr.filter((r) => r[f] !== null && r[f] !== '').length;
+const hasTempleIdentity = (temple) =>
+  Boolean(
+    temple.id &&
+      temple.nameTa &&
+      Array.isArray(temple.sources) &&
+      temple.sources.some((source) => source?.reference || source?.url),
+  );
+
+const canonicalTextCount = has(songs, 'canonicalText');
+const templeIdentityCount = temples.filter(hasTempleIdentity).length;
+const namavaliRecordCount = Array.isArray(namavali.records) ? namavali.records.length : 0;
 
 const lines = [];
 const w = (s = '') => lines.push(s);
@@ -41,14 +52,16 @@ w('## Summary');
 w();
 w('| Domain | Records | Publishable text | Notes |');
 w('|---|---:|---:|---|');
-w(`| Temples | ${temples.length} | n/a | descriptive fields largely empty |`);
-w(`| Arupadai Veedu | ${arupadai.length} | n/a | all six classified correctly |`);
-w(`| Thiruppugazh | ${songs.length} | ${has(songs, 'canonicalText')} | source-linked, verse body not re-imported |`);
-w(`| Works (registry) | ${works.length} | 0 | metadata only |`);
-w(`| Devotional works (Phase 2S) | ${devotional.length} | 0 | rights unresolved |`);
-w(`| Kumarastavam | ${kumarastavam.length} | 0 | republication not permitted |`);
-w(`| Namavali | ${namavali.records.length} | 0 | ${namavali.datasetStatus} |`);
-w(`| Sacred names | ${names.length} | ${has(names, 'meaning')} | |`);
+w(`| Temples | ${temples.length} | n/a | field coverage reported below |`);
+w(`| Arupadai Veedu | ${arupadai.length} | n/a | classified pilgrimage records |`);
+w(
+  `| Thiruppugazh | ${songs.length} | ${canonicalTextCount} | ${canonicalTextCount === 0 ? 'source-linked; canonical verse body not imported' : `${canonicalTextCount} canonical text bodies present`} |`,
+);
+w(`| Works (registry) | ${works.length} | 0 | metadata registry; no governed full text field |`);
+w(`| Devotional works (Phase 2S) | ${devotional.length} | 0 | rights-governed metadata |`);
+w(`| Kumarastavam | ${kumarastavam.length} | 0 | republication state remains governed |`);
+w(`| Namavali | ${namavaliRecordCount} | ${namavaliRecordCount} | ${namavali.datasetStatus} |`);
+w(`| Sacred names | ${names.length} | ${has(names, 'meaning')} | meaning count shown as publishable text |`);
 w(`| Source ledger | ${sources.length} | n/a | |`);
 w();
 
@@ -71,8 +84,11 @@ for (const [f, label] of templeFields) {
   w(`| ${label} | ${n} / ${temples.length} | ${pct(n, temples.length)} |`);
 }
 w();
-w('All 376 temple records carry a canonical Tamil name, an id and a source');
-w('reference. The descriptive and location fields above are the gap.');
+w(
+  `${templeIdentityCount} / ${temples.length} temple records carry the minimum governed identity set ` +
+    '(id, canonical Tamil name, and at least one source reference or URL).',
+);
+w('The field-coverage table above is the current descriptive/location gap statement.');
 w();
 
 w('## Thiruppugazh — layer states');
@@ -87,27 +103,34 @@ w(`- Meaning: ${bucket('meaningState')}`);
 w(`- Transliteration: ${bucket('transliterationState')}`);
 w(`- Audio: ${bucket('audioState')}`);
 w();
-w('The registry identifies the source edition for each song but the verse text');
-w('itself was never re-imported. The site therefore publishes the record, its');
-w('edition and its state, and no verse text.');
+if (canonicalTextCount === 0) {
+  w('The registry identifies the source edition for each song but no canonical');
+  w('verse body is currently present. The site therefore publishes record/source');
+  w('metadata and state without inventing or reconstructing verse text.');
+} else {
+  w(`${canonicalTextCount} / ${songs.length} Thiruppugazh records currently contain canonical text.`);
+  w('Records without canonical text continue to publish only their governed source/state metadata.');
+}
 w();
 
 w('## What is needed to close the gaps');
 w();
-w('Listed in the order that would most improve the site.');
+w('Listed in the order that would most improve the site; counts above are the authority.');
 w();
-w('1. **Thiruppugazh verse text** — a rights-cleared edition with per-song');
-w('   mapping to `source_numbering`. Without it the reading experience cannot');
-w('   exist. Project Madurai Part I is the edition already referenced.');
-w('2. **Temple coordinates** — a verified gazetteer keyed to');
-w('   `canonical_temple_id`. Unlocks maps and pilgrimage routing.');
-w('3. **Temple visitor information and timings** — from HR&CE or each temple');
-w('   authority. Must be attributable; timings are safety-relevant.');
-w('4. **Temple history and architecture** — cited secondary scholarship.');
-w('5. **Audio** — owned or licensed recordings with provenance. The audio');
-w('   registry is currently empty.');
-w('6. **Namavali** — an identifiable edition with clear rights. The registry');
-w('   explicitly refuses names taken from posters or unreviewed web lists.');
+w('1. **Thiruppugazh verse text** — rights-cleared canonical text for every record');
+w('   still missing it, mapped to `source_numbering`.');
+w('2. **Temple coordinates** — verified coordinates keyed to the canonical temple id');
+w('   for every record still missing them.');
+w('3. **Temple visitor information and timings** — attributable current information');
+w('   from HR&CE or the relevant temple authority.');
+w('4. **Temple history and architecture** — cited secondary scholarship for missing fields.');
+w('5. **Audio** — owned or licensed recordings with explicit provenance and state.');
+if (namavaliRecordCount === 0) {
+  w('6. **Namavali** — an identifiable edition with clear rights; unreviewed web/poster');
+  w('   lists remain intentionally excluded.');
+} else {
+  w('6. **Namavali** — continue source/rights review for any collection not yet publishable.');
+}
 w();
 w('## Rules for any future import');
 w();
