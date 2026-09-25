@@ -33,14 +33,19 @@ const Accessibility = lazy(() => import('@/features/legal/Legal').then((module) 
 const Contact = lazy(() => import('@/features/legal/Legal').then((module) => ({ default: module.Contact })));
 
 export default function App() {
-  const { locale, text } = useLocale();
+  const { uiLocale, text } = useLocale();
 
   return (
     <Layout>
       <Suspense
         fallback={
-          <p className="page" role="status" lang={locale}>
-            {text('ஏற்றப்படுகிறது…', 'Loading…')}
+          <p className="page" role="status" lang={uiLocale}>
+            {text('ஏற்றப்படுகிறது…', 'Loading…', {
+              te: 'లోడ్ అవుతోంది…',
+              ml: 'ലോഡ് ചെയ്യുന്നു…',
+              kn: 'ಲೋಡ್ ಆಗುತ್ತಿದೆ…',
+              hi: 'लोड हो रहा है…',
+            })}
           </p>
         }
       >
