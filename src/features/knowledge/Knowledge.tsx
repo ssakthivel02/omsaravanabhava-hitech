@@ -180,6 +180,9 @@ export default function Knowledge() {
                         {name.nameEn && <p className="latin-name" lang="en">{name.nameEn}</p>}
                       </>
                     )}
+                    {/* The devotional "meaning" is a governed content layer of
+                        its own, distinct from UI chrome — shown as recorded,
+                        always Tamil, never machine-translated. */}
                     {name.meaning ? (
                       <p lang="ta">{name.meaning}</p>
                     ) : (
@@ -199,7 +202,14 @@ export default function Knowledge() {
                       <span lang={locale}>{sourceState.label}</span>
                     </span>
                     {name.id && (
-                      <SaveControl item={{ type: 'knowledge', id: name.id, titleTa: name.nameTa, titleEn: name.nameEn }} />
+                      <SaveControl
+                        item={{
+                          type: 'knowledge',
+                          id: name.id,
+                          titleTa: name.nameTa,
+                          titleEn: name.nameEn,
+                        }}
+                      />
                     )}
                   </div>
                 </article>
@@ -214,7 +224,7 @@ export default function Knowledge() {
           <h2 id="abodes-h" lang={uiLocale}>
             {text('ஆறு புனிதப் படைவீடுகள்', 'The Six Sacred Abodes', {
               te: 'ఆరు పవిత్ర నిలయాలు',
-              ml: 'ആറ് പവിത്ര പടைவീடുകൾ',
+              ml: 'ആറ് പവിത്ര പടைவീടുകൾ',
               kn: 'ಆರು ಪವಿತ್ರ ಪಡೈವೀಡುಗಳು',
               hi: 'छह पवित्र धाम',
             })}
@@ -256,49 +266,156 @@ export default function Knowledge() {
           })}
         </ol>
         <Link href="/arupadai-veedu" className="btn btn-quiet">
-          <span lang={uiLocale}>{text('முழு யாத்திரைப் பாதையைத் திற', 'Open the full pilgrimage route', { te: 'పూర్తి యాత్ర మార్గాన్ని తెరవండి', ml: 'പൂർണ്ണ തീർത്ഥയാത്രാ പാത തുറക്കുക', kn: 'ಪೂರ್ಣ ಯಾತ್ರಾ ಮಾರ್ಗವನ್ನು ತೆರೆಯಿರಿ', hi: 'पूरा तीर्थयात्रा मार्ग खोलें' })}</span>
+          <span lang={uiLocale}>
+            {text('முழு யாத்திரைப் பாதையைத் திற', 'Open the full pilgrimage route', {
+              te: 'పూర్తి యాత్ర మార్గాన్ని తెరవండి',
+              ml: 'പൂർണ്ണ തീർത്ഥയാത്രാ പാത തുറക്കുക',
+              kn: 'ಪೂರ್ಣ ಯಾತ್ರಾ ಮಾರ್ಗವನ್ನು ತೆರೆಯಿರಿ',
+              hi: 'पूरा तीर्थयात्रा मार्ग खोलें',
+            })}
+          </span>
         </Link>
       </section>
 
       <section className="knowledge-section" aria-labelledby="works-h">
         <div className="band-head">
-          <h2 id="works-h" lang={uiLocale}>{text('பக்தி நூல்கள்', 'Devotional Works', { te: 'భక్తి గ్రంథాలు', ml: 'ഭക്തി കൃതികൾ', kn: 'ಭಕ್ತಿ ಕೃತಿಗಳು', hi: 'भक्ति ग्रंथ' })}</h2>
-          <p lang={uiLocale}>{text('உரிமை மற்றும் வெளியீட்டு நிலை தனித்தனியாகக் காட்டப்படும் தற்போதைய நூல் பதிவுகள்.', 'Current work records, with rights and publication state shown separately.', { te: 'హక్కులు మరియు ప్రచురణ స్థితి విడిగా చూపబడే ప్రస్తుత గ్రంథ నమోదులు.', ml: 'അവകാശവും പ്രസിദ്ധീകരണ നിലയും വേർതിരിച്ച് കാണിക്കുന്ന നിലവിലെ കൃതി രേഖകൾ.', kn: 'ಹಕ್ಕುಗಳು ಮತ್ತು ಪ್ರಕಟಣೆ ಸ್ಥಿತಿಯನ್ನು ಪ್ರತ್ಯೇಕವಾಗಿ ತೋರಿಸುವ ಪ್ರಸ್ತುತ ಕೃತಿ ದಾಖಲೆಗಳು.', hi: 'वर्तमान ग्रंथ अभिलेख, जिनमें अधिकार और प्रकाशन स्थिति अलग-अलग दिखाई जाती है।' })}</p>
+          <h2 id="works-h" lang={uiLocale}>
+            {text('பக்தி நூல்கள்', 'Devotional Works', {
+              te: 'భక్తి గ్రంథాలు',
+              ml: 'ഭക്തി കൃതികൾ',
+              kn: 'ಭಕ್ತಿ ಕೃತಿಗಳು',
+              hi: 'भक्ति ग्रंथ',
+            })}
+          </h2>
+          <p lang={uiLocale}>
+            {text(
+              'உரிமை மற்றும் வெளியீட்டு நிலை தனித்தனியாகக் காட்டப்படும் தற்போதைய நூல் பதிவுகள்.',
+              'Current work records, with rights and publication state shown separately.',
+              {
+                te: 'హక్కులు మరియు ప్రచురణ స్థితి విడిగా చూపబడే ప్రస్తుత గ్రంథ నమోదులు.',
+                ml: 'അവകാശവും പ്രസിദ്ധീകരണ നിലയും വേർതിരിച്ച് കാണിക്കുന്ന നിലവിലെ കൃതി രേഖകൾ.',
+                kn: 'ಹಕ್ಕುಗಳು ಮತ್ತು ಪ್ರಕಟಣೆ ಸ್ಥಿತಿಯನ್ನು ಪ್ರತ್ಯೇಕವಾಗಿ ತೋರಿಸುವ ಪ್ರಸ್ತುತ ಕೃತಿ ದಾಖಲೆಗಳು.',
+                hi: 'वर्तमान ग्रंथ अभिलेख, जिनमें अधिकार और प्रकाशन स्थिति अलग-अलग दिखाई जाती है।',
+              },
+            )}
+          </p>
         </div>
         <ul className="knowledge-ledger">
           {workCatalogue.map((work, index) => {
             const id = work.id ?? `work-${index + 1}`;
-            const state = 'rightsState' in work ? work.rightsState : (work.verificationState ?? 'UNKNOWN');
+            const state = 'rightsState' in work
+              ? work.rightsState
+              : (work.verificationState ?? 'UNKNOWN');
             const workTitleEn = 'titleEn' in work ? work.titleEn : null;
             const showEnglishFirst = locale === 'en' && Boolean(workTitleEn);
             return (
               <li id={`work-${id}`} key={id}>
                 <div>
-                  {showEnglishFirst ? <><b lang="en">{workTitleEn}</b>{work.titleTa && <small lang="ta">{work.titleTa}</small>}</> : <><b lang={work.titleTa ? 'ta' : 'en'}>{work.titleTa ?? workTitleEn ?? id}</b>{workTitleEn && <small>{workTitleEn}</small>}</>}
+                  {showEnglishFirst ? (
+                    <>
+                      <b lang="en">{workTitleEn}</b>
+                      {work.titleTa && <small lang="ta">{work.titleTa}</small>}
+                    </>
+                  ) : (
+                    <>
+                      <b lang={work.titleTa ? 'ta' : 'en'}>{work.titleTa ?? workTitleEn ?? id}</b>
+                      {workTitleEn && <small>{workTitleEn}</small>}
+                    </>
+                  )}
                 </div>
                 <StateBadge state={state} />
-                {work.id && <SaveControl item={{ type: 'work', id: work.id, titleTa: work.titleTa, titleEn: workTitleEn }} />}
+                {work.id && (
+                  <SaveControl
+                    item={{
+                      type: 'work',
+                      id: work.id,
+                      titleTa: work.titleTa,
+                      titleEn: workTitleEn,
+                    }}
+                  />
+                )}
               </li>
             );
           })}
         </ul>
-        <Link href="/works" className="btn btn-quiet"><span lang={uiLocale}>{text('நூல் பட்டியல்', 'Work list', { te: 'గ్రంథాల జాబితా', ml: 'കൃതികളുടെ പട്ടിക', kn: 'ಕೃತಿಗಳ ಪಟ್ಟಿ', hi: 'ग्रंथ सूची' })}</span></Link>
+        <Link href="/works" className="btn btn-quiet">
+          <span lang={uiLocale}>
+            {text('நூல் பட்டியல்', 'Work list', {
+              te: 'గ్రంథాల జాబితా',
+              ml: 'കൃതികളുടെ പട്ടിക',
+              kn: 'ಕೃತಿಗಳ ಪಟ್ಟಿ',
+              hi: 'ग्रंथ सूची',
+            })}
+          </span>
+        </Link>
       </section>
 
       <section className="knowledge-section" aria-labelledby="tp-h">
         <div className="band-head">
           <h2 id="tp-h" lang="ta">திருப்புகழ்</h2>
-          <p lang={uiLocale}>{text(`${thiruppugazh.length} பதிவு அடையாளங்கள் உள்ளன. மூலத் தமிழ் உரை கிடைக்காத இடங்களில் அது வெளிப்படையாக நிலுவையில் காட்டப்படுகிறது.`, `${thiruppugazh.length} identity records exist. Where the canonical Tamil text is not yet available, that is shown as openly pending.`, { te: `${thiruppugazh.length} గుర్తింపు నమోదులు ఉన్నాయి. ప్రామాణిక తమిళ పాఠ్యం ఇంకా అందుబాటులో లేని చోట అది స్పష్టంగా పెండింగ్‌గా చూపబడుతుంది.`, ml: `${thiruppugazh.length} തിരിച്ചറിയൽ രേഖകൾ നിലവിലുണ്ട്. പ്രാമാണിക തമിഴ് പാഠം ഇതുവരെ ലഭ്യമല്ലാത്തിടത്ത് അത് വ്യക്തമായി നിലുവയിൽ എന്ന് കാണിക്കുന്നു.`, kn: `${thiruppugazh.length} ಗುರುತು ದಾಖಲೆಗಳಿವೆ. ಪ್ರಾಮಾಣಿಕ ತಮಿಳು ಪಠ್ಯ ಇನ್ನೂ ಲಭ್ಯವಿಲ್ಲದ ಸ್ಥಳದಲ್ಲಿ ಅದನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ಬಾಕಿ ಎಂದು ತೋರಿಸಲಾಗುತ್ತದೆ.`, hi: `${thiruppugazh.length} पहचान अभिलेख मौजूद हैं। जहाँ प्रामाणिक तमिल पाठ अभी उपलब्ध नहीं है, वहाँ उसे स्पष्ट रूप से लंबित दिखाया जाता है।` })}</p>
+          <p lang={uiLocale}>
+            {text(
+              `${thiruppugazh.length} பதிவு அடையாளங்கள் உள்ளன. மூலத் தமிழ் உரை கிடைக்காத இடங்களில் அது வெளிப்படையாக நிலுவையில் காட்டப்படுகிறது.`,
+              `${thiruppugazh.length} identity records exist. Where the canonical Tamil text is not yet available, that is shown as openly pending.`,
+              {
+                te: `${thiruppugazh.length} గుర్తింపు నమోదులు ఉన్నాయి. ప్రామాణిక తమిళ పాఠ్యం ఇంకా అందుబాటులో లేని చోట అది స్పష్టంగా పెండింగ్‌గా చూపబడుతుంది.`,
+                ml: `${thiruppugazh.length} തിരിച്ചറിയൽ രേഖകൾ നിലവിലുണ്ട്. പ്രാമാണിക തമിഴ് പാഠം ഇതുവരെ ലഭ്യമല്ലാത്തിടത്ത് അത് വ്യക്തമായി നിലുവയിൽ എന്ന് കാണിക്കുന്നു.`,
+                kn: `${thiruppugazh.length} ಗುರುತು ದಾಖಲೆಗಳಿವೆ. ಪ್ರಾಮಾಣಿಕ ತಮಿಳು ಪಠ್ಯ ಇನ್ನೂ ಲಭ್ಯವಿಲ್ಲದ ಸ್ಥಳದಲ್ಲಿ ಅದನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ಬಾಕಿ ಎಂದು ತೋರಿಸಲಾಗುತ್ತದೆ.`,
+                hi: `${thiruppugazh.length} पहचान अभिलेख मौजूद हैं। जहाँ प्रामाणिक तमिल पाठ अभी उपलब्ध नहीं है, वहाँ उसे स्पष्ट रूप से लंबित दिखाया जाता है।`,
+              },
+            )}
+          </p>
         </div>
-        <Link href="/thiruppugazh" className="btn btn-primary"><span lang={uiLocale}>{text('திருப்புகழ் பதிவுகளைப் பார்க்க', 'View Thiruppugazh records', { te: 'తిరుప్పుగళ్ నమోదులను చూడండి', ml: 'തിരുപ്പുകഴ് രേഖകൾ കാണുക', kn: 'ತಿರುಪ್ಪುಗಳ್ ದಾಖಲೆಗಳನ್ನು ನೋಡಿ', hi: 'तिरुप्पुगळ अभिलेख देखें' })}</span></Link>
+        <Link href="/thiruppugazh" className="btn btn-primary">
+          <span lang={uiLocale}>
+            {text('திருப்புகழ் பதிவுகளைப் பார்க்க', 'View Thiruppugazh records', {
+              te: 'తిరుప్పుగళ్ నమోదులను చూడండి',
+              ml: 'തിരുപ്പുകഴ് രേഖകൾ കാണുക',
+              kn: 'ತಿರುಪ್ಪುಗಳ್ ದಾಖಲೆಗಳನ್ನು ನೋಡಿ',
+              hi: 'तिरुप्पुगळ अभिलेख देखें',
+            })}
+          </span>
+        </Link>
       </section>
 
       <section className="knowledge-trust" aria-labelledby="trust-h">
-        <h2 id="trust-h" lang={uiLocale}>{text('மூலமும் முழுமையும்', 'Source and Completeness', { te: 'మూలం మరియు సంపూర్ణత', ml: 'ഉറവിടവും സമ്പൂർണ്ണതയും', kn: 'ಮೂಲ ಮತ್ತು ಪೂರ್ಣತೆ', hi: 'स्रोत और पूर्णता' })}</h2>
-        <p lang={uiLocale}>{text('இந்த அறிவுக் களம் முழுமையான முருகன் களஞ்சியம் என்று கூறாது. ஒவ்வொரு வெளியீடும் கிடைத்துள்ள ஆளுகைப் பதிவுகளால் மட்டுமே கட்டுப்படுத்தப்படுகிறது.', 'This knowledge hub does not claim to be a complete Murugan repository. Every publication is bounded only by the governed records that are actually available.', { te: 'ఈ జ్ఞాన కేంద్రం సంపూర్ణ మురుగన్ భాండాగారమని చెప్పదు. ప్రతి ప్రచురణ నిజంగా అందుబాటులో ఉన్న పరిపాలిత నమోదుల పరిమితిలోనే ఉంటుంది.', ml: 'ഈ വിജ്ഞാനകേന്ദ്രം സമ്പൂർണ്ണ മുരുകൻ ശേഖരമാണെന്ന് അവകാശപ്പെടുന്നില്ല. ഓരോ പ്രസിദ്ധീകരണവും യഥാർത്ഥത്തിൽ ലഭ്യമായ ഭരണത്തിലുള്ള രേഖകൾക്കുള്ളിലാണ് പരിമിതപ്പെടുത്തിയിരിക്കുന്നത്.', kn: 'ಈ ಜ್ಞಾನ ಕೇಂದ್ರವು ಸಂಪೂರ್ಣ ಮುರುಗನ್ ಸಂಗ್ರಹವಾಗಿದೆ ಎಂದು ಹೇಳುವುದಿಲ್ಲ. ಪ್ರತಿಯೊಂದು ಪ್ರಕಟಣೆಯೂ ನಿಜವಾಗಿ ಲಭ್ಯವಿರುವ ನಿಯಂತ್ರಿತ ದಾಖಲೆಗಳ ಮಿತಿಯಲ್ಲಿರುತ್ತದೆ.', hi: 'यह ज्ञान केंद्र स्वयं को पूर्ण मुरुगन भंडार नहीं मानता। प्रत्येक प्रकाशन केवल वास्तव में उपलब्ध शासित अभिलेखों की सीमा तक ही है।' })}</p>
+        <h2 id="trust-h" lang={uiLocale}>
+          {text('மூலமும் முழுமையும்', 'Source and Completeness', {
+            te: 'మూలం మరియు సంపూర్ణత',
+            ml: 'ഉറവിടവും സമ്പൂർണ്ണതയും',
+            kn: 'ಮೂಲ ಮತ್ತು ಪೂರ್ಣತೆ',
+            hi: 'स्रोत और पूर्णता',
+          })}
+        </h2>
+        <p lang={uiLocale}>
+          {text(
+            'இந்த அறிவுக் களம் முழுமையான முருகன் களஞ்சியம் என்று கூறாது. ஒவ்வொரு வெளியீடும் கிடைத்துள்ள ஆளுகைப் பதிவுகளால் மட்டுமே கட்டுப்படுத்தப்படுகிறது.',
+            'This knowledge hub does not claim to be a complete Murugan repository. Every publication is bounded only by the governed records that are actually available.',
+            {
+              te: 'ఈ జ్ఞాన కేంద్రం సంపూర్ణ మురుగన్ భాండాగారమని చెప్పదు. ప్రతి ప్రచురణ నిజంగా అందుబాటులో ఉన్న పరిపాలిత నమోదుల పరిమితిలోనే ఉంటుంది.',
+              ml: 'ഈ വിജ്ഞാനകേന്ദ്രം സമ്പൂർണ്ണ മുരുകൻ ശേഖരമാണെന്ന് അവകാശപ്പെടുന്നില്ല. ഓരോ പ്രസിദ്ധീകരണവും യഥാർത്ഥത്തിൽ ലഭ്യമായ ഭരണത്തിലുള്ള രേഖകൾക്കുള്ളിലാണ് പരിമിതപ്പെടുത്തിയിരിക്കുന്നത്.',
+              kn: 'ಈ ಜ್ಞಾನ ಕೇಂದ್ರವು ಸಂಪೂರ್ಣ ಮುರುಗನ್ ಸಂಗ್ರಹವಾಗಿದೆ ಎಂದು ಹೇಳುವುದಿಲ್ಲ. ಪ್ರತಿಯೊಂದು ಪ್ರಕಟಣೆಯೂ ನಿಜವಾಗಿ ಲಭ್ಯವಿರುವ ನಿಯಂತ್ರಿತ ದಾಖಲೆಗಳ ಮಿತಿಯಲ್ಲಿರುತ್ತದೆ.',
+              hi: 'यह ज्ञान केंद्र स्वयं को पूर्ण मुरुगन भंडार नहीं मानता। प्रत्येक प्रकाशन केवल वास्तव में उपलब्ध शासित अभिलेखों की सीमा तक ही है।',
+            },
+          )}
+        </p>
         <div className="band-links">
-          <Link href="/sources" lang={uiLocale}>{text('மூலங்கள்', 'Sources', { te: 'మూలాలు', ml: 'ഉറവിടങ്ങൾ', kn: 'ಮೂಲಗಳು', hi: 'स्रोत' })}</Link>
-          <Link href="/content-completeness" lang={uiLocale}>{text('உள்ளடக்க நிலை', 'Content status', { te: 'కంటెంట్ స్థితి', ml: 'ഉള്ളടക്ക നില', kn: 'ವಿಷಯ ಸ್ಥಿತಿ', hi: 'सामग्री की स्थिति' })}</Link>
+          <Link href="/sources" lang={uiLocale}>
+            {text('மூலங்கள்', 'Sources', {
+              te: 'మూలాలు',
+              ml: 'ഉറവിടങ്ങൾ',
+              kn: 'ಮೂಲಗಳು',
+              hi: 'स्रोत',
+            })}
+          </Link>
+          <Link href="/content-completeness" lang={uiLocale}>
+            {text('உள்ளடக்க நிலை', 'Content status', {
+              te: 'కంటెంట్ స్థితి',
+              ml: 'ഉള്ളടക്ക നില',
+              kn: 'ವಿಷಯ ಸ್ಥಿತಿ',
+              hi: 'सामग्री की स्थिति',
+            })}
+          </Link>
         </div>
       </section>
     </article>
