@@ -62,8 +62,8 @@ export default function Thiruppugazh() {
   return (
     <article className="page thiruppugazh-page">
       <header className="page-head">
-        <h1 lang={locale}>திருப்புகழ் <span className="latin-name" lang="en">· Thiruppugazh</span></h1>
-        <p lang={locale}>
+        <h1 lang="ta">திருப்புகழ் <span className="latin-name" lang="en">· Thiruppugazh</span></h1>
+        <p lang={uiLocale}>
           {ui(
             `அருணகிரிநாதர் அருளிய திருப்புகழின் 1–${THIRUPPUGAZH_REFERENCE_CORPUS_SIZE} பாடல்கள் கொண்ட மூல-குறிப்பு வரம்பில், தற்போது ${thiruppugazh.length} பதிவுகள் மட்டுமே தனிப்பட்ட மூல இணைப்புடன் சரிபார்க்கப்பட்டுள்ளன.`,
             `Within the 1–${THIRUPPUGAZH_REFERENCE_CORPUS_SIZE} source-reference corpus for Arunagirinathar's Thiruppugazh, only ${thiruppugazh.length} records are currently individually source-linked in this application.`,
@@ -77,7 +77,7 @@ export default function Thiruppugazh() {
 
       <section className="corpus-summary" aria-labelledby="corpus-summary-title">
         <div>
-          <p className="eyebrow" id="corpus-summary-title" lang={locale}>
+          <p className="eyebrow" id="corpus-summary-title" lang={uiLocale}>
             {ui(
               'வெளியீட்டு உண்மை நிலை',
               'Publication truth',
@@ -87,7 +87,7 @@ export default function Thiruppugazh() {
               'प्रकाशन की वास्तविक स्थिति',
             )}
           </p>
-          <p lang={locale}>
+          <p lang={uiLocale}>
             {ui(
               'முழு 1,326 பாடல்களும் இத்தளத்தில் வெளியிடப்பட்டதாக இந்த எண் பொருளல்ல. உரிமை மற்றும் பதிப்பு சரிபார்ப்பு முடிந்த பதிவுகள் மட்டுமே திறக்கப்படும்.',
               'The 1,326 reference count does not mean all song texts are published here. Only records that pass source and publication checks are opened as catalogue entries.',
@@ -99,17 +99,17 @@ export default function Thiruppugazh() {
           </p>
         </div>
         <dl className="corpus-counts">
-          <div><dt lang={locale}>{ui('மூல இணைப்புள்ள பதிவுகள்', 'Source-linked records', 'మూలంతో అనుసంధానమైన రికార్డులు', 'ഉറവിടവുമായി ബന്ധിപ്പിച്ച രേഖകൾ', 'ಮೂಲಕ್ಕೆ ಸಂಪರ್ಕಿಸಿದ ದಾಖಲೆಗಳು', 'स्रोत से जुड़े अभिलेख')}</dt><dd>{thiruppugazh.length}</dd></div>
-          <div><dt lang={locale}>{ui('குறிப்பு பாடல் வரம்பு', 'Reference corpus', 'సూచన కార్పస్', 'റഫറൻസ് കോർപ്പസ്', 'ಉಲ್ಲೇಖ ಕಾರ್ಪಸ್', 'संदर्भ कॉर्पस')}</dt><dd>{THIRUPPUGAZH_REFERENCE_CORPUS_SIZE}</dd></div>
-          <div><dt lang={locale}>{ui('முழு மூல உரை வெளியீடு', 'Canonical texts published', 'ప్రామాణిక పాఠాలు ప్రచురించబడ్డవి', 'കാനോനിക്കൽ പാഠങ്ങൾ പ്രസിദ്ധീകരിച്ചത്', 'ಕ್ಯಾನಾನಿಕಲ್ ಪಠ್ಯಗಳು ಪ್ರಕಟಿತ', 'प्रामाणिक पाठ प्रकाशित')}</dt><dd>{publishedCanonicalTextCount}</dd></div>
-          <div><dt lang={locale}>{ui('அங்கீகரிக்கப்பட்ட ஒலி', 'Approved audio', 'ఆమోదిత ఆడియో', 'അംഗീകരിച്ച ഓഡിയോ', 'ಅನುಮೋದಿತ ಆಡಿಯೋ', 'स्वीकृत ऑडियो')}</dt><dd>{approvedAudioCount}</dd></div>
+          <div><dt lang={uiLocale}>{ui('மூல இணைப்புள்ள பதிவுகள்', 'Source-linked records', 'మూలంతో అనుసంధానమైన రికార్డులు', 'ഉറവിടവുമായി ബന്ധിപ്പിച്ച രേഖകൾ', 'ಮೂಲಕ್ಕೆ ಸಂಪರ್ಕಿಸಿದ ದಾಖಲೆಗಳು', 'स्रोत से जुड़े अभिलेख')}</dt><dd>{thiruppugazh.length}</dd></div>
+          <div><dt lang={uiLocale}>{ui('குறிப்பு பாடல் வரம்பு', 'Reference corpus', 'సూచన కార్పస్', 'റഫറൻസ് കോർപ്പസ്', 'ಉಲ್ಲೇಖ ಕಾರ್ಪಸ್', 'संदर्भ कॉर्पस')}</dt><dd>{THIRUPPUGAZH_REFERENCE_CORPUS_SIZE}</dd></div>
+          <div><dt lang={uiLocale}>{ui('முழு மூல உரை வெளியீடு', 'Canonical texts published', 'ప్రామాణిక పాఠాలు ప్రచురించబడ్డవి', 'കാനോനിക്കൽ പാഠങ്ങൾ പ്രസിദ്ധീകരിച്ചത്', 'ಕ್ಯಾನಾನಿಕಲ್ ಪಠ್ಯಗಳು ಪ್ರಕಟಿತ', 'प्रामाणिक पाठ प्रकाशित')}</dt><dd>{publishedCanonicalTextCount}</dd></div>
+          <div><dt lang={uiLocale}>{ui('அங்கீகரிக்கப்பட்ட ஒலி', 'Approved audio', 'ఆమోదిత ఆడియో', 'അംഗീകരിച്ച ഓഡിയോ', 'ಅನುಮೋದಿತ ಆಡಿಯೋ', 'स्वीकृत ऑडियो')}</dt><dd>{approvedAudioCount}</dd></div>
         </dl>
       </section>
 
       <section className="corpus-parts" aria-labelledby="corpus-parts-title">
         <div className="section-heading">
-          <h2 id="corpus-parts-title" lang={locale}>{ui('மூலப் பகுதி வரைபடம்', 'Source-part map', 'మూల భాగాల మ్యాప్', 'ഉറവിട ഭാഗങ്ങളുടെ മാപ്പ്', 'ಮೂಲ ಭಾಗಗಳ ನಕ್ಷೆ', 'स्रोत-भाग मानचित्र')}</h2>
-          <p lang={locale}>{ui('நான்கு Project Madurai பகுதிகளும் தற்போது குறிப்பு மற்றும் ஒப்பீட்டு பயன்பாட்டிற்கே.', 'All four Project Madurai parts are currently reference-only for source comparison and coverage.', 'నాలుగు Project Madurai భాగాలు ప్రస్తుతం మూలాల పోలిక మరియు కవరేజ్ కోసం సూచన ప్రయోజనాలకే ఉపయోగించబడుతున్నాయి.', 'നാല് Project Madurai ഭാഗങ്ങളും നിലവിൽ ഉറവിട താരതമ്യത്തിനും കവറേജ് പരിശോധനയ്ക്കുമുള്ള റഫറൻസായി മാത്രമാണ് ഉപയോഗിക്കുന്നത്.', 'ನಾಲ್ಕು Project Madurai ಭಾಗಗಳೂ ಪ್ರಸ್ತುತ ಮೂಲ ಹೋಲಿಕೆ ಮತ್ತು ವ್ಯಾಪ್ತಿ ಪರಿಶೀಲನೆಗಾಗಿ ಉಲ್ಲೇಖ ಉದ್ದೇಶಕ್ಕಷ್ಟೇ ಬಳಸಲಾಗುತ್ತಿವೆ.', 'चारों Project Madurai भाग अभी स्रोत तुलना और कवरेज जाँच के लिए केवल संदर्भ के रूप में उपयोग किए जा रहे हैं।')}</p>
+          <h2 id="corpus-parts-title" lang={uiLocale}>{ui('மூலப் பகுதி வரைபடம்', 'Source-part map', 'మూల భాగాల మ్యాప్', 'ഉറവിട ഭാഗങ്ങളുടെ മാപ്പ്', 'ಮೂಲ ಭಾಗಗಳ ನಕ್ಷೆ', 'स्रोत-भाग मानचित्र')}</h2>
+          <p lang={uiLocale}>{ui('நான்கு Project Madurai பகுதிகளும் தற்போது குறிப்பு மற்றும் ஒப்பீட்டு பயன்பாட்டிற்கே.', 'All four Project Madurai parts are currently reference-only for source comparison and coverage.', 'నాలుగు Project Madurai భాగాలు ప్రస్తుతం మూలాల పోలిక మరియు కవరేజ్ కోసం సూచన ప్రయోజనాలకే ఉపయోగించబడుతున్నాయి.', 'നാല് Project Madurai ഭാഗങ്ങളും നിലവിൽ ഉറവിട താരതമ്യത്തിനും കവറേജ് പരിശോധനയ്ക്കുമുള്ള റഫറൻസായി മാത്രമാണ് ഉപയോഗിക്കുന്നത്.', 'ನಾಲ್ಕು Project Madurai ಭಾಗಗಳೂ ಪ್ರಸ್ತುತ ಮೂಲ ಹೋಲಿಕೆ ಮತ್ತು ವ್ಯಾಪ್ತಿ ಪರಿಶೀಲನೆಗಾಗಿ ಉಲ್ಲೇಖ ಉದ್ದೇಶಕ್ಕಷ್ಟೇ ಬಳಸಲಾಗುತ್ತಿವೆ.', 'चारों Project Madurai भाग अभी स्रोत तुलना और कवरेज जाँच के लिए केवल संदर्भ के रूप में उपयोग किए जा रहे हैं।')}</p>
         </div>
         <div className="corpus-part-grid">
           {THIRUPPUGAZH_CORPUS_PARTS.map((part) => {
@@ -121,8 +121,8 @@ export default function Thiruppugazh() {
               <article className="corpus-part" key={part.id}>
                 <b>{part.label}</b>
                 <span>{part.start}–{part.end}</span>
-                <small lang={locale}>{ui(`${linked} பதிவுகள் இணைக்கப்பட்டுள்ளன`, `${linked} records linked`, `${linked} రికార్డులు అనుసంధానించబడ్డాయి`, `${linked} രേഖകൾ ബന്ധിപ്പിച്ചിട്ടുണ്ട്`, `${linked} ದಾಖಲೆಗಳು ಸಂಪರ್ಕಿಸಲ್ಪಟ್ಟಿವೆ`, `${linked} अभिलेख जुड़े हैं`)}</small>
-                <a href={part.sourceUrl} target="_blank" rel="noreferrer" lang={locale}>
+                <small lang={uiLocale}>{ui(`${linked} பதிவுகள் இணைக்கப்பட்டுள்ளன`, `${linked} records linked`, `${linked} రికార్డులు అనుసంధానించబడ్డాయి`, `${linked} രേഖകൾ ബന്ധിപ്പിച്ചിട്ടുണ്ട്`, `${linked} ದಾಖಲೆಗಳು ಸಂಪರ್ಕಿಸಲ್ಪಟ್ಟಿವೆ`, `${linked} अभिलेख जुड़े हैं`)}</small>
+                <a href={part.sourceUrl} target="_blank" rel="noreferrer" lang={uiLocale}>
                   {ui('மூலத்தை காண்க', 'View source', 'మూలాన్ని చూడండి', 'ഉറവിടം കാണുക', 'ಮೂಲವನ್ನು ನೋಡಿ', 'स्रोत देखें')}
                 </a>
               </article>
@@ -133,12 +133,12 @@ export default function Thiruppugazh() {
 
       <section className="catalog-controls" aria-labelledby="catalog-title">
         <div className="section-heading">
-          <h2 id="catalog-title" lang={locale}>{ui('சரிபார்க்கப்பட்ட பட்டியல்', 'Verified catalogue', 'ధృవీకరించిన కాటలాగ్', 'സ്ഥിരീകരിച്ച കാറ്റലോഗ്', 'ಪರಿಶೀಲಿತ ಕ್ಯಾಟಲಾಗ್', 'सत्यापित कैटलॉग')}</h2>
-          <p lang={locale}>{ui('தமிழ் தொடக்கச் சொல் அல்லது பாடல் எண்ணால் தேடலாம்.', 'Search by Tamil opening words or source song number.', 'తమిళ ప్రారంభ పదాలు లేదా మూల పాట సంఖ్యతో వెతకండి.', 'തമിഴ് ആരംഭ വാക്കുകളോ ഉറവിട ഗാന നമ്പറോ ഉപയോഗിച്ച് തിരയുക.', 'ತಮಿಳು ಆರಂಭ ಪದಗಳು ಅಥವಾ ಮೂಲ ಹಾಡಿನ ಸಂಖ್ಯೆಯಿಂದ ಹುಡುಕಿ.', 'तमिल आरंभिक शब्दों या स्रोत गीत संख्या से खोजें।')}</p>
+          <h2 id="catalog-title" lang={uiLocale}>{ui('சரிபார்க்கப்பட்ட பட்டியல்', 'Verified catalogue', 'ధృవీకరించిన కాటలాగ్', 'സ്ഥിരീകരിച്ച കാറ്റലോഗ്', 'ಪರಿಶೀಲಿತ ಕ್ಯಾಟಲಾಗ್', 'सत्यापित कैटलॉग')}</h2>
+          <p lang={uiLocale}>{ui('தமிழ் தொடக்கச் சொல் அல்லது பாடல் எண்ணால் தேடலாம்.', 'Search by Tamil opening words or source song number.', 'తమిళ ప్రారంభ పదాలు లేదా మూల పాట సంఖ్యతో వెతకండి.', 'തമിഴ് ആരംഭ വാക്കുകളോ ഉറവിട ഗാന നമ്പറോ ഉപയോഗിച്ച് തിരയുക.', 'ತಮಿಳು ಆರಂಭ ಪದಗಳು ಅಥವಾ ಮೂಲ ಹಾಡಿನ ಸಂಖ್ಯೆಯಿಂದ ಹುಡುಕಿ.', 'तमिल आरंभिक शब्दों या स्रोत गीत संख्या से खोजें।')}</p>
         </div>
         <div className="catalog-filter-row">
           <label>
-            <span lang={locale}>{ui('திருப்புகழ் தேடல்', 'Search Thiruppugazh', 'తిరుప్పుగళ్‌లో వెతకండి', 'തിരുപ്പുകഴിൽ തിരയുക', 'ತಿರುಪ್ಪುಗ಴್‌ನಲ್ಲಿ ಹುಡುಕಿ', 'तिरुप्पुगऴ खोजें')}</span>
+            <span lang={uiLocale}>{ui('திருப்புகழ் தேடல்', 'Search Thiruppugazh', 'తిరుప్పుగళ్‌లో వెతకండి', 'തിരുപ്പുകഴിൽ തിരയുക', 'ತಿರುಪ್ಪುಗ಴್‌ನಲ್ಲಿ ಹುಡುಕಿ', 'तिरुप्पुगऴ खोजें')}</span>
             <input
               type="search"
               value={query}
@@ -147,7 +147,7 @@ export default function Thiruppugazh() {
             />
           </label>
           <label>
-            <span lang={locale}>{ui('மூல பகுதி', 'Source part', 'మూల భాగం', 'ഉറവിട ഭാഗം', 'ಮೂಲ ಭಾಗ', 'स्रोत भाग')}</span>
+            <span lang={uiLocale}>{ui('மூல பகுதி', 'Source part', 'మూల భాగం', 'ഉറവിട ഭാഗം', 'ಮೂಲ ಭಾಗ', 'स्रोत भाग')}</span>
             <select value={partFilter} onChange={(event) => setPartFilter(event.target.value)}>
               <option value="all">{ui('அனைத்து பகுதிகள்', 'All parts', 'అన్ని భాగాలు', 'എല്ലാ ഭാഗങ്ങളും', 'ಎಲ್ಲಾ ಭಾಗಗಳು', 'सभी भाग')}</option>
               {THIRUPPUGAZH_CORPUS_PARTS.map((part) => (
@@ -156,7 +156,7 @@ export default function Thiruppugazh() {
             </select>
           </label>
         </div>
-        <p className="catalog-result-count" aria-live="polite" lang={locale}>
+        <p className="catalog-result-count" aria-live="polite" lang={uiLocale}>
           {ui(`காட்டப்படுவது ${rows.length} / ${thiruppugazh.length}`, `Showing ${rows.length} / ${thiruppugazh.length}`, `${rows.length} / ${thiruppugazh.length} చూపబడుతున్నాయి`, `${rows.length} / ${thiruppugazh.length} കാണിക്കുന്നു`, `${rows.length} / ${thiruppugazh.length} ತೋರಿಸಲಾಗುತ್ತಿದೆ`, `${rows.length} / ${thiruppugazh.length} दिखाए जा रहे हैं`)}
         </p>
       </section>
@@ -177,7 +177,7 @@ export default function Thiruppugazh() {
           ))}
         </ul>
       ) : (
-        <p className="catalog-empty" role="status" lang={locale}>
+        <p className="catalog-empty" role="status" lang={uiLocale}>
           {ui('இந்த வடிகட்டலில் சரிபார்க்கப்பட்ட பதிவு இல்லை. இத்தளம் காணாமல் உள்ள பாடலை உருவாக்காது.', 'No verified record matches this filter. The site will not invent a missing song entry.', 'ఈ ఫిల్టర్‌కు సరిపడే ధృవీకరించిన రికార్డు లేదు. కనిపించని పాట రికార్డును ఈ సైట్ కల్పించదు.', 'ഈ ഫിൽറ്ററുമായി പൊരുത്തപ്പെടുന്ന സ്ഥിരീകരിച്ച രേഖയില്ല. ഇല്ലാത്ത ഗാന എൻട്രി ഈ സൈറ്റ് സൃഷ്ടിക്കില്ല.', 'ಈ ಫಿಲ್ಟರ್‌ಗೆ ಹೊಂದುವ ಪರಿಶೀಲಿತ ದಾಖಲೆ ಇಲ್ಲ. ಕಾಣೆಯಾದ ಹಾಡಿನ ದಾಖಲೆಯನ್ನು ಈ ತಾಣ ಕಲ್ಪಿಸದು.', 'इस फ़िल्टर से मेल खाने वाला कोई सत्यापित अभिलेख नहीं है। यह साइट किसी अनुपस्थित गीत प्रविष्टि को गढ़ेगी नहीं।')}
         </p>
       )}
