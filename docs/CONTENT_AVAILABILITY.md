@@ -5,21 +5,21 @@ extracted registries, not asserted by hand.
 
 - Source archive: `OmSaravanaBhava_R6_FINAL_MANUS_MASTER_SOURCE.zip`
 - SHA-256: `3477dd375e9545bd51482f9cacabe851adc6a841cdf111ffd5eb408f76c26585` (verified)
-- Generated: 2026-09-04T12:35:53.412Z
+- Generated: 2026-09-25T12:44:06.461Z
 
 ## Summary
 
 | Domain | Records | Publishable text | Notes |
 |---|---:|---:|---|
-| Temples | 376 | n/a | descriptive fields largely empty |
-| Arupadai Veedu | 6 | n/a | all six classified correctly |
-| Thiruppugazh | 12 | 0 | source-linked, verse body not re-imported |
-| Works (registry) | 10 | 0 | metadata only |
-| Devotional works (Phase 2S) | 11 | 0 | rights unresolved |
-| Kumarastavam | 1 | 0 | republication not permitted |
+| Temples | 376 | n/a | field coverage reported below |
+| Arupadai Veedu | 6 | n/a | classified pilgrimage records |
+| Thiruppugazh | 1326 | 0 | source-linked; canonical verse body not imported |
+| Works (registry) | 10 | 0 | metadata registry; no governed full text field |
+| Devotional works (Phase 2S) | 11 | 0 | rights-governed metadata |
+| Kumarastavam | 1 | 0 | republication state remains governed |
 | Namavali | 0 | 0 | ZERO_PUBLISHABLE_COLLECTIONS |
-| Sacred names | 7 | 0 | |
-| Source ledger | 11 | n/a | |
+| Sacred names | 7 | 0 | meaning count shown as publishable text |
+| Source ledger | 14 | n/a | |
 
 ## Temples — field coverage
 
@@ -30,40 +30,38 @@ extracted registries, not asserted by hand.
 | Architecture | 0 / 376 | 0% |
 | Sthala purana | 0 / 376 | 0% |
 | Visitor information | 0 / 376 | 0% |
-| Official website | 0 / 376 | 0% |
+| Official website | 6 / 376 | 2% |
 | District | 0 / 376 | 0% |
 | State | 360 / 376 | 96% |
 
-All 376 temple records carry a canonical Tamil name, an id and a source
-reference. The descriptive and location fields above are the gap.
+376 / 376 temple records carry the minimum governed identity set (id, canonical Tamil name, and at least one source reference or URL).
+The field-coverage table above is the current descriptive/location gap statement.
 
 ## Thiruppugazh — layer states
 
-- Canonical text: INHERITED_SOURCE_LINKED_TEXT_NOT_REIMPORTED (12)
-- Meaning: NOT_PUBLISHED_PHASE2H (12)
-- Transliteration: NOT_PUBLISHED_PHASE2H (12)
-- Audio: NO_APPROVED_AUDIO (12)
+- Canonical text: SOURCE_LINKED_TEXT_NOT_IMPORTED (1314), INHERITED_SOURCE_LINKED_TEXT_NOT_REIMPORTED (12)
+- Meaning: NOT_PUBLISHED (1314), NOT_PUBLISHED_PHASE2H (12)
+- Transliteration: NOT_PUBLISHED (1314), NOT_PUBLISHED_PHASE2H (12)
+- Audio: NO_APPROVED_AUDIO (1326)
 
-The registry identifies the source edition for each song but the verse text
-itself was never re-imported. The site therefore publishes the record, its
-edition and its state, and no verse text.
+The registry identifies the source edition for each song but no canonical
+verse body is currently present. The site therefore publishes record/source
+metadata and state without inventing or reconstructing verse text.
 
 ## What is needed to close the gaps
 
-Listed in the order that would most improve the site.
+Listed in the order that would most improve the site; counts above are the authority.
 
-1. **Thiruppugazh verse text** — a rights-cleared edition with per-song
-   mapping to `source_numbering`. Without it the reading experience cannot
-   exist. Project Madurai Part I is the edition already referenced.
-2. **Temple coordinates** — a verified gazetteer keyed to
-   `canonical_temple_id`. Unlocks maps and pilgrimage routing.
-3. **Temple visitor information and timings** — from HR&CE or each temple
-   authority. Must be attributable; timings are safety-relevant.
-4. **Temple history and architecture** — cited secondary scholarship.
-5. **Audio** — owned or licensed recordings with provenance. The audio
-   registry is currently empty.
-6. **Namavali** — an identifiable edition with clear rights. The registry
-   explicitly refuses names taken from posters or unreviewed web lists.
+1. **Thiruppugazh verse text** — rights-cleared canonical text for every record
+   still missing it, mapped to `source_numbering`.
+2. **Temple coordinates** — verified coordinates keyed to the canonical temple id
+   for every record still missing them.
+3. **Temple visitor information and timings** — attributable current information
+   from HR&CE or the relevant temple authority.
+4. **Temple history and architecture** — cited secondary scholarship for missing fields.
+5. **Audio** — owned or licensed recordings with explicit provenance and state.
+6. **Namavali** — an identifiable edition with clear rights; unreviewed web/poster
+   lists remain intentionally excluded.
 
 ## Rules for any future import
 
@@ -74,4 +72,3 @@ Listed in the order that would most improve the site.
   separate fields and are never merged.
 - `tests/content-integrity.test.ts` fails if text appears while the record
   still declares a not-imported or rights-uncertain state.
-
