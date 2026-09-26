@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       expected_sha:
-        description: Exact build/r2-10-sacred-visuals commit SHA approved for preview
+        description: Exact build/r2-13-product-completion commit SHA approved for preview
         required: true
         type: string
 
@@ -30,7 +30,7 @@ jobs:
         run: |
           set -euo pipefail
           test "${GITHUB_REPOSITORY}" = "ssakthivel02/omsaravanabhava-hitech"
-          test "${GITHUB_REF_NAME}" = "build/r2-10-sacred-visuals"
+          test "${GITHUB_REF_NAME}" = "build/r2-13-product-completion"
           test "${GITHUB_SHA}" = "${{ inputs.expected_sha }}"
           echo "Exact preview candidate: ${GITHUB_SHA}"
 
@@ -118,7 +118,7 @@ jobs:
       - name: Record immutable deployment identity
         if: success()
         run: |
-          echo "### OmSaravanaBhava Hi-Tech R2.10 preview deployed" >> "$GITHUB_STEP_SUMMARY"
+          echo "### OmSaravanaBhava Hi-Tech R2.13 preview deployed" >> "$GITHUB_STEP_SUMMARY"
           echo "- Repository: \`${GITHUB_REPOSITORY}\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Branch: \`${GITHUB_REF_NAME}\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Commit: \`${GITHUB_SHA}\`" >> "$GITHUB_STEP_SUMMARY"
