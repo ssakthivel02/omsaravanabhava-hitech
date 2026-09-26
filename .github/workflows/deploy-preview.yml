@@ -38,8 +38,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test -s public/images/home-murugan-valli-deivanai-1920.webp
-          test -s public/images/home-murugan-valli-deivanai-mobile.webp
+          desktop_hero="public/images/home-murugan-valli-deivanai-1920.webp"
+          mobile_hero="public/images/home-murugan-valli-deivanai-mobile.webp"
+          approved_desktop_bytes=245832
+          approved_desktop_sha256="255f406451e5cafbec5eb6e541cbae0d0ab37f7ce155413e000587519bede461"
+
+          test -s "$desktop_hero"
+          test -s "$mobile_hero"
+          test "$(stat -c%s "$desktop_hero")" -eq "$approved_desktop_bytes"
+          echo "$approved_desktop_sha256  $desktop_hero" | sha256sum -c -
 
       - uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
         with:
@@ -76,8 +83,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test -s dist/images/home-murugan-valli-deivanai-1920.webp
-          test -s dist/images/home-murugan-valli-deivanai-mobile.webp
+          desktop_hero="dist/images/home-murugan-valli-deivanai-1920.webp"
+          mobile_hero="dist/images/home-murugan-valli-deivanai-mobile.webp"
+          approved_desktop_bytes=245832
+          approved_desktop_sha256="255f406451e5cafbec5eb6e541cbae0d0ab37f7ce155413e000587519bede461"
+
+          test -s "$desktop_hero"
+          test -s "$mobile_hero"
+          test "$(stat -c%s "$desktop_hero")" -eq "$approved_desktop_bytes"
+          echo "$approved_desktop_sha256  $desktop_hero" | sha256sum -c -
 
       - name: Assert dist contains application assets only
         shell: bash
