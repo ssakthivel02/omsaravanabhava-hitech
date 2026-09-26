@@ -24,7 +24,7 @@ Deploy only from:
 
 at the exact approved candidate Git SHA on branch:
 
-`build/native-r6-flagship`
+`build/r2-13-product-completion`
 
 Use the repository-owned preview configuration only:
 
