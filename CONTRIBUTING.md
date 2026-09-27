@@ -17,7 +17,7 @@ Do not develop application features directly on `main`.
 
 Preferred active build branch:
 
-`build/native-r6-flagship`
+`build/r2-13-product-completion`
 
 Use pull requests for promotion into `main`.
 
