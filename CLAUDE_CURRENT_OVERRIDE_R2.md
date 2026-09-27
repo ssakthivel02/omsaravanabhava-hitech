@@ -1,8 +1,17 @@
-# Claude Current Override — OmSaravanaBhava Hi-Tech R2
+# Claude Current Override — OmSaravanaBhava Hi-Tech R2.13
 
 Read this file **before** `CLAUDE_OMSARAVANABHAVA_HITECH_MASTER_BUILD_PROMPT.md`.
 
 If any older build instruction conflicts with this file or `CURRENT_PROJECT_AUTHORITY.md`, this current override wins.
+
+## R2.13 controlled-continuation authority
+
+- Active candidate branch: `build/r2-13-product-completion`.
+- Before any write, re-read the live branch HEAD, `main`, open PRs, recent branch movement, and running/queued Actions; stop on overlap rather than duplicating another task.
+- The historical R2 defect lists below are retained as background. Do **not** restart completed work unless current exact-head evidence shows a real regression or unresolved gap.
+- Generic interface locales are `ta`, `en`, `te`, `ml`, `kn`, and `hi`.
+- Governed devotional/sacred content remains source-safe Tamil/English unless reviewed translations exist; other UI locales must use truthful controlled fallback rather than fabricated sacred translation.
+- Production and root-domain cutover remain NO-GO until exact-candidate preview/runtime evidence and explicit owner approval are complete.
 
 ## Current architecture
 
