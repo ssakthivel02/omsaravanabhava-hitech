@@ -9,7 +9,7 @@ The repository `main` branch is currently unprotected. Until repository rules/br
 For the application phase, prefer:
 
 - `main` = reviewed release integration branch;
-- feature/build branch such as `build/native-r6-flagship` = active candidate;
+- active candidate branch = `build/r2-13-product-completion`;
 - changes merged by PR;
 - production deploy uses exact approved `main` SHA only after owner release approval.
 
