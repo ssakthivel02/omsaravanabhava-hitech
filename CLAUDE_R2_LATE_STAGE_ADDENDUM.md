@@ -6,11 +6,11 @@ This addendum does not change application authority or authorize production. It 
 
 ## Repository landing zone now ready
 
-The real application branch now exists:
+The active application branch is:
 
-`build/native-r6-flagship`
+`build/r2-13-product-completion`
 
-Use it for the R2 clean application candidate when GitHub write access is available.
+Use it for the active R2.13 clean application candidate when GitHub write access is available.
 
 Do not develop application features directly on `main`.
 
