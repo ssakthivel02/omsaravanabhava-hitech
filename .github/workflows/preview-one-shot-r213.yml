@@ -1,0 +1,185 @@
+name: One-shot deploy exact R2.13 isolated preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/preview-one-shot-r213.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: omsaravanabhava-hitech-preview-deploy
+  cancel-in-progress: false
+
+env:
+  AUTHORITATIVE_R2_13_SHA: bfa15b1411e444850e7a0a939346d8ee2d9a2385
+  AUTHORITATIVE_R2_13_BRANCH: build/r2-13-product-completion
+
+jobs:
+  deploy-preview:
+    name: One-shot exact R2.13 preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Verify Cloudflare deployment credentials are configured
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          test -n "${CLOUDFLARE_API_TOKEN}" || { echo "::error::Missing CLOUDFLARE_API_TOKEN"; exit 1; }
+          test -n "${CLOUDFLARE_ACCOUNT_ID}" || { echo "::error::Missing CLOUDFLARE_ACCOUNT_ID"; exit 1; }
+
+      - name: Verify Cloudflare token can access Workers Scripts API
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          status=$(curl -sS -o /tmp/cf.json -w '%{http_code}' \
+            "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/scripts" \
+            -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+            -H 'Content-Type: application/json')
+          if [ "${status}" != "200" ]; then
+            echo "::error::Cloudflare Workers Scripts API preflight failed (HTTP ${status})"
+            cat /tmp/cf.json
+            exit 1
+          fi
+          node - <<'NODE'
+          const fs = require('fs');
+          const body = JSON.parse(fs.readFileSync('/tmp/cf.json', 'utf8'));
+          if (body.success !== true) process.exit(1);
+          console.log('Cloudflare Workers Scripts API preflight: PASS');
+          NODE
+
+      - name: Checkout authoritative R2.13 branch
+        uses: actions/checkout@v7
+        with:
+          ref: build/r2-13-product-completion
+          fetch-depth: 1
+
+      - name: Verify exact repository, branch and SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REPOSITORY}" = "ssakthivel02/omsaravanabhava-hitech"
+          test "$(git rev-parse HEAD)" = "${AUTHORITATIVE_R2_13_SHA}"
+          test "$(git rev-parse --abbrev-ref HEAD)" = "${AUTHORITATIVE_R2_13_BRANCH}"
+
+      - name: Require approved sacred hero assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          desktop_hero="public/images/home-murugan-valli-deivanai-1920.webp"
+          mobile_hero="public/images/home-murugan-valli-deivanai-mobile.webp"
+          approved_desktop_bytes=245832
+          approved_desktop_sha256="255f406451e5cafbec5eb6e541cbae0d0ab37f7ce155413e000587519bede461"
+          test -s "$desktop_hero"
+          test -s "$mobile_hero"
+          test "$(stat -c%s "$desktop_hero")" -eq "$approved_desktop_bytes"
+          echo "$approved_desktop_sha256  $desktop_hero" | sha256sum -c -
+
+      - uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996
+        with:
+          version: 10.4.1
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Verify exact pnpm version
+        run: test "$(pnpm --version)" = "10.4.1"
+
+      - name: Install from frozen lockfile
+        run: pnpm install --frozen-lockfile
+
+      - name: Re-run release safety gates
+        run: |
+          pnpm run typecheck
+          pnpm run lint
+          pnpm run test
+          pnpm run scan:contamination
+
+      - name: Build exact preview artifact from checked-out Git identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          env -u GITHUB_SHA -u GITHUB_REF_NAME DEPLOY_ENV=preview pnpm run build
+
+      - name: Verify immutable release identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const release = JSON.parse(fs.readFileSync('dist/release.json', 'utf8'));
+          const sha = process.env.AUTHORITATIVE_R2_13_SHA;
+          const branch = process.env.AUTHORITATIVE_R2_13_BRANCH;
+          if (release.commit !== sha || release.branch !== branch || release.environment !== 'preview') {
+            console.error(JSON.stringify(release, null, 2));
+            process.exit(1);
+          }
+          console.log(`release identity PASS: ${release.commit} / ${release.branch} / ${release.environment}`);
+          NODE
+
+      - name: Verify PWA assets before upload
+        run: node scripts/check-pwa-installability.mjs
+
+      - name: Verify sacred hero assets reached dist
+        shell: bash
+        run: |
+          set -euo pipefail
+          desktop_hero="dist/images/home-murugan-valli-deivanai-1920.webp"
+          mobile_hero="dist/images/home-murugan-valli-deivanai-mobile.webp"
+          approved_desktop_bytes=245832
+          approved_desktop_sha256="255f406451e5cafbec5eb6e541cbae0d0ab37f7ce155413e000587519bede461"
+          test -s "$desktop_hero"
+          test -s "$mobile_hero"
+          test "$(stat -c%s "$desktop_hero")" -eq "$approved_desktop_bytes"
+          echo "$approved_desktop_sha256  $desktop_hero" | sha256sum -c -
+
+      - name: Assert dist contains application assets only
+        shell: bash
+        run: |
+          set -euo pipefail
+          forbidden=("dist/.wrangler" "dist/wrangler.toml" "dist/wrangler.preview.jsonc" "dist/PREVIEW_AUTHORITY.txt" "dist/INTEGRITY_MANIFEST_SHA256.txt")
+          for path in "${forbidden[@]}"; do
+            if test -e "$path"; then
+              echo "::error::Forbidden deployment metadata found in static asset root: $path"
+              exit 1
+            fi
+          done
+
+      - name: Assert preview config cannot bind production domain
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '"name": "omsaravanabhava-hitech-preview"' wrangler.preview.jsonc
+          grep -q '"workers_dev": true' wrangler.preview.jsonc
+          grep -q '"directory": "./dist"' wrangler.preview.jsonc
+          if grep -Eiq 'omsaravanabhava\.org|custom_domain|routes?[[:space:]]*[:=]' wrangler.preview.jsonc; then
+            echo "::error::Preview config contains a production/custom-domain binding"
+            exit 1
+          fi
+
+      - name: Deploy only isolated Workers Static Assets preview
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm dlx wrangler@4.129.0 deploy --config wrangler.preview.jsonc
+
+      - name: Record immutable deployment identity
+        if: success()
+        run: |
+          echo "### OmSaravanaBhava Hi-Tech R2.13 one-shot preview deployed" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`${AUTHORITATIVE_R2_13_SHA}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Branch: \`${AUTHORITATIVE_R2_13_BRANCH}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Worker: \`omsaravanabhava-hitech-preview\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Environment: \`preview\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Production/root-domain routing: unchanged" >> "$GITHUB_STEP_SUMMARY"
