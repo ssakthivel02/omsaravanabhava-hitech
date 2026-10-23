@@ -71,3 +71,14 @@ Re-examined all eleven number values flagged as repeated in the stored 1,331-occ
 **Actionable parser rule:** A regex hit alone MUST NOT establish a song boundary. Candidate headings require a page-layout/line-position check, a credible continuation/boundary, and a verse-body comparison. Same-page and distant recurrence candidates must remain in a manual-exception ledger instead of generating duplicate canonical IDs. Preserve source-side numbering; NEVER auto-shift songs to fill a missing number.
 
 **Evidence limitation:** Text-layer Tamil glyph corruption prevents claiming corrected verses, confirmed duplicates, or a published text count. This update is documentation only; follow source-rights and production HOLD gates before importing any content.
+
+## 2026-10-23 direct PDF text-layer follow-up — suspected misread numbers
+
+Inspected text-layer excerpts of the owner-provided 2,191-page PDF at the source boundaries. These are **observations, not approved textual emendations**:
+
+- **1141 candidate, PDF p.1894:** following the preceding verse, the extracted heading is `பாடல் 114த ( மபாதுப்பாடல்கள் )`, followed by its own rhythm and lines; PDF p.1896 begins heading 1142. The non-digit `த` in `114த` may reflect embedded-font mapping/text-extraction corruption. Record as **probable heading-recognition failure**, requiring a rendered page check and comparison with a second independent edition.
+- **1199 candidate, PDF p.2000:** after heading 1198 (p.1998), the next PDF heading is literally extracted as `பாடல் 1100 ( மபாதுப்பாடல்கள் )`; p.2001 continues its song body. The apparent repeated 1100 between 1198 and 1200 may be a source printing/encoding numbering anomaly. Treat as **1199 candidate / displayed 1100**, not an automatically corrected 1199.
+- **205/206 candidate, PDF pp.348–350:** PDF p.348 and p.349 both show heading 205 with the same raga/tala description, and their following extracted verse text overlaps; p.351 begins heading 207. Treat as a **potential duplicated body rather than evidence for 206** until comparison of complete verse lines and any intervening pages.
+- **92/93, 101/102, 202/203:** duplicate predecessor headings occur at the expected boundaries. Require full-body matching rather than numeric guessing.
+
+**Evidence method:** direct PyMuPDF text-layer reading around pages 159–162, 173–176, 343–351, 1893–1896, and 1998–2001. Extracted Tamil glyphs are visibly corrupted. No wholesale source extraction, copyrighted modern-edition content, or owner's PDF is committed. A readable page-image/second-witness inspection remains required, and the count of published canonical songs is unchanged.
