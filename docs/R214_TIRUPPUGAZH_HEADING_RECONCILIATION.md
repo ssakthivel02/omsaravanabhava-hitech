@@ -32,3 +32,20 @@ Automated local scan used PyMuPDF text-layer extraction and a heading detector t
 ## Release safety
 
 Audit-only branch from `bfa15b1411e444850e7a0a939346d8ee2d9a2385`. No changes to deployment, Cloudflare, database, existing PR #4, or production. R2.13 preview remains the reference baseline.
+
+## 2026-10-23 follow-up — page-boundary evidence (text-layer only)
+
+A subsequent independent review of the owner-provided 2,191-page PDF and the previously generated heading index recorded **1,331 detected heading occurrences** and **1,320 unique song numbers**. These counts describe the extraction, **not** a count of verified or publishable verses.
+
+| Undetected reference number | Immediately preceding heading occurrence(s), PDF page(s) | Following heading, PDF page | Editorial status |
+|---|---|---|---|
+| 93 | 92 on 159 and 160 | 94 on 162 | Number gap coincides with repeated 92; do not renumber without verse-level comparison |
+| 102 | 101 on 173 and 174 | 103 on 176 | Number gap coincides with repeated 101; do not renumber without verse-level comparison |
+| 203 | 202 on 343 and 344 | 204 on 346 | Number gap coincides with repeated 202; do not renumber without verse-level comparison |
+| 206 | 205 on 348 and 349 | 207 on 351 | Number gap coincides with repeated 205; do not renumber without verse-level comparison |
+| 1141 | 1140 on 1892 | 1142 on 1896 | Heading not matched in intervening pages; presence/identity of verse unverified |
+| 1199 | 1198 on 1998 | 1200 on 2001 | Heading not matched in intervening pages; presence/identity of verse unverified |
+
+**Inspection method and limits:** The page numbers above are 1-based PDF page indexes. PyMuPDF extracted Tamil text has character-corruption artefacts; consequently heading detection is not trustworthy enough to certify a verse or correct the source numbering. Page images and full verse bodies must be compared against a second witness. The Project Madurai reference editions for this review are Part I (1–330; pmuni0180.html) and Part IV (1001–1326; pmuni0191.html); both display the condition that the electronic text header be preserved when redistributed.
+
+**Hold points:** Do not commit owner-supplied PDF bytes or its wholesale extracted text. Do not synthesize verses, silently renumber source headings, promote reference-record counts to published counts, or deploy production from this documentation-only change. Next review: capture original heading image plus initial and final verse lines for each ambiguous occurrence, compare to independent edition witnesses, then seek source-rights clearance before publication.
