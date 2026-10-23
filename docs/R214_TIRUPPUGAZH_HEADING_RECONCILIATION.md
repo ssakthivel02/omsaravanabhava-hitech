@@ -105,3 +105,22 @@ A machine check against the **actual saved** `r214_pdf_heading_index.json` found
 The newly flagged six numbers and six repeat values may be alternate heading formats or parser artifacts. Neither absence nor duplication of an actual song has been established. The count assertions used above must NOT be used as a release or publication approval. The 1,320/6/11 audit may be correct for a **different** revised extraction, but that extraction must be located and its input, parser version, and content hash preserved before reconciliation.
 
 **Required corrective action:** independently rerun extraction from the owner PDF with the exact parser version and retain hashes for PDF and output; diff both heading inventories at the occurrence level; inspect page images and verse bodies for all exceptions; then apply the four-state R2 publication contract. Do not auto-renumber, fabricate canonical verses, or publish any of these exception records.
+
+## 2026-10-23 reproducible extraction reconciliation
+
+The saved index discrepancy is now **explained** by the parser, rather than by six missing songs. A new reproducible parser has been committed at `scripts/audit_r214_headings.py`. It was executed against the owner-provided 2,191-page PDF with SHA-256 `d4133d7e32625f49d5184d624f07ae131639f1d8d9d817c91d007ad53ee16e9f`.
+
+| Metric | Old permissive saved index | New heading-constrained extraction |
+|---|---:|---:|
+| Occurrences | 1,331 | **1,330** |
+| Unique numeric song headings | 1,314 | **1,320** |
+| Undetected numeric headings | 12 | **6** |
+| Repeated numeric-heading groups | 17 | **10** |
+
+The old extraction interpreted spaced-number headings as shorter song numbers: `9 7` (97, p.167), `23 1` (231, p.387), `49 0` (490, p.823), `55 7` (557, p.939), `118 0` (1180, p.1964), and `124 0` (1240, p.2061). The new parser normalizes embedded spaces only inside a heading-number field and includes special invocation headings 1–5.
+
+The old parser also misinterpreted `114த` on p.1894 as numeric 114. Requiring the normal `(` delimiter after a numeric heading excludes that false positive. Thus **10**, not 11, numeric-heading groups remain repeated in this parse.
+
+**Still unresolved:** 93, 102, 203, 206, 1141, 1199. A detected numeric heading is only a text-layer observation. In particular, the rendered candidates `114த` and `1100` are not automatically renamed to 1141/1199. The six identities require independent full-verse witness comparison, and publication remains withheld pending rights clearance.
+
+**Reproduction:** install PyMuPDF in an isolated development environment; run `python scripts/audit_r214_headings.py <owner-PDF> --output heading-audit.json`. The PDF itself and output's potentially rights-sensitive excerpts must remain outside the public repository. This audit output contains heading metadata only. Never present heading counts as certified canonical-text publication counts.
