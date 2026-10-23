@@ -86,3 +86,22 @@ Inspected text-layer excerpts of the owner-provided 2,191-page PDF at the source
 ### Rendered-heading confirmation
 
 Rendered crops from the owner PDF confirm that **the page itself visibly prints** `பாடல் 114த` on PDF p.1894 and `பாடல் 1100` on PDF p.2000 (between 1198 and 1200). Therefore these are not solely text-extraction regex misses. The glyph `த` could be an edition-level typo or font/text rendering problem; the precise cause and intended canonical number are still unverified. Retain original displayed values in provenance and keep candidate identities separate pending independent verse-body comparison. The rendered crops are local review artifacts, not committed source images.
+
+## 2026-10-23 critical index-versus-summary discrepancy
+
+A machine check against the **actual saved** `r214_pdf_heading_index.json` found that the earlier audit report does **not** reproduce from this index. Treat all earlier 'only six undetected' and 'only eleven repeated' statements as **method-specific provisional results**, not global completeness evidence.
+
+| Measure | Earlier audit prose | Saved index recount |
+|---|---:|---:|
+| Heading occurrences | 1,331 | 1,331 |
+| Distinct matched numbers | 1,320 | **1,314** |
+| Unmatched reference numbers (1–1326) | 6 | **12** |
+| Repeated number values | 11 | **17** |
+
+**Full saved-index unmatched list:** 93, 97, 102, 203, 206, 231, 490, 557, 1141, 1180, 1199, 1240.
+
+**Full saved-index repeated list:** 9, 23, 49, 55, 72, 92, 101, 114, 118, 124, 202, 205, 349, 801, 920, 922, 1100.
+
+The newly flagged six numbers and six repeat values may be alternate heading formats or parser artifacts. Neither absence nor duplication of an actual song has been established. The count assertions used above must NOT be used as a release or publication approval. The 1,320/6/11 audit may be correct for a **different** revised extraction, but that extraction must be located and its input, parser version, and content hash preserved before reconciliation.
+
+**Required corrective action:** independently rerun extraction from the owner PDF with the exact parser version and retain hashes for PDF and output; diff both heading inventories at the occurrence level; inspect page images and verse bodies for all exceptions; then apply the four-state R2 publication contract. Do not auto-renumber, fabricate canonical verses, or publish any of these exception records.
