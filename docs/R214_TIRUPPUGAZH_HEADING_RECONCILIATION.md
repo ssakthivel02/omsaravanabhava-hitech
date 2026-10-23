@@ -82,3 +82,7 @@ Inspected text-layer excerpts of the owner-provided 2,191-page PDF at the source
 - **92/93, 101/102, 202/203:** duplicate predecessor headings occur at the expected boundaries. Require full-body matching rather than numeric guessing.
 
 **Evidence method:** direct PyMuPDF text-layer reading around pages 159–162, 173–176, 343–351, 1893–1896, and 1998–2001. Extracted Tamil glyphs are visibly corrupted. No wholesale source extraction, copyrighted modern-edition content, or owner's PDF is committed. A readable page-image/second-witness inspection remains required, and the count of published canonical songs is unchanged.
+
+### Rendered-heading confirmation
+
+Rendered crops from the owner PDF confirm that **the page itself visibly prints** `பாடல் 114த` on PDF p.1894 and `பாடல் 1100` on PDF p.2000 (between 1198 and 1200). Therefore these are not solely text-extraction regex misses. The glyph `த` could be an edition-level typo or font/text rendering problem; the precise cause and intended canonical number are still unverified. Retain original displayed values in provenance and keep candidate identities separate pending independent verse-body comparison. The rendered crops are local review artifacts, not committed source images.
