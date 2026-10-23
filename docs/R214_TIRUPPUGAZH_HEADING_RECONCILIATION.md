@@ -49,3 +49,25 @@ A subsequent independent review of the owner-provided 2,191-page PDF and the pre
 **Inspection method and limits:** The page numbers above are 1-based PDF page indexes. PyMuPDF extracted Tamil text has character-corruption artefacts; consequently heading detection is not trustworthy enough to certify a verse or correct the source numbering. Page images and full verse bodies must be compared against a second witness. The Project Madurai reference editions for this review are Part I (1–330; pmuni0180.html) and Part IV (1001–1326; pmuni0191.html); both display the condition that the electronic text header be preserved when redistributed.
 
 **Hold points:** Do not commit owner-supplied PDF bytes or its wholesale extracted text. Do not synthesize verses, silently renumber source headings, promote reference-record counts to published counts, or deploy production from this documentation-only change. Next review: capture original heading image plus initial and final verse lines for each ambiguous occurrence, compare to independent edition witnesses, then seek source-rights clearance before publication.
+
+## 2026-10-23 follow-up — repeated heading occurrence classification
+
+Re-examined all eleven number values flagged as repeated in the stored 1,331-occurrence index against the owner-provided PDF text layer. These are **occurrence locations, not proof of distinct songs or fully legible headings**.
+
+| Number | PDF pages in extracted index | Initial triage |
+|---|---|---|
+| 72 | 124, 124 | Two matches on one page: check double text layer or repeated reference |
+| 92 | 159, 160 | Adjacent page duplicate, preceding undetected 93 |
+| 101 | 173, 174 | Adjacent page duplicate, preceding undetected 102 |
+| 114 | 193, 1894 | Distant recurrence: reject automatic classification as second verse |
+| 202 | 343, 344 | Adjacent page duplicate, preceding undetected 203 |
+| 205 | 348, 349 | Adjacent page duplicate, preceding undetected 206 |
+| 349 | 577, 577 | Two matches on one page: check extraction duplication |
+| 801 | 1338, 1339 | Adjacent page duplicate; inspect page-break continuation |
+| 920 | 1545, 1545 | Two matches on one page: check extraction duplication |
+| 922 | 1549, 1550 | Adjacent page duplicate; inspect page-break continuation |
+| 1100 | 1827, 2000 | Distant recurrence: may be cited within another song or metadata |
+
+**Actionable parser rule:** A regex hit alone MUST NOT establish a song boundary. Candidate headings require a page-layout/line-position check, a credible continuation/boundary, and a verse-body comparison. Same-page and distant recurrence candidates must remain in a manual-exception ledger instead of generating duplicate canonical IDs. Preserve source-side numbering; NEVER auto-shift songs to fill a missing number.
+
+**Evidence limitation:** Text-layer Tamil glyph corruption prevents claiming corrected verses, confirmed duplicates, or a published text count. This update is documentation only; follow source-rights and production HOLD gates before importing any content.
