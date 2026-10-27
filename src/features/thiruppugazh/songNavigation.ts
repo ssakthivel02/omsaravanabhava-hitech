@@ -8,7 +8,7 @@ export function neighboringSongs(
   const position = songs.findIndex((song) => song.id === currentId);
   if (position < 0) return {};
   return {
-    previous: position > 0 ? songs[position - 1] : undefined,
-    next: position + 1 < songs.length ? songs[position + 1] : undefined,
+    ...(position > 0 && songs[position - 1] ? { previous: songs[position - 1] } : {}),
+    ...(position + 1 < songs.length && songs[position + 1] ? { next: songs[position + 1] } : {}),
   };
 }
