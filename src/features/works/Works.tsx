@@ -1,4 +1,5 @@
 import { works, devotionalWorks } from '@/content';
+import { Link } from 'wouter';
 import StateBadge from '@/components/StateBadge';
 import SaveControl from '@/components/SaveControl';
 import { useLocale } from '@/lib/locale';
@@ -166,6 +167,11 @@ export default function Works() {
                     )}
                   </div>
                   <div className="works-entry-actions">
+                    {w.id && devotionalIds.has(w.id) && (
+                      <Link href={`/works/read/${encodeURIComponent(w.id)}`} lang={uiLocale}>
+                        {locale === 'ta' ? 'தமிழில் படிக்க' : 'Read in Tamil'}
+                      </Link>
+                    )}
                     <StateBadge
                       state={
                         'rightsState' in w
