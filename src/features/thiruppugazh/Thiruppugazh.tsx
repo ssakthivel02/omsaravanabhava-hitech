@@ -18,6 +18,7 @@ export default function Thiruppugazh() {
   const [numberError, setNumberError] = useState('');
   const [, setLocation] = useLocation();
   const [partFilter, setPartFilter] = useState('all');
+  const [readableOnly, setReadableOnly] = useState(false);
 
   const ui = (
     ta: string,
@@ -49,7 +50,7 @@ export default function Thiruppugazh() {
       const number = song.sourceNumbering?.number;
       const part = typeof number === 'number' ? corpusPartForSongNumber(number) : undefined;
       const matchesPart = partFilter === 'all' || part?.id === partFilter;
-      if (!matchesPart) return false;
+      if (!matchesPart || (readableOnly && !canPublishCanonicalSong(song))) return false;
       if (!normalized) return true;
       const haystack = [
         song.titleTa,
@@ -62,7 +63,7 @@ export default function Thiruppugazh() {
         .toLocaleLowerCase('ta');
       return haystack.includes(normalized);
     });
-  }, [partFilter, query]);
+  }, [partFilter, query, readableOnly]);
 
   return (
     <article className="page thiruppugazh-page">
@@ -195,6 +196,23 @@ export default function Thiruppugazh() {
             </select>
           </label>
         </div>
+        <label className="catalog-readable-filter">
+          <input
+            type="checkbox"
+            checked={readableOnly}
+            onChange={(event) => setReadableOnly(event.target.checked)}
+          />{' '}
+          <span lang={uiLocale}>
+            {ui(
+              'முழு தமிழ் உரை உள்ள பாடல்கள் மட்டும்',
+              'Only songs with full Tamil text',
+              'పూర్తి తమిళ పాఠం ఉన్న పాటలు మాత్రమే',
+              'പൂർണ്ണ തമിഴ് പാഠമുള്ള ഗാനങ്ങൾ മാത്രം',
+              'ಪೂರ್ಣ ತಮಿಳು ಪಠ್ಯವಿರುವ ಹಾಡುಗಳು ಮಾತ್ರ',
+              'केवल पूर्ण तमिल पाठ वाले गीत',
+            )}
+          </span>
+        </label>
         <p className="catalog-result-count" aria-live="polite" lang={uiLocale}>
           {ui(`காட்டப்படுவது ${rows.length} / ${thiruppugazh.length}`, `Showing ${rows.length} / ${thiruppugazh.length}`, `${rows.length} / ${thiruppugazh.length} చూపబడుతున్నాయి`, `${rows.length} / ${thiruppugazh.length} കാണിക്കുന്നു`, `${rows.length} / ${thiruppugazh.length} ತೋರಿಸಲಾಗುತ್ತಿದೆ`, `${rows.length} / ${thiruppugazh.length} दिखाए जा रहे हैं`)}
         </p>
