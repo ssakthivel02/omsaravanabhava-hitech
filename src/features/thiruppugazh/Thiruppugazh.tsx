@@ -7,6 +7,7 @@ import {
   corpusPartForSongNumber,
 } from '@/content/thiruppugazh-corpus';
 import StateBadge from '@/components/StateBadge';
+import { canPublishCanonicalSong } from './canPublishCanonicalSong';
 import { useLocale } from '@/lib/locale';
 
 export default function Thiruppugazh() {
@@ -32,7 +33,7 @@ export default function Thiruppugazh() {
   };
 
   const publishedCanonicalTextCount = thiruppugazh.filter(
-    (song) => Boolean(song.canonicalText),
+    (song) => canPublishCanonicalSong(song),
   ).length;
   const approvedAudioCount = thiruppugazh.filter(
     (song) => song.audioState && song.audioState !== 'NO_APPROVED_AUDIO',
