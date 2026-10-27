@@ -4,7 +4,7 @@ on:
   push:
     branches: ['**']
   pull_request:
-    branches: [main]
+    branches: [main, build/r2-13-product-completion]
 
 permissions:
   contents: read
