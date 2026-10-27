@@ -1,5 +1,5 @@
 import { useParams, Link } from 'wouter';
-import { templeById, templeCompleteness } from '@/content/temples';
+import { templeById } from '@/content/temples';
 import { works, arupadaiVeedu, resolveOfficialSourceState } from '@/content';
 import StateBadge from '@/components/StateBadge';
 import SaveControl from '@/components/SaveControl';
