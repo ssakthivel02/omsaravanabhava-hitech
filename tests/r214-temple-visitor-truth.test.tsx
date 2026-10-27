@@ -15,10 +15,10 @@ describe('R2.14 temple visitor experience', () => {
     expect(await screen.findByRole('heading', { level: 1 })).toBeInTheDocument();
     expect(await screen.findByText(/கோயிலின் பெயர் மற்றும் கிடைக்கும் தகவல்கள்/)).toBeInTheDocument();
     const visible = document.body.textContent ?? '';
-    expect(visible).not.toMatch(/Saravana_Bhava_World_Murugan_Temples_Expanded_Master\\.xlsx/);
-    expect(visible).not.toMatch(/Completeness:\\s*0\\/3/);
-    expect(visible).not.toMatch(/Source identity:\\s*MEDIUM/);
-    expect(visible).not.toMatch(/Coordinates:\\s*Verification pending/);
-    expect(visible).not.toMatch(/Image:\\s*Image pending/);
+    expect(visible).not.toContain('Saravana_Bhava_World_Murugan_Temples_Expanded_Master.xlsx');
+    expect(visible).not.toContain('Completeness: 0/3');
+    expect(visible).not.toContain('Source identity: MEDIUM');
+    expect(visible).not.toContain('Coordinates: Verification pending');
+    expect(visible).not.toContain('Image: Image pending');
   });
 });
