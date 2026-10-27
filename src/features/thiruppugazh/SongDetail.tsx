@@ -1,5 +1,6 @@
 import { useParams, Link } from 'wouter';
-import { songById } from '@/content';
+import { songById, thiruppugazh } from '@/content';
+import { neighboringSongs } from './songNavigation';
 import { canPublishCanonicalSong } from './canPublishCanonicalSong';
 import StateBadge from '@/components/StateBadge';
 import SaveControl from '@/components/SaveControl';
@@ -162,6 +163,8 @@ export default function SongDetail() {
     );
   }
 
+  const { previous, next } = neighboringSongs(thiruppugazh, song.id);
+
   return (
     <article className="page">
       <header className="page-head">
@@ -185,6 +188,20 @@ export default function SongDetail() {
       ) : (
         <p className="empty" lang={uiLocale}>{copy.canonicalMissing}</p>
       )}
+
+      <nav className="reader-sequence" aria-label={uiLocale === 'ta' ? 'திருப்புகழ் பாடல் வழிசெலுத்தல்' : 'Thiruppugazh song navigation'}>
+        {previous ? (
+          <Link href={`/thiruppugazh/${previous.id}`} lang={uiLocale}>
+            {uiLocale === 'ta' ? 'முந்தைய பாடல்' : 'Previous song'} · <span lang="ta">{previous.titleTa ?? previous.openingWords}</span>
+          </Link>
+        ) : <span />}
+        <Link href="/thiruppugazh" lang={uiLocale}>{copy.thiruppugazhList}</Link>
+        {next ? (
+          <Link href={`/thiruppugazh/${next.id}`} lang={uiLocale}>
+            {uiLocale === 'ta' ? 'அடுத்த பாடல்' : 'Next song'} · <span lang="ta">{next.titleTa ?? next.openingWords}</span>
+          </Link>
+        ) : <span />}
+      </nav>
 
       <section className="layers" aria-labelledby="layers-h">
         <h2 id="layers-h" lang={uiLocale}>{copy.layers}</h2>
