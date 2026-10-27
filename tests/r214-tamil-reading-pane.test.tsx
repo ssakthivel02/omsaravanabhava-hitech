@@ -9,7 +9,7 @@ describe('First-party Tamil reading layout', () => {
     const text = 'முதல் வரி\nஇரண்டாம் வரி';
     const { container } = render(<TamilReadingPane tamilText={text} />);
     const verse = container.querySelector('.canonical');
-    expect(verse).toHaveTextContent(text);
+    expect(verse?.textContent).toBe(text);
     expect(verse).toHaveAttribute('lang', 'ta');
     expect(verse).toHaveStyle({ whiteSpace: 'pre-wrap', fontSize: '22px' });
     await user.click(screen.getByRole('button', { name: 'எழுத்தைப் பெருக்க' }));
