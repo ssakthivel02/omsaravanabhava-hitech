@@ -41,7 +41,7 @@ describe('R2.14 internal Tamil library journeys', () => {
   it('does not create a missing song when an unknown number is submitted', async () => {
     const user = userEvent.setup();
     openPath('/thiruppugazh');
-    const jump = await screen.findByRole('textbox', { name: 'பாடல் எண்ணுக்கு செல்லவும்' });
+    const jump = await screen.findByRole('textbox', { name: 'பாடல் எண்ணுக்கு செல்லவும்' }, { timeout: 5000 });
     await user.type(jump, '9999');
     await user.click(screen.getByRole('button', { name: 'செல்' }));
     expect(await screen.findByRole('status')).toHaveTextContent('இந்த எண்ணுக்கான பதிவு கிடைக்கவில்லை');

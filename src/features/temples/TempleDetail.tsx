@@ -1,12 +1,13 @@
 import { useParams, Link } from 'wouter';
 import { templeById } from '@/content/temples';
-import { works, arupadaiVeedu, resolveOfficialSourceState } from '@/content';
+import { describeSourceConfidence, works, arupadaiVeedu, resolveOfficialSourceState } from '@/content';
 import StateBadge from '@/components/StateBadge';
 import SaveControl from '@/components/SaveControl';
 import ReadAloud from '@/components/ReadAloud';
 import { useEntityMeta } from '@/lib/routeMeta';
 import { useRecentItem } from '@/lib/useRecent';
 import { useLocale, type UiLocale } from '@/lib/locale';
+import { evaluateCoordinatePublication } from '@/lib/geographicProvenance';
 
 type TempleDetailCopy = {
   recordNotFound: string;
@@ -301,6 +302,12 @@ export default function TempleDetail() {
     );
   }
 
+  const sourceConfidence = describeSourceConfidence(temple.sources[0]?.confidence, locale);
+  const coordinateDecision = evaluateCoordinatePublication({
+    latitude: temple.latitude,
+    longitude: temple.longitude,
+    coordinateConfidence: temple.coordinateConfidence,
+  });
   const pilgrimageStop = arupadaiVeedu.find((a) => a.id === temple.id);
   const officialSourceState = pilgrimageStop?.officialCurrentSource ? resolveOfficialSourceState(pilgrimageStop.officialCurrentSource) : null;
   const showEnglishFirst = locale === 'en' && Boolean(temple.nameEn);
@@ -389,6 +396,11 @@ export default function TempleDetail() {
           or internal validation codes. No unverified facts are introduced. */}
       <section className="provenance" aria-labelledby="prov-h">
         <h2 id="prov-h" lang={uiLocale}>{copy.sourceAndState}</h2>
+        <p className="state-row" data-coordinate-publication-state={coordinateDecision.state}>
+          <span className={`state state-${sourceConfidence.tone}`}><span className="state-dot" aria-hidden="true" /><span lang={locale}>{sourceConfidence.label}</span></span>
+          <StateBadge state={coordinateDecision.state} dimension={copy.coordinates} />
+          <StateBadge state={temple.imageStatus} dimension={copy.image} />
+        </p>
         <p className="note" lang={uiLocale}>
           {(uiLocale === 'ta' ?
             'கோயிலின் பெயர் மற்றும் கிடைக்கும் தகவல்கள் பதிவுசெய்யப்பட்ட ஆதாரங்களுடன் பரிசீலிக்கப்படுகின்றன. இடம், வரலாறு, படம் அல்லது வழிபாட்டு நேரம் உறுதியாகாதபோது அவற்றை ஊகித்து வெளியிடமாட்டோம்.' :
