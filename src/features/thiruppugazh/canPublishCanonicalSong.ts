@@ -9,6 +9,7 @@ export function canPublishCanonicalSong(song: ThiruppugazhSong): boolean {
   return Boolean(
     typeof song.canonicalText === 'string' &&
     song.canonicalText.trim().length > 0 &&
+    /[\u0B80-\u0BFF]/u.test(song.canonicalText) &&
     song.sourceId?.trim() &&
     song.edition?.trim() &&
     song.verificationState === 'SOURCE_VERIFIED' &&
