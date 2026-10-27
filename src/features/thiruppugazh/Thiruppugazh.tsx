@@ -123,9 +123,7 @@ export default function Thiruppugazh() {
                 <b>{part.label}</b>
                 <span>{part.start}–{part.end}</span>
                 <small lang={uiLocale}>{ui(`${linked} பதிவுகள் இணைக்கப்பட்டுள்ளன`, `${linked} records linked`, `${linked} రికార్డులు అనుసంధానించబడ్డాయి`, `${linked} രേഖകൾ ബന്ധിപ്പിച്ചിട്ടുണ്ട്`, `${linked} ದಾಖಲೆಗಳು ಸಂಪರ್ಕಿಸಲ್ಪಟ್ಟಿವೆ`, `${linked} अभिलेख जुड़े हैं`)}</small>
-                <a href={part.sourceUrl} target="_blank" rel="noreferrer" lang={uiLocale}>
-                  {ui('மூலத்தை காண்க', 'View source', 'మూలాన్ని చూడండి', 'ഉറവിടം കാണുക', 'ಮೂಲವನ್ನು ನೋಡಿ', 'स्रोत देखें')}
-                </a>
+                <small lang={uiLocale}>{ui('உரை சரிபார்ப்பு நிலுவையில்', 'Text verification pending', 'పాఠ్య ధృవీకరణ పెండింగ్', 'പാഠ പരിശോധന ബാക്കി', 'ಪಠ್ಯ ಪರಿಶೀಲನೆ ಬಾಕಿ', 'पाठ सत्यापन लंबित')}</small>
               </article>
             );
           })}
