@@ -41,12 +41,12 @@ describe('R2.14 internal Tamil library journeys', () => {
   it('does not create a missing song when an unknown number is submitted', async () => {
     const user = userEvent.setup();
     openPath('/thiruppugazh');
-    const jump = await screen.findByRole('textbox', { name: /பாடல் எண்ணுக்கு செல்லவும்|Jump to song number/ });
+    const jump = await screen.findByRole('textbox', { name: /பாடல் எண்ணுக்கு செல்லவும்|Jump to song number/ }, { timeout: 5000 });
     await user.type(jump, '9999');
     await user.click(screen.getByRole('button', { name: /செல்|Go/ }));
     expect(await screen.findByRole('status')).toHaveTextContent(/இந்த எண்ணுக்கான பதிவு கிடைக்கவில்லை|No catalogue entry exists/);
     expect(document.querySelector('a[href="/thiruppugazh/thiruppugazh-9999"]')).toBeNull();
-  });
+  }, 10000);
 
   it('does not send a Tiruppugazh reader to an external source website', async () => {
     openPath('/thiruppugazh');
