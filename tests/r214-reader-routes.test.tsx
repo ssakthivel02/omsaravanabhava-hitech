@@ -44,7 +44,7 @@ describe('R2.14 internal Tamil library journeys', () => {
     const jump = await screen.findByRole('textbox', { name: /பாடல் எண்ணுக்கு செல்லவும்|Jump to song number/ });
     await user.type(jump, '9999');
     await user.click(screen.getByRole('button', { name: /செல்|Go/ }));
-    expect(await screen.findByRole('status')).toHaveTextContent(/இந்த எண்ணுக்கான பதிவு கிடைக்கவில்லை|No catalogue entry exists/));
+    expect(await screen.findByRole('status')).toHaveTextContent(/இந்த எண்ணுக்கான பதிவு கிடைக்கவில்லை|No catalogue entry exists/);
     expect(document.querySelector('a[href="/thiruppugazh/thiruppugazh-9999"]')).toBeNull();
   });
 
