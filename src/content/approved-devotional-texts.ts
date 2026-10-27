@@ -30,6 +30,7 @@ export function canRenderDevotionalText(
     text.sourceVerification === 'SOURCE_VERIFIED' &&
     text.publicationState === 'PUBLISHED_CANONICAL_TEXT' &&
     text.canonicalTamil.trim() &&
+    /[\u0B80-\u0BFF]/u.test(text.canonicalTamil) &&
     text.editionId.trim() &&
     text.sourceId.trim() &&
     text.attribution.trim() &&
