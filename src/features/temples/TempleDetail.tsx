@@ -391,7 +391,7 @@ export default function TempleDetail() {
         <h2 id="prov-h" lang={uiLocale}>{copy.sourceAndState}</h2>
         <p className="note" lang={uiLocale}>
           {(uiLocale === 'ta' ?
-            'கோயிலின் பெயர் மற்றும் கிடைக்கும் தகவல்கள் பதிவுசெய்யப்பட்ட ஆதாரங்களுடன் பரிசீலிக்கப்படுகின்றன. இடம், வரலாறு, படம் அல்லது வழிபாட்டு நேரம் உறுதியாகாதபோது அவற்றை ஊகித்து வெளியிடமாட்டோம்.',
+            'கோயிலின் பெயர் மற்றும் கிடைக்கும் தகவல்கள் பதிவுசெய்யப்பட்ட ஆதாரங்களுடன் பரிசீலிக்கப்படுகின்றன. இடம், வரலாறு, படம் அல்லது வழிபாட்டு நேரம் உறுதியாகாதபோது அவற்றை ஊகித்து வெளியிடமாட்டோம்.' :
             'Temple identity and available details are reviewed against recorded evidence. Where location, history, imagery or worship information is not verified, we do not invent it.')}
         </p>
       </section>
