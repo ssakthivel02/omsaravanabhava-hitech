@@ -9,7 +9,7 @@ export default function DevotionalReader() {
   const { uiLocale, text } = useLocale();
   const work = devotionalWorks.find((item) => item.id === id);
   const record = approvedDevotionalTexts.find((item) => item.workId === id);
-  const publishable = work && canRenderDevotionalText(work, record);
+  const approved = work && canRenderDevotionalText(work, record) ? record : null;
 
   return (
     <article className="page devotional-reader-page">
@@ -20,15 +20,15 @@ export default function DevotionalReader() {
       </header>
       {!work ? (
         <p role="status">{text('இந்த நூல் எங்கள் பட்டியலில் இல்லை.', 'This work is not in the catalogue.')}</p>
-      ) : publishable ? (
+      ) : approved ? (
         <section aria-label={text('தமிழ் மூல உரை', 'Original Tamil text')}>
           <div className="canonical" lang="ta" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', lineHeight: 1.9 }}>
-            {record.canonicalTamil}
+            {approved.canonicalTamil}
           </div>
           <footer className="provenance">
             <h2>{text('உரை ஆதாரங்கள்', 'Text provenance')}</h2>
-            <p>{record.attribution}</p>
-            <p>{record.editionId} · {record.sourceId}</p>
+            <p>{approved.attribution}</p>
+            <p>{approved.editionId} · {approved.sourceId}</p>
           </footer>
         </section>
       ) : (
