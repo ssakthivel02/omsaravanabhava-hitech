@@ -5,6 +5,7 @@ import { canPublishCanonicalSong } from './canPublishCanonicalSong';
 import StateBadge from '@/components/StateBadge';
 import SaveControl from '@/components/SaveControl';
 import ReadAloud from '@/components/ReadAloud';
+import TamilReadingPane from '@/features/works/TamilReadingPane';
 import { useEntityMeta } from '@/lib/routeMeta';
 import { useRecentItem } from '@/lib/useRecent';
 import { useLocale, type UiLocale } from '@/lib/locale';
@@ -182,7 +183,7 @@ export default function SongDetail() {
           reconstruction or for the placeholder message. */}
       {canPublishCanonicalSong(song) ? (
         <>
-          <div className="canonical" lang="ta" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{song.canonicalText}</div>
+          <TamilReadingPane tamilText={song.canonicalText!} ta={uiLocale === 'ta'} />
           <ReadAloud text={song.canonicalText!} labelTa="மூல உரையை வாசிக்க" labelEn="Read source text aloud" />
         </>
       ) : (
