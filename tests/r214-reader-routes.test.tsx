@@ -22,7 +22,10 @@ describe('R2.14 internal Tamil library journeys', () => {
     openPath('/works');
     const heading = await screen.findByRole('heading', { level: 1 });
     expect(heading).toBeInTheDocument();
-    expect(document.querySelector('a[href="/works/read/kandar-anubhuti"]')).not.toBeNull();
+    const link = document.querySelector('a[href="/works/read/kandar-anubhuti"]');
+    expect(link).not.toBeNull();
+    expect(link).toHaveTextContent('நூல் விவரம்');
+    expect(link).not.toHaveTextContent('தமிழில் படிக்க');
   });
 
   it('does not send a Tiruppugazh reader to an external source website', async () => {
