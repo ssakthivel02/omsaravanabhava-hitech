@@ -1,5 +1,6 @@
 import { useParams, Link } from 'wouter';
 import { songById } from '@/content';
+import { canPublishCanonicalSong } from './canPublishCanonicalSong';
 import StateBadge from '@/components/StateBadge';
 import SaveControl from '@/components/SaveControl';
 import ReadAloud from '@/components/ReadAloud';
@@ -176,10 +177,10 @@ export default function SongDetail() {
           verse body — never reconstructed, never paraphrased. Browser TTS is
           only offered for that governed canonical body, never for a guessed
           reconstruction or for the placeholder message. */}
-      {song.canonicalText ? (
+      {canPublishCanonicalSong(song) ? (
         <>
-          <div className="canonical" lang="ta">{song.canonicalText}</div>
-          <ReadAloud text={song.canonicalText} labelTa="மூல உரையை வாசிக்க" labelEn="Read source text aloud" />
+          <div className="canonical" lang="ta" style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{song.canonicalText}</div>
+          <ReadAloud text={song.canonicalText!} labelTa="மூல உரையை வாசிக்க" labelEn="Read source text aloud" />
         </>
       ) : (
         <p className="empty" lang={uiLocale}>{copy.canonicalMissing}</p>
