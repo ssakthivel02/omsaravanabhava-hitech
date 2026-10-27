@@ -29,7 +29,7 @@ describe('R2.14 Tamil canonical reading publication gate', () => {
     [{ publicationState: 'PUBLISHED_METADATA_ONLY_SOURCE_LINKED' }, 'metadata-only publication'],
     [{ sourceId: null }, 'missing source reference'],
     [{ edition: null }, 'missing edition'],
-  ] as const)('blocks %s (%s)', (patch) => {
+  ] as Array<[Partial<ThiruppugazhSong>, string]>)('blocks %s (%s)', (patch) => {
     expect(canPublishCanonicalSong(variant(patch))).toBe(false);
   });
   it('accepts explicit owner-confirmed reproduction rights with all other gates met', () => {
