@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { thiruppugazh } from '@/content';
 import {
   THIRUPPUGAZH_CORPUS_PARTS,
@@ -8,11 +8,15 @@ import {
 } from '@/content/thiruppugazh-corpus';
 import StateBadge from '@/components/StateBadge';
 import { canPublishCanonicalSong } from './canPublishCanonicalSong';
+import { findSongByReferenceNumber } from './findSongByNumber';
 import { useLocale } from '@/lib/locale';
 
 export default function Thiruppugazh() {
   const { uiLocale, text } = useLocale();
   const [query, setQuery] = useState('');
+  const [numberQuery, setNumberQuery] = useState('');
+  const [numberError, setNumberError] = useState('');
+  const [, setLocation] = useLocation();
   const [partFilter, setPartFilter] = useState('all');
 
   const ui = (
@@ -135,6 +139,42 @@ export default function Thiruppugazh() {
           <h2 id="catalog-title" lang={uiLocale}>{ui('சரிபார்க்கப்பட்ட பட்டியல்', 'Verified catalogue', 'ధృవీకరించిన కాటలాగ్', 'സ്ഥിരീകരിച്ച കാറ്റലോഗ്', 'ಪರಿಶೀಲಿತ ಕ್ಯಾಟಲಾಗ್', 'सत्यापित कैटलॉग')}</h2>
           <p lang={uiLocale}>{ui('தமிழ் தொடக்கச் சொல் அல்லது பாடல் எண்ணால் தேடலாம்.', 'Search by Tamil opening words or source song number.', 'తమిళ ప్రారంభ పదాలు లేదా మూల పాట సంఖ్యతో వెతకండి.', 'തമിഴ് ആരംഭ വാക്കുകളോ ഉറവിട ഗാന നമ്പറോ ഉപയോഗിച്ച് തിരയുക.', 'ತಮಿಳು ಆರಂಭ ಪದಗಳು ಅಥವಾ ಮೂಲ ಹಾಡಿನ ಸಂಖ್ಯೆಯಿಂದ ಹುಡುಕಿ.', 'तमिल आरंभिक शब्दों या स्रोत गीत संख्या से खोजें।')}</p>
         </div>
+        <form
+          className="song-number-jump"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const found = findSongByReferenceNumber(thiruppugazh, numberQuery);
+            if (found) {
+              setNumberError('');
+              setLocation(`/thiruppugazh/${found.id}`);
+            } else {
+              setNumberError(ui(
+                'இந்த எண்ணுக்கான பதிவு கிடைக்கவில்லை. வேறு பாடல் எண்ணை முயற்சிக்கவும்.',
+                'No catalogue entry exists for this number. Try another song number.',
+                'ఈ సంఖ్యకు పాట నమోదు లేదు.',
+                'ഈ നമ്പറിനായി ഗാനരേഖ കണ്ടെത്തിയില്ല.',
+                'ಈ ಸಂಖ್ಯೆಗೆ ಹಾಡಿನ ದಾಖಲೆ ಇಲ್ಲ.',
+                'इस संख्या का गीत रिकॉर्ड उपलब्ध नहीं है.',
+              ));
+            }
+          }}
+        >
+          <label htmlFor="thiruppugazh-jump-number" lang={uiLocale}>
+            {ui('பாடல் எண்ணுக்கு செல்லவும்', 'Jump to song number', 'పాట సంఖ్యకు వెళ్లండి', 'ഗാന നമ്പറിലേക്ക് പോകുക', 'ಹಾಡಿನ ಸಂಖ್ಯೆಗೆ ಹೋಗಿ', 'गीत संख्या पर जाएँ')}
+          </label>
+          <input
+            id="thiruppugazh-jump-number"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            maxLength={4}
+            value={numberQuery}
+            onChange={(event) => { setNumberQuery(event.target.value); setNumberError(''); }}
+            placeholder="1–1326"
+          />
+          <button type="submit">{ui('செல்', 'Go', 'వెళ్ళు', 'പോകുക', 'ಹೋಗಿ', 'जाएँ')}</button>
+          {numberError && <p role="status" lang={uiLocale}>{numberError}</p>}
+        </form>
         <div className="catalog-filter-row">
           <label>
             <span lang={uiLocale}>{ui('திருப்புகழ் தேடல்', 'Search Thiruppugazh', 'తిరుప్పుగళ్‌లో వెతకండి', 'തിരുപ്പുകഴിൽ തിരയുക', 'ತಿರುಪ್ಪುಗ಴್‌ನಲ್ಲಿ ಹುಡುಕಿ', 'तिरुप्पुगऴ खोजें')}</span>
