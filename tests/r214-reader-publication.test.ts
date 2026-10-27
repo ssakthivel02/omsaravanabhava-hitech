@@ -21,6 +21,7 @@ describe('R2.14 Tamil canonical reading publication gate', () => {
   it.each([
     [{ canonicalText: null }, 'absent body'],
     [{ canonicalText: '  ' }, 'blank body'],
+    [{ canonicalText: 'Latin-only placeholder text' }, 'not Tamil script'],
     [{ rightsStatus: 'PERMISSION_PENDING' }, 'rights pending'],
     [{ rightsStatus: 'HEADER_PRESERVATION_CONDITION_STATED' }, 'header condition unresolved'],
     [{ rightsStatus: null }, 'missing rights evidence'],
