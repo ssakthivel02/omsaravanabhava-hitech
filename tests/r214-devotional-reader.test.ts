@@ -23,6 +23,7 @@ describe('Tamil devotional book reader publication gate', () => {
     [{ id: 'other-work', rightsState: 'PUBLISHABLE' }, eligible],
     [{ id: 'test-work', rightsState: 'RIGHTS_UNCERTAIN_OR_METADATA_ONLY' }, eligible],
     [{ id: 'test-work', rightsState: 'PUBLISHABLE' }, { ...eligible, canonicalTamil: ' ' }],
+    [{ id: 'test-work', rightsState: 'PUBLISHABLE' }, { ...eligible, canonicalTamil: 'Latin-only placeholder text' }],
     [{ id: 'test-work', rightsState: 'PUBLISHABLE' }, { ...eligible, sourceVerification: 'PENDING' }],
     [{ id: 'test-work', rightsState: 'PUBLISHABLE' }, { ...eligible, rightsState: 'PERMISSION_PENDING' }],
     [{ id: 'test-work', rightsState: 'PUBLISHABLE' }, { ...eligible, rightsEvidenceId: '' }],
