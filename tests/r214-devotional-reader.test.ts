@@ -14,6 +14,11 @@ describe('Tamil devotional book reader publication gate', () => {
   it('allows a verified, matched, rights-cleared edition', () => {
     expect(canRenderDevotionalText({ id: 'test-work', rightsState: 'PUBLISHABLE' }, eligible)).toBe(true);
   });
+  it('supports owner-confirmed rights only when both the work and edition match', () => {
+    const ownerRecord = { ...eligible, rightsState: 'OWNER_SUPPLIED_RIGHTS_CONFIRMED' as const };
+    expect(canRenderDevotionalText({ id: 'test-work', rightsState: 'OWNER_SUPPLIED_RIGHTS_CONFIRMED' }, ownerRecord)).toBe(true);
+    expect(canRenderDevotionalText({ id: 'test-work', rightsState: 'PUBLISHABLE' }, ownerRecord)).toBe(false);
+  });
   it.each([
     [{ id: 'other-work', rightsState: 'PUBLISHABLE' }, eligible],
     [{ id: 'test-work', rightsState: 'RIGHTS_UNCERTAIN_OR_METADATA_ONLY' }, eligible],
