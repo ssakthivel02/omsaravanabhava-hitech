@@ -25,8 +25,8 @@ export function canRenderDevotionalText(
   return Boolean(
     work.id && text &&
     work.id === text.workId &&
-    work.rightsState === 'PUBLISHABLE' &&
-    text.rightsState === 'PUBLISHABLE' &&
+    (work.rightsState === 'PUBLISHABLE' || work.rightsState === 'OWNER_SUPPLIED_RIGHTS_CONFIRMED') &&
+    work.rightsState === text.rightsState &&
     text.sourceVerification === 'SOURCE_VERIFIED' &&
     text.publicationState === 'PUBLISHED_CANONICAL_TEXT' &&
     text.canonicalTamil.trim() &&
