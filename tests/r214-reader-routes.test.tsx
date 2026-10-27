@@ -48,6 +48,16 @@ describe('R2.14 internal Tamil library journeys', () => {
     expect(document.querySelector('a[href="/thiruppugazh/thiruppugazh-9999"]')).toBeNull();
   }, 10000);
 
+  it('distinguishes full Tamil text availability from source-reference entries', async () => {
+    const user = userEvent.setup();
+    openPath('/thiruppugazh');
+    const filter = await screen.findByRole('checkbox', { name: /முழு தமிழ் உரை உள்ள பாடல்கள் மட்டும்|Only songs with full Tamil text/ }, { timeout: 10000 });
+    await user.click(filter);
+    expect(filter).toBeChecked();
+    expect(screen.getByText(/காட்டப்படுவது 0 \/|Showing 0 \/|0 \/ 1326/)).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent(/சரிபார்க்கப்பட்ட பதிவு இல்லை|No verified record/);
+  }, 15000);
+
   it('does not send a Tiruppugazh reader to an external source website', async () => {
     openPath('/thiruppugazh');
     expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent('திருப்புகழ்');
