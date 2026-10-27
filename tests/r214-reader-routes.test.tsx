@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Router } from 'wouter';
 import { memoryLocation } from 'wouter/memory-location';
 import App from '@/app/App';
@@ -35,6 +36,16 @@ describe('R2.14 internal Tamil library journeys', () => {
     expect(screen.queryByRole('button', { name: 'எழுத்தைப் பெருக்க' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Decrease text size' })).not.toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: /திருப்புகழ் பாடல் வழிசெலுத்தல்/ })).toBeInTheDocument();
+  });
+
+  it('does not create a missing song when an unknown number is submitted', async () => {
+    const user = userEvent.setup();
+    openPath('/thiruppugazh');
+    const jump = await screen.findByRole('textbox', { name: 'பாடல் எண்ணுக்கு செல்லவும்' });
+    await user.type(jump, '9999');
+    await user.click(screen.getByRole('button', { name: 'செல்' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('இந்த எண்ணுக்கான பதிவு கிடைக்கவில்லை');
+    expect(document.querySelector('a[href="/thiruppugazh/thiruppugazh-9999"]')).toBeNull();
   });
 
   it('does not send a Tiruppugazh reader to an external source website', async () => {
