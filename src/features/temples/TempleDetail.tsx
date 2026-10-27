@@ -1,13 +1,12 @@
 import { useParams, Link } from 'wouter';
 import { templeById, templeCompleteness } from '@/content/temples';
-import { describeSourceConfidence, works, arupadaiVeedu, resolveOfficialSourceState } from '@/content';
+import { works, arupadaiVeedu, resolveOfficialSourceState } from '@/content';
 import StateBadge from '@/components/StateBadge';
 import SaveControl from '@/components/SaveControl';
 import ReadAloud from '@/components/ReadAloud';
 import { useEntityMeta } from '@/lib/routeMeta';
 import { useRecentItem } from '@/lib/useRecent';
 import { useLocale, type UiLocale } from '@/lib/locale';
-import { evaluateCoordinatePublication } from '@/lib/geographicProvenance';
 
 type TempleDetailCopy = {
   recordNotFound: string;
@@ -302,16 +301,8 @@ export default function TempleDetail() {
     );
   }
 
-  const { documentedFields, totalFields } = templeCompleteness(temple);
-  const primarySource = temple.sources[0];
-  const sourceConfidence = describeSourceConfidence(primarySource?.confidence, locale);
   const pilgrimageStop = arupadaiVeedu.find((a) => a.id === temple.id);
   const officialSourceState = pilgrimageStop?.officialCurrentSource ? resolveOfficialSourceState(pilgrimageStop.officialCurrentSource) : null;
-  const coordinateDecision = evaluateCoordinatePublication({
-    latitude: temple.latitude,
-    longitude: temple.longitude,
-    coordinateConfidence: temple.coordinateConfidence,
-  });
   const showEnglishFirst = locale === 'en' && Boolean(temple.nameEn);
   const contentLang = (value: string) => /[\u0B80-\u0BFF]/u.test(value) ? 'ta' : 'en';
   const facts = [
@@ -393,28 +384,17 @@ export default function TempleDetail() {
         </section>
       )}
 
+      {/* Keep detailed source, coordinate and image audit states in the governed
+          data model. Visitors need a useful explanation, not import filenames
+          or internal validation codes. No unverified facts are introduced. */}
       <section className="provenance" aria-labelledby="prov-h">
         <h2 id="prov-h" lang={uiLocale}>{copy.sourceAndState}</h2>
-        <p lang={uiLocale} className="note">{copy.stateDimensionsNote}</p>
-        <p className="state-row" data-coordinate-publication-state={coordinateDecision.state}>
-          <span className={`state state-${sourceConfidence.tone}`}><span className="state-dot" aria-hidden="true" /><span lang={locale}>{sourceConfidence.label}</span></span>
-          <StateBadge state={coordinateDecision.state} dimension={copy.coordinates} />
-          <StateBadge state={temple.imageStatus} dimension={copy.image} />
+        <p className="note" lang={uiLocale}>
+          {text(
+            'கோயிலின் பெயர் மற்றும் கிடைக்கும் தகவல்கள் பதிவுசெய்யப்பட்ட ஆதாரங்களுடன் பரிசீலிக்கப்படுகின்றன. இடம், வரலாறு, படம் அல்லது வழிபாட்டு நேரம் உறுதியாகாதபோது அவற்றை ஊகித்து வெளியிடமாட்டோம்.',
+            'Temple identity and available details are reviewed against recorded evidence. Where location, history, imagery or worship information is not verified, we do not invent it.',
+          )}
         </p>
-        <p className="note" lang={uiLocale}>{copy.completeness(documentedFields, totalFields)}</p>
-        {temple.sources.length > 0 && (
-          <ul className="source-list">
-            {temple.sources.map((s, i) => {
-              const conf = describeSourceConfidence(s.confidence, locale);
-              return (
-                <li key={i}>
-                  {s.url ? <a href={s.url} rel="noopener noreferrer" target="_blank">{s.reference ?? s.url}</a> : (s.reference ?? '—')}
-                  <span className={`state state-${conf.tone} source-confidence`}><span className="state-dot" aria-hidden="true" /><span lang={locale}>{conf.label}</span></span>
-                </li>
-              );
-            })}
-          </ul>
-        )}
       </section>
 
       {pilgrimageStop?.officialCurrentSource && (
