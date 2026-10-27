@@ -7,6 +7,7 @@ import ReadAloud from '@/components/ReadAloud';
 import { useEntityMeta } from '@/lib/routeMeta';
 import { useRecentItem } from '@/lib/useRecent';
 import { useLocale, type UiLocale } from '@/lib/locale';
+import { evaluateCoordinatePublication } from '@/lib/geographicProvenance';
 
 type TempleDetailCopy = {
   recordNotFound: string;
@@ -303,6 +304,11 @@ export default function TempleDetail() {
 
   const pilgrimageStop = arupadaiVeedu.find((a) => a.id === temple.id);
   const officialSourceState = pilgrimageStop?.officialCurrentSource ? resolveOfficialSourceState(pilgrimageStop.officialCurrentSource) : null;
+  const coordinateDecision = evaluateCoordinatePublication({
+    latitude: temple.latitude,
+    longitude: temple.longitude,
+    coordinateConfidence: temple.coordinateConfidence,
+  });
   const showEnglishFirst = locale === 'en' && Boolean(temple.nameEn);
   const contentLang = (value: string) => /[\u0B80-\u0BFF]/u.test(value) ? 'ta' : 'en';
   const facts = [
@@ -387,7 +393,7 @@ export default function TempleDetail() {
       {/* Keep detailed source, coordinate and image audit states in the governed
           data model. Visitors need a useful explanation, not import filenames
           or internal validation codes. No unverified facts are introduced. */}
-      <section className="provenance" aria-labelledby="prov-h">
+      <section className="provenance" aria-labelledby="prov-h" data-coordinate-publication-state={coordinateDecision.state}>
         <h2 id="prov-h" lang={uiLocale}>{copy.sourceAndState}</h2>
         <p className="note" lang={uiLocale}>
           {(uiLocale === 'ta' ?
