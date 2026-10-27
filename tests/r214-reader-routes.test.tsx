@@ -28,6 +28,15 @@ describe('R2.14 internal Tamil library journeys', () => {
     expect(link).not.toHaveTextContent('தமிழில் படிக்க');
   });
 
+  it('keeps reading controls and canonical text hidden for a rights-pending song', async () => {
+    openPath('/thiruppugazh/thiruppugazh-0006');
+    expect(await screen.findByRole('heading', { level: 1, name: 'முத்தைத்தரு' })).toBeInTheDocument();
+    expect(document.querySelector('.canonical')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'எழுத்தைப் பெருக்க' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Decrease text size' })).not.toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: /திருப்புகழ் பாடல் வழிசெலுத்தல்/ })).toBeInTheDocument();
+  });
+
   it('does not send a Tiruppugazh reader to an external source website', async () => {
     openPath('/thiruppugazh');
     expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent('திருப்புகழ்');
