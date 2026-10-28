@@ -1,0 +1,26 @@
+name: Review R2.14 isolated preview launcher
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/preview-manual-r214.yml
+      - .github/workflows/review-r214-preview-launcher.yml
+      - scripts/verify-r214-preview-launcher.mjs
+  push:
+    branches: [release/r214-isolated-preview-launcher-20261028]
+
+permissions:
+  contents: read
+
+jobs:
+  review-preview-launcher:
+    name: Static isolated-preview safety gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Verify release launcher cannot auto-deploy or target production
+        run: node scripts/verify-r214-preview-launcher.mjs
