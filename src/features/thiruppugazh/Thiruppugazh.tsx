@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { thiruppugazh } from '@/content';
 import {
   THIRUPPUGAZH_CORPUS_PARTS,
@@ -7,12 +7,18 @@ import {
   corpusPartForSongNumber,
 } from '@/content/thiruppugazh-corpus';
 import StateBadge from '@/components/StateBadge';
+import { canPublishCanonicalSong } from './canPublishCanonicalSong';
+import { findSongByReferenceNumber } from './findSongByNumber';
 import { useLocale } from '@/lib/locale';
 
 export default function Thiruppugazh() {
   const { uiLocale, text } = useLocale();
   const [query, setQuery] = useState('');
+  const [numberQuery, setNumberQuery] = useState('');
+  const [numberError, setNumberError] = useState('');
+  const [, setLocation] = useLocation();
   const [partFilter, setPartFilter] = useState('all');
+  const [readableOnly, setReadableOnly] = useState(false);
 
   const ui = (
     ta: string,
@@ -32,7 +38,7 @@ export default function Thiruppugazh() {
   };
 
   const publishedCanonicalTextCount = thiruppugazh.filter(
-    (song) => Boolean(song.canonicalText),
+    (song) => canPublishCanonicalSong(song),
   ).length;
   const approvedAudioCount = thiruppugazh.filter(
     (song) => song.audioState && song.audioState !== 'NO_APPROVED_AUDIO',
@@ -44,7 +50,7 @@ export default function Thiruppugazh() {
       const number = song.sourceNumbering?.number;
       const part = typeof number === 'number' ? corpusPartForSongNumber(number) : undefined;
       const matchesPart = partFilter === 'all' || part?.id === partFilter;
-      if (!matchesPart) return false;
+      if (!matchesPart || (readableOnly && !canPublishCanonicalSong(song))) return false;
       if (!normalized) return true;
       const haystack = [
         song.titleTa,
@@ -57,7 +63,7 @@ export default function Thiruppugazh() {
         .toLocaleLowerCase('ta');
       return haystack.includes(normalized);
     });
-  }, [partFilter, query]);
+  }, [partFilter, query, readableOnly]);
 
   return (
     <article className="page thiruppugazh-page">
@@ -122,9 +128,7 @@ export default function Thiruppugazh() {
                 <b>{part.label}</b>
                 <span>{part.start}–{part.end}</span>
                 <small lang={uiLocale}>{ui(`${linked} பதிவுகள் இணைக்கப்பட்டுள்ளன`, `${linked} records linked`, `${linked} రికార్డులు అనుసంధానించబడ్డాయి`, `${linked} രേഖകൾ ബന്ധിപ്പിച്ചിട്ടുണ്ട്`, `${linked} ದಾಖಲೆಗಳು ಸಂಪರ್ಕಿಸಲ್ಪಟ್ಟಿವೆ`, `${linked} अभिलेख जुड़े हैं`)}</small>
-                <a href={part.sourceUrl} target="_blank" rel="noreferrer" lang={uiLocale}>
-                  {ui('மூலத்தை காண்க', 'View source', 'మూలాన్ని చూడండి', 'ഉറവിടം കാണുക', 'ಮೂಲವನ್ನು ನೋಡಿ', 'स्रोत देखें')}
-                </a>
+                <small lang={uiLocale}>{ui('உரை சரிபார்ப்பு நிலுவையில்', 'Text verification pending', 'పాఠ్య ధృవీకరణ పెండింగ్', 'പാഠ പരിശോധന ബാക്കി', 'ಪಠ್ಯ ಪರಿಶೀಲನೆ ಬಾಕಿ', 'पाठ सत्यापन लंबित')}</small>
               </article>
             );
           })}
@@ -136,6 +140,42 @@ export default function Thiruppugazh() {
           <h2 id="catalog-title" lang={uiLocale}>{ui('சரிபார்க்கப்பட்ட பட்டியல்', 'Verified catalogue', 'ధృవీకరించిన కాటలాగ్', 'സ്ഥിരീകരിച്ച കാറ്റലോഗ്', 'ಪರಿಶೀಲಿತ ಕ್ಯಾಟಲಾಗ್', 'सत्यापित कैटलॉग')}</h2>
           <p lang={uiLocale}>{ui('தமிழ் தொடக்கச் சொல் அல்லது பாடல் எண்ணால் தேடலாம்.', 'Search by Tamil opening words or source song number.', 'తమిళ ప్రారంభ పదాలు లేదా మూల పాట సంఖ్యతో వెతకండి.', 'തമിഴ് ആരംഭ വാക്കുകളോ ഉറവിട ഗാന നമ്പറോ ഉപയോഗിച്ച് തിരയുക.', 'ತಮಿಳು ಆರಂಭ ಪದಗಳು ಅಥವಾ ಮೂಲ ಹಾಡಿನ ಸಂಖ್ಯೆಯಿಂದ ಹುಡುಕಿ.', 'तमिल आरंभिक शब्दों या स्रोत गीत संख्या से खोजें।')}</p>
         </div>
+        <form
+          className="song-number-jump"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const found = findSongByReferenceNumber(thiruppugazh, numberQuery);
+            if (found) {
+              setNumberError('');
+              setLocation(`/thiruppugazh/${found.id}`);
+            } else {
+              setNumberError(ui(
+                'இந்த எண்ணுக்கான பதிவு கிடைக்கவில்லை. வேறு பாடல் எண்ணை முயற்சிக்கவும்.',
+                'No catalogue entry exists for this number. Try another song number.',
+                'ఈ సంఖ్యకు పాట నమోదు లేదు.',
+                'ഈ നമ്പറിനായി ഗാനരേഖ കണ്ടെത്തിയില്ല.',
+                'ಈ ಸಂಖ್ಯೆಗೆ ಹಾಡಿನ ದಾಖಲೆ ಇಲ್ಲ.',
+                'इस संख्या का गीत रिकॉर्ड उपलब्ध नहीं है.',
+              ));
+            }
+          }}
+        >
+          <label htmlFor="thiruppugazh-jump-number" lang={uiLocale}>
+            {ui('பாடல் எண்ணுக்கு செல்லவும்', 'Jump to song number', 'పాట సంఖ్యకు వెళ్లండి', 'ഗാന നമ്പറിലേക്ക് പോകുക', 'ಹಾಡಿನ ಸಂಖ್ಯೆಗೆ ಹೋಗಿ', 'गीत संख्या पर जाएँ')}
+          </label>
+          <input
+            id="thiruppugazh-jump-number"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            maxLength={4}
+            value={numberQuery}
+            onChange={(event) => { setNumberQuery(event.target.value); setNumberError(''); }}
+            placeholder="1–1326"
+          />
+          <button type="submit">{ui('செல்', 'Go', 'వెళ్ళు', 'പോകുക', 'ಹೋಗಿ', 'जाएँ')}</button>
+          {numberError && <p role="status" lang={uiLocale}>{numberError}</p>}
+        </form>
         <div className="catalog-filter-row">
           <label>
             <span lang={uiLocale}>{ui('திருப்புகழ் தேடல்', 'Search Thiruppugazh', 'తిరుప్పుగళ్‌లో వెతకండి', 'തിരുപ്പുകഴിൽ തിരയുക', 'ತಿರುಪ್ಪುಗ಴್‌ನಲ್ಲಿ ಹುಡುಕಿ', 'तिरुप्पुगऴ खोजें')}</span>
@@ -156,6 +196,23 @@ export default function Thiruppugazh() {
             </select>
           </label>
         </div>
+        <label className="catalog-readable-filter">
+          <input
+            type="checkbox"
+            checked={readableOnly}
+            onChange={(event) => setReadableOnly(event.target.checked)}
+          />{' '}
+          <span lang={uiLocale}>
+            {ui(
+              'முழு தமிழ் உரை உள்ள பாடல்கள் மட்டும்',
+              'Only songs with full Tamil text',
+              'పూర్తి తమిళ పాఠం ఉన్న పాటలు మాత్రమే',
+              'പൂർണ്ണ തമിഴ് പാഠമുള്ള ഗാനങ്ങൾ മാത്രം',
+              'ಪೂರ್ಣ ತಮಿಳು ಪಠ್ಯವಿರುವ ಹಾಡುಗಳು ಮಾತ್ರ',
+              'केवल पूर्ण तमिल पाठ वाले गीत',
+            )}
+          </span>
+        </label>
         <p className="catalog-result-count" aria-live="polite" lang={uiLocale}>
           {ui(`காட்டப்படுவது ${rows.length} / ${thiruppugazh.length}`, `Showing ${rows.length} / ${thiruppugazh.length}`, `${rows.length} / ${thiruppugazh.length} చూపబడుతున్నాయి`, `${rows.length} / ${thiruppugazh.length} കാണിക്കുന്നു`, `${rows.length} / ${thiruppugazh.length} ತೋರಿಸಲಾಗುತ್ತಿದೆ`, `${rows.length} / ${thiruppugazh.length} दिखाए जा रहे हैं`)}
         </p>

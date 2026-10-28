@@ -1,4 +1,6 @@
 import { works, devotionalWorks } from '@/content';
+import { Link } from 'wouter';
+import { approvedDevotionalTexts, canRenderDevotionalText } from '@/content/approved-devotional-texts';
 import StateBadge from '@/components/StateBadge';
 import SaveControl from '@/components/SaveControl';
 import { useLocale } from '@/lib/locale';
@@ -146,6 +148,10 @@ export default function Works() {
             // titleEn is governed content, not a translation this UI invents —
             // it may lead in English mode when the registry actually has it.
             const showEnglishFirst = locale === 'en' && Boolean(titleEn);
+            const approvedText = devotionalIds.has(id)
+              ? approvedDevotionalTexts.find((entry) => entry.workId === id)
+              : undefined;
+            const readyToRead = 'rightsState' in w && canRenderDevotionalText(w, approvedText);
             return (
               <li key={id} id={w.id ? `work-${w.id}` : undefined} className="works-entry">
                 <div className="work-row works-entry-row">
@@ -166,6 +172,13 @@ export default function Works() {
                     )}
                   </div>
                   <div className="works-entry-actions">
+                    {w.id && devotionalIds.has(w.id) && (
+                      <Link href={`/works/read/${encodeURIComponent(w.id)}`} lang={uiLocale}>
+                        {readyToRead
+                          ? (locale === 'ta' ? 'தமிழில் படிக்க' : 'Read in Tamil')
+                          : (locale === 'ta' ? 'நூல் விவரம்' : 'Work details')}
+                      </Link>
+                    )}
                     <StateBadge
                       state={
                         'rightsState' in w

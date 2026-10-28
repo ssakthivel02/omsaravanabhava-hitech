@@ -13,6 +13,7 @@ const TempleExperience = lazy(() => import('@/features/library/TempleExperience'
 const Thiruppugazh = lazy(() => import('@/features/thiruppugazh/Thiruppugazh'));
 const SongExperience = lazy(() => import('@/features/library/SongExperience'));
 const Works = lazy(() => import('@/features/works/Works'));
+const DevotionalReader = lazy(() => import('@/features/works/DevotionalReader'));
 const Prayers = lazy(() => import('@/features/prayers/Prayers'));
 const Practice = lazy(() => import('@/features/practice/Practice'));
 const Search = lazy(() => import('@/features/search/Search'));
@@ -59,6 +60,7 @@ export default function App() {
           <Route path="/thiruppugazh" component={Thiruppugazh} />
           <Route path="/thiruppugazh/:id" component={SongExperience} />
           <Route path="/works" component={Works} />
+          <Route path="/works/read/:id" component={DevotionalReader} />
           <Route path="/prayers" component={Prayers} />
           <Route path="/practice" component={Practice} />
           <Route path="/search" component={Search} />
