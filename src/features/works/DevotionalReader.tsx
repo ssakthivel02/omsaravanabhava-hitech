@@ -2,6 +2,7 @@ import { Link, useParams } from 'wouter';
 import { devotionalWorks } from '@/content';
 import { approvedDevotionalTexts, canRenderDevotionalText } from '@/content/approved-devotional-texts';
 import { useLocale } from '@/lib/locale';
+import { useEntityMeta } from '@/lib/routeMeta';
 import TamilReadingPane from './TamilReadingPane';
 
 /** First-party Tamil reader. No outbound reading links or third-party embeds. */
@@ -11,6 +12,12 @@ export default function DevotionalReader() {
   const work = devotionalWorks.find((item) => item.id === id);
   const record = approvedDevotionalTexts.find((item) => item.workId === id);
   const approved = work && canRenderDevotionalText(work, record) ? record : null;
+  useEntityMeta(`/works/read/${id}`, {
+    titleTa: work?.titleTa ?? 'நூல் காணப்படவில்லை',
+    titleEn: work?.titleEn ?? 'Work not found',
+    descriptionTa: 'தமிழ் பக்தி நூல் விவரங்கள் மற்றும் உரை வெளியீட்டு நிலை.',
+    descriptionEn: 'Tamil devotional work details and text publication status.',
+  });
 
   return (
     <article className="page devotional-reader-page">
