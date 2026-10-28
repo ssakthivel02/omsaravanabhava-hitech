@@ -2,6 +2,11 @@ name: Manual deploy exact R2.14 isolated preview
 
 on:
   workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type DEPLOY_R214_ISOLATED_PREVIEW to authorize preview-only deployment'
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -20,6 +25,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: Require explicit isolated-preview confirmation
+        shell: bash
+        env:
+          DEPLOY_CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          if [ "$DEPLOY_CONFIRMATION" != 'DEPLOY_R214_ISOLATED_PREVIEW' ]; then
+            echo '::error::Explicit isolated-preview confirmation missing'
+            exit 1
+          fi
+
       - name: Verify Cloudflare deployment credentials are configured
         shell: bash
         env:
