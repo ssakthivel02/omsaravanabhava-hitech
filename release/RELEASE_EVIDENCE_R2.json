@@ -1,0 +1,118 @@
+{
+  "project": "OmSaravanaBhava Hi-Tech",
+  "templateVersion": "1.0.0",
+  "candidateStage": "R2",
+  "productionAuthorized": false,
+  "candidate": {
+    "repository": "ssakthivel02/omsaravanabhava-hitech",
+    "branch": "build/native-r6-flagship",
+    "gitSha": "5ac387cae1a5486b3c492fa95ff60e3f5ba24b23",
+    "version": "1.0.0",
+    "buildTimestamp": "2026-09-04T17:57:00Z",
+    "environment": "ci",
+    "previewUrl": null,
+    "cloudflareDeploymentId": null,
+    "note": "gitSha is a local commit made inside the working sandbox on top of the R1.1 hardening baseline; GitHub write access was unavailable this session, so this SHA is NOT yet present on ssakthivel02/omsaravanabhava-hitech. It becomes the exact-candidate identity once the owner (or a session with GitHub write access) pushes this tree and branch. See CURRENT BLOCKERS."
+  },
+  "sourceAuthority": {
+    "applicationAuthority": "clean-room React/TypeScript/Vite application in new repository",
+    "r6Role": "GOVERNED_DATA_PROVENANCE_ONLY",
+    "r6SourceSha256": "3477dd375e9545bd51482f9cacabe851adc6a841cdf111ffd5eb408f76c26585",
+    "legacyApplicationShellAllowed": false
+  },
+  "engineeringEvidence": {
+    "frozenInstall": "PASS (pnpm install --frozen-lockfile, pnpm 10.4.1, lockfile up to date)",
+    "exactPnpmVersion": "PASS (10.4.1, corepack-pinned)",
+    "typecheck": "PASS (tsc -b --noEmit, 0 errors)",
+    "lint": "PASS (eslint . --max-warnings 0, 0 warnings/errors)",
+    "unitIntegrationTests": "PASS (vitest run, 48/48 tests, 4 files: ui.test.tsx, anti-reversion-build.test.ts, content-integrity.test.ts, local-day.test.ts)",
+    "build": "PASS (vite build, 6 JS chunks + 1 CSS emitted, DEPLOY_ENV=ci)",
+    "verifyBuild": "PASS (scripts/verify-build.mjs, 12/12 checks: release marker repo, no legacy shell artefacts, SW namespace, JS chunks emitted, module entry, SPA shape, no cross-project contamination, non-prod robots disallow-all, non-prod X-Robots-Tag noindex, non-prod CSP report-only, PWA manifest does not overclaim, SW caches only successful HTML)",
+    "secretScan": "PENDING (no dedicated secret-scan tool run in this sandbox pass; no .env/credentials present in tree; recommend running gitleaks/trufflehog in real CI before merge)",
+    "crossProjectContamination": "PASS (scripts/scan-contamination.mjs, 45 files scanned, 0 hits for KirthiVerse/RamaVerse/DivyaNexus/SakthiAI/SaravanAI)",
+    "antiReversion": "PASS (tests/anti-reversion-build.test.ts unit-level + tests/e2e/anti-reversion.spec.ts runtime-level, both green — see playwrightBrowserMatrix)"
+  },
+  "browserEvidence": {
+    "playwright320": "PASS (small-mobile-320 project, all journeys/accessibility/responsive specs)",
+    "playwright390": "PASS (mobile-390 project)",
+    "playwright768": "PASS (tablet-768 project)",
+    "playwright1440": "PASS (desktop-1440 project)",
+    "playwright1920SpotCheck": "PENDING (no 1920 project configured in playwright.config.ts this candidate)",
+    "landscapePhone": "PENDING (no dedicated landscape-phone project configured)",
+    "deepRefresh": "PASS ('survives a deep-link refresh' for all 17 routes x 4 viewports)",
+    "unknownRoute": "PASS ('legacy page corpus is not served as static HTML' — unknown path resolves to SPA not-found view, not a legacy static page)",
+    "privateFreshBrowser": "PASS (each Playwright test runs in a fresh, isolated browser context by default)",
+    "totalPlaywrightTests": "148/148 passed across 4 viewport projects (excludes 'no console errors' checks — see consoleErrorsCaveat)",
+    "consoleErrorsCaveat": "SANDBOX_NETWORK_LIMITATION — the 18 'renders with a heading and no console errors' tests (one per route) fail ONLY with net::ERR_TUNNEL_CONNECTION_FAILED from the Google Fonts CDN (fonts.googleapis.com / fonts.gstatic.com), which this sandbox's egress proxy blocks (confirmed via direct curl: 403 CONNECT tunnel failed). Grep of all failure output across all 18 routes shows this is the ONLY error string produced — no other console errors or exceptions. This is a sandbox network-policy artifact, not an application defect, and is expected to pass in real GitHub Actions CI and the actual Cloudflare preview, both of which have unrestricted internet egress. MUST be re-verified in real CI before this caveat is closed."
+  },
+  "accessibilityEvidence": {
+    "axe": "PASS (@axe-core/playwright, wcag2a+wcag2aa+wcag21a+wcag21aa+wcag22aa tags, 0 violations on /, /arupadai-veedu, /temples, /search, /practice, x4 viewports)",
+    "keyboardOnly": "PASS (focus-visible test navigates by Tab only)",
+    "focusVisibility": "PASS ('focus is visible on keyboard navigation', outlineStyle asserted != none)",
+    "skipLinkFocusTransfer": "PASS ('skip link is reachable and moves focus to main')",
+    "touchTargets": "PASS (WCAG 2.2 SC 2.5.8-correct 3-tier check: 44px primary controls, 24px secondary nav, inline-sentence links exempt — real bugs found and fixed: .btn-quiet background, .footer-link and .trust-band a padding)",
+    "zoomReflow200": "PENDING (no automated 200% zoom/reflow test in this candidate's Playwright suite)",
+    "reducedMotion": "PASS ('home renders fully with animation suppressed', prefers-reduced-motion emulated, transitionDuration asserted ~0)",
+    "tamilLanguageSemantics": "PASS (lang=\"ta\" applied throughout templates; Tamil glyph-width responsive check passes)"
+  },
+  "pwaEvidence": {
+    "manifest": "PASS (manifest.webmanifest present in dist; verify-build confirms it does not overclaim standalone installability without icons)",
+    "icons": "NOT_YET_QUALIFIED (icons: [] — no governed 192/512/maskable icon set produced this session; manifest correctly stays display:\"browser\" rather than overclaiming)",
+    "installability": "NOT_YET_QUALIFIED",
+    "serviceWorkerRegistration": "PASS ('service worker registers and becomes ready under the product namespace', navigator.serviceWorker.ready resolves, all cache keys start with omsaravanabhava-hitech-)",
+    "offlineAfterOnlineVisit": "PASS ('offline navigation falls back to the last known-good shell')",
+    "versionUpdate": "PASS ('a new release is served rather than a cached shell', release.json fetched cache:no-store post-reload)",
+    "legacyCacheEviction": "PASS ('a legacy cache present before activation is evicted, not just left alone' — legacy cache seeded BEFORE candidate SW registration to genuinely exercise activate-time cleanup)",
+    "staleShellRecovery": "PASS (network-first navigation strategy; covered by versionUpdate + offline tests)"
+  },
+  "contentTruthEvidence": {
+    "canonicalTextNoFabrication": "PASS (no canonical Thiruppugazh/mantra/scripture text invented; 0/12 Thiruppugazh canonical bodies remain explicitly pending, never silently filled)",
+    "templeFactsNoFabrication": "PASS (history/architecture/sthalaPurana/visitorInformation/coordinates rendered only when the registry holds them; empty-state copy explicitly says pending, not absent-implies-unverified-identity)",
+    "stateDimensionsIndependent": "PASS (R2-CODE-005/012 fix: source/identity confidence, coordinate confidence, and image status render as three independently-labeled StateBadge dimensions, never collapsed into one global 'verified' flag)",
+    "searchTruth": "PASS (R2-CODE fix: removed 'verified records only' overclaim; each hit now carries its own StateBadge; result-count disclosure 'காட்டப்படுவது X / மொத்தம் Y' added)",
+    "homeMetricsCompletenessContext": "PASS (Home.tsx pairs Thiruppugazh record count with canonical-text-complete count and links to /content-completeness rather than implying record count = completeness)",
+    "rightsPublicationGate": "PARTIAL (Legal.tsx Terms/Accessibility/Contact honestly disclose current rights/evidence state and provide a real correction channel; a formal per-record rightsState publication gate matching release/CONTENT_PUBLICATION_POLICY.json's exact enum values was not implemented this session — see CURRENT BLOCKERS)",
+    "dynamicFactFreshness": "PENDING (source-data/ARUPADAI_VEEDU_OFFICIAL_DYNAMIC_SEED_2026-09-04.json retrievedAt/lastVerifiedAt fields not yet wired into this candidate's content layer)",
+    "correctionWorkflow": "PASS (Contact page links a real GitHub Issues template: labels=content-correction, with an honest 'no dedicated email/form yet' disclosure rather than a fake contact form)"
+  },
+  "seoSecurityEvidence": {
+    "previewNoindex": "PASS (DEPLOY_ENV != production => robots.txt Disallow: /, _headers X-Robots-Tag: noindex, empty sitemap.xml placeholder — verified by both verify-build.mjs and Playwright 'preview crawler controls are non-indexable in CI build')",
+    "productionCanonicalLogic": "PENDING (not exercised — this candidate has never been built with DEPLOY_ENV=production in this session; deferred to actual preview/production build per project instructions)",
+    "sitemapPublicationPolicy": "PASS (scripts/generate-sitemap.mjs gates each temple/song detail route on >=2 substantive fields or non-empty canonical text before indexing it — thin per-ID pages are held out; does not yet use the exact INDEXABLE_PUBLIC/PUBLIC_DIRECTORY_ONLY/PUBLIC_NOINDEX/WITHHELD enum names from release/CONTENT_PUBLICATION_POLICY.json, functionally equivalent)",
+    "structuredDataTruth": "NOT_IMPLEMENTED (no JSON-LD structured data emitted this candidate; absence is not a truth violation, but it is a real SEO gap — see NEXT BATCH)",
+    "securityHeaders": "PASS (public/_headers / scripts/generate-deployment-files.mjs emit X-Content-Type-Options, Referrer-Policy, X-Frame-Options, Permissions-Policy on every route, matching release/SECURITY_HEADERS_POLICY_V1.json's requiredHeaders for both preview and production; HSTS correctly withheld per policy, ENABLE_ONLY_AFTER_CUSTOM_DOMAIN_HTTPS_AND_ROLLBACK_REVIEW, not yet applicable)",
+    "cspPreviewReportOnly": "PASS (Content-Security-Policy-Report-Only header added this session with the exact cspMinimumDirectives from release/SECURITY_HEADERS_POLICY_V1.json, non-production builds only; verify-build.mjs now fails the build if CSP is missing or is enforced outright instead of report-only)",
+    "privacyTelemetryReview": "PASS (no analytics/telemetry script present in the candidate; nothing to review)"
+  },
+  "performanceEvidence": {
+    "mobileLighthouse": null,
+    "desktopLighthouse": null,
+    "lcp": null,
+    "inp": null,
+    "cls": null,
+    "homeInitialTransferKb": "PASS_BY_BUILD_ARTIFACT (index.html 2.30kB + index-*.css gzip 2.81kB + index-*.js gzip 14.85kB + vendor-*.js gzip 62.80kB ≈ 82.7kB raw-measured from this build's dist/, well under the 450kB budget; measured directly from dist/ output, not simulated)",
+    "homeInitialJsGzipKb": "PASS_BY_BUILD_ARTIFACT (14.85 + 62.80 = 77.65kB gzip against a 110kB budget; temples-*.js 10.83kB gzip and Search/TempleDetail/Temples chunks are route-level lazy chunks, confirmed NOT part of the home initial load)",
+    "homeInitialCssGzipKb": "PASS_BY_BUILD_ARTIFACT (2.81kB gzip against a 45kB budget)",
+    "templeCorpusAbsentFromHomeInitialChunk": "PASS (temples-B5uPGMVT.js, 295kB/10.83kB gzip, is a separate route-level chunk, not bundled into index-*.js)",
+    "note": "Field metrics (LCP/INP/CLS) and Lighthouse lab scores require a real Chrome + unrestricted network run (this sandbox's egress proxy blocks the Google Fonts CDN the app loads — see consoleErrorsCaveat) and were not attempted here to avoid producing a number that reflects the sandbox's network policy rather than the application. Transfer-size budgets ARE real, measured directly from this build's dist/ output."
+  },
+  "visualEvidence": {
+    "p0VisualMatrix": "PENDING (docs/R2_VISUAL_ACCEPTANCE_MATRIX.csv P0 rows require human/owner visual judgment — e.g. 'hero reads as pilgrimage journey not identical cards' — not mechanically checkable; not scored this session)",
+    "homeSacredTech": "PENDING (subjective craft judgment, not scored)",
+    "arupadaiJourney": "PENDING (subjective craft judgment, not scored)",
+    "templeDirectory": "PENDING (subjective craft judgment, not scored)",
+    "templeDetailIncompleteState": "PASS (verified functionally: an incomplete temple record renders truthful pending state, not a broken or fabricated view — see contentTruthEvidence)",
+    "thiruppugazhReaderShell": "PASS (verified functionally: reader shell renders correctly with 0/12 canonical bodies present, showing pending state rather than blank/broken UI)",
+    "search": "PASS (verified functionally per searchTruth)",
+    "tamilPrimary": "PASS (Tamil is the default and only fully-built UI language this candidate; no English-parity claim is made)"
+  },
+  "releaseControl": {
+    "rollbackTargetRecorded": true,
+    "rollbackTargetNote": "Legacy ssakthivel02/OmSaravanaBhava remains untouched and is the rollback/reference target; omsaravanabhava.org production hosting/DNS was not touched this session.",
+    "ownerVisualContentApproval": false,
+    "ownerProductionApproval": false,
+    "rootDomainChanged": false,
+    "finalStatus": "NO_GO"
+  },
+  "rule": "No PENDING mandatory field may be silently converted to PASS without exact-candidate evidence tied to gitSha. Production approval remains a separate owner action."
+}
