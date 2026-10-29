@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  AUTHORITATIVE_R2_14_SHA: 9fa0a4d450f09f4cbc0eff3f8f4146c945e28028
+  AUTHORITATIVE_R2_14_SHA: cc1cd4e413fc1917a611f21a9b33181495a0cf22
   AUTHORITATIVE_R2_14_BRANCH: feature/r214-on-site-tamil-reader-gate-20261027
 
 jobs:
@@ -72,7 +72,7 @@ jobs:
       - name: Checkout frozen qualified R2.14 commit
         uses: actions/checkout@v7
         with:
-          ref: 9fa0a4d450f09f4cbc0eff3f8f4146c945e28028
+          ref: cc1cd4e413fc1917a611f21a9b33181495a0cf22
           fetch-depth: 1
 
       - name: Verify exact repository and frozen SHA (detached checkout)
