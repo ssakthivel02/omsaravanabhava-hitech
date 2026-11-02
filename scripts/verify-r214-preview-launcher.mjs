@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 
 const path = '.github/workflows/preview-manual-r214.yml';
 const source = readFileSync(path, 'utf8');
-const candidate = 'cc1cd4e413fc1917a611f21a9b33181495a0cf22';
+const candidate = 'cfb39ba97fa4e1666915f578ede5229542ee3d58';
 const failures = [];
 function requireMatch(label, pattern) {
   if (!pattern.test(source)) failures.push(label);
@@ -18,6 +18,7 @@ requireMatch('explicit confirmation input', /confirmation:\s*\n\s+description:/)
 requireMatch('typed confirmation must fail closed', /DEPLOY_CONFIRMATION[^\n]*!= 'DEPLOY_R214_ISOLATED_PREVIEW'/);
 requireMatch('pinned qualified code SHA', new RegExp('AUTHORITATIVE_R2_14_SHA: '+candidate));
 requireMatch('checkout immutable SHA', new RegExp('ref: '+candidate));
+requireMatch('merged main branch identity', /AUTHORITATIVE_R2_14_BRANCH: main/);
 requireMatch('verify actual checkout SHA', /git rev-parse HEAD/);
 requireMatch('detached checkout check', /git rev-parse --abbrev-ref HEAD/);
 requireMatch('expected repository check', /ssakthivel02\/omsaravanabhava-hitech/);
