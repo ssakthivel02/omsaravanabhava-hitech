@@ -1,0 +1,51 @@
+{
+  "name": "omsaravanabhava-hitech",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "OmSaravanaBhava — Sacred-Tech Murugan devotional knowledge platform",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ssakthivel02/omsaravanabhava-hitech"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/generate-deployment-files.mjs && node scripts/generate-release.mjs && node scripts/generate-sitemap.mjs && tsc -b && vite build && node scripts/verify-build.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
+    "extract:content": "node scripts/extract-r6-content.mjs",
+    "verify:build": "node scripts/verify-build.mjs",
+    "test:e2e": "playwright test",
+    "report:content": "node scripts/content-gap-report.mjs",
+    "verify:contamination": "node scripts/scan-contamination.mjs",
+    "scan:contamination": "node scripts/scan-contamination.mjs"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "wouter": "^3.7.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.62.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^24.7.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.4",
+    "eslint": "^10.10.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.12.0",
+    "jsdom": "^30.0.1",
+    "typescript": "~5.6.3",
+    "typescript-eslint": "^8",
+    "vite": "^7.1.7",
+    "vitest": "^2.1.9"
+  },
+  "packageManager": "pnpm@10.4.1"
+}

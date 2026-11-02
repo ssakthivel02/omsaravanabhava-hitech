@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "project": "OmSaravanaBhava Hi-Tech",
+  "recordType": "exact-head-pr-evidence",
+  "recordedDate": "2026-10-28",
+  "repository": "ssakthivel02/omsaravanabhava-hitech",
+  "releaseLane": "R2.13 application-base integration into main",
+  "pullRequest": 11,
+  "base": {
+    "branch": "main",
+    "shaAtInspection": "535fdbe9679252f51252966bc41e995aee4933df"
+  },
+  "head": {
+    "branch": "build/r2-13-product-completion",
+    "shaAtInspection": "bfa15b1411e444850e7a0a939346d8ee2d9a2385"
+  },
+  "mergeabilityAtInspection": "mergeable",
+  "checks": {
+    "runId": 40659251733,
+    "url": "https://github.com/ssakthivel02/omsaravanabhava-hitech/actions/runs/40659251733",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "Repository provenance",
+        "conclusion": "success"
+      },
+      {
+        "name": "Typecheck, lint, test, build",
+        "conclusion": "success"
+      },
+      {
+        "name": "Browser journeys and accessibility",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "dependencies": {
+    "readerPR": 8,
+    "readerHeadAtInspection": "3a5d5b5f944ddca6b976fdd89d8f1e563ff7a04e",
+    "readerBase": "build/r2-13-product-completion",
+    "readerCI": {
+      "runId": 40657008907,
+      "conclusion": "success"
+    },
+    "previewLauncherPR": 10,
+    "previewLauncherMainMergeSha": "535fdbe9679252f51252966bc41e995aee4933df",
+    "previewOnlyTargetSha": "9fa0a4d450f09f4cbc0eff3f8f4146c945e28028"
+  },
+  "unverifiedGates": [
+    "Actual R2.14 manual workflow dispatch history and result",
+    "Live isolated preview deployment identity (release.json)",
+    "Live responsive reader, PWA and accessibility smoke tests",
+    "Cloudflare production deployment mechanics and rollback rehearsal",
+    "Exact current main integration qualification after any branch/head change",
+    "Release owner approval for incremental content scope",
+    "Full canonical Tamil text publication rights and completeness"
+  ],
+  "productionAuthorized": false,
+  "mergeAuthorized": false,
+  "productionDeploymentExecuted": false,
+  "notes": [
+    "This file is inspection evidence; it must never be interpreted as a CI status oracle or a production authorization.",
+    "The legacy release/RELEASE_EVIDENCE_R2.json describes a different historical candidate and is not superseded by changing its contents.",
+    "No DNS, custom domains, production routes, secrets, or Worker bindings changed by this evidence record.",
+    "Qualified reader code does not imply the complete Murugan devotional corpus is published."
+  ]
+}

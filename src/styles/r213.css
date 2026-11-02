@@ -1,0 +1,551 @@
+.language-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.language-switch::after {
+  content: '⌄';
+  position: absolute;
+  inset-inline-end: 0.65rem;
+  top: 50%;
+  transform: translateY(-54%);
+  color: var(--ink-faint);
+  pointer-events: none;
+  font-size: 0.72rem;
+}
+
+.language-switch-select {
+  appearance: none;
+  min-height: 44px;
+  max-width: 8.5rem;
+  padding: 0.52rem 1.75rem 0.52rem 0.75rem;
+  border: 1px solid var(--sanctum-edge);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sanctum) 94%, var(--gold) 6%);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--t-xs);
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.language-switch-select:hover,
+.language-switch-select:focus-visible {
+  border-color: var(--gold);
+  color: var(--gold-soft);
+  outline: none;
+}
+
+.language-switch-select option {
+  background: var(--sanctum);
+  color: var(--ink);
+}
+
+/* Keep the primary home/brand action at the same touch-target quality as the
+   language and menu controls after the R2.13 header became denser. */
+.brand {
+  min-height: 44px;
+}
+
+/* R2.13 visitor-facing Thiruppugazh discovery pass. The content model remains
+   unchanged: 1,326 means source-linked catalogue records, not published song
+   bodies. This layer improves hierarchy without manufacturing content. */
+.thiruppugazh-page {
+  max-width: 78rem;
+}
+
+.thiruppugazh-page > .page-head {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(2.75rem, 8vw, 5.75rem) clamp(1.25rem, 5vw, 3.25rem);
+  border-block: 1px solid var(--sanctum-edge);
+  background:
+    radial-gradient(70% 120% at 88% 12%, color-mix(in srgb, var(--gold) 17%, transparent), transparent 63%),
+    radial-gradient(55% 90% at 18% 100%, color-mix(in srgb, var(--copper) 13%, transparent), transparent 70%),
+    linear-gradient(135deg, color-mix(in srgb, var(--sanctum-raised) 94%, var(--gold) 6%), var(--sanctum));
+}
+
+.thiruppugazh-page > .page-head::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset-block: 10%;
+  inset-inline-end: clamp(1rem, 7vw, 5rem);
+  width: clamp(4rem, 12vw, 8rem);
+  border-inline-start: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  border-inline-end: 1px solid color-mix(in srgb, var(--copper) 32%, transparent);
+  transform: skew(-10deg);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.thiruppugazh-page > .page-head h1 {
+  max-width: 12ch;
+  color: var(--gold-soft);
+  font-size: clamp(2.8rem, 8vw, 5.25rem);
+  letter-spacing: -0.025em;
+}
+
+.thiruppugazh-page > .page-head p {
+  max-width: 60ch;
+  margin-top: 1.25rem;
+  color: var(--ink-muted);
+  font-size: clamp(var(--t-base), 1rem + 0.35vw, var(--t-md));
+}
+
+.thiruppugazh-page .corpus-summary {
+  margin-top: 0;
+  padding: clamp(1.4rem, 4vw, 2.25rem) 0;
+  border-inline-start: 0;
+  border-inline-end: 0;
+  background: transparent;
+}
+
+.thiruppugazh-page .corpus-summary .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.thiruppugazh-page .corpus-counts {
+  gap: 0;
+  border-block: 1px solid var(--sanctum-edge);
+}
+
+.thiruppugazh-page .corpus-counts div {
+  min-width: 0;
+  padding: 1rem 0.85rem;
+  border-top: 0;
+}
+
+.thiruppugazh-page .corpus-counts div + div {
+  border-inline-start: 1px solid var(--sanctum-edge);
+}
+
+.thiruppugazh-page .corpus-counts dd {
+  font-size: clamp(var(--t-lg), 1.5rem + 1vw, var(--t-2xl));
+}
+
+.thiruppugazh-page .corpus-parts {
+  padding-top: clamp(2rem, 5vw, 3.5rem);
+  border-top: 1px solid var(--sanctum-edge);
+}
+
+.thiruppugazh-page .corpus-part-grid {
+  gap: 0;
+  border-inline: 0;
+}
+
+.thiruppugazh-page .corpus-part {
+  min-height: 12rem;
+  padding: 1.35rem;
+  border: 1px solid var(--sanctum-edge);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--sanctum-raised) 88%, var(--gold) 12%),
+    var(--sanctum)
+  );
+}
+
+.thiruppugazh-page .catalog-controls {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding: clamp(1.35rem, 3vw, 2rem);
+  border-block: 1px solid var(--sanctum-edge);
+  background:
+    radial-gradient(70% 130% at 100% 0%, color-mix(in srgb, var(--vel) 8%, transparent), transparent 68%),
+    color-mix(in srgb, var(--sanctum-raised) 92%, var(--gold) 8%);
+}
+
+.thiruppugazh-page .catalog-filter-row input,
+.thiruppugazh-page .catalog-filter-row select {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sanctum-raised) 88%, var(--gold) 12%);
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.thiruppugazh-page .catalog-filter-row input:hover,
+.thiruppugazh-page .catalog-filter-row select:hover {
+  border-color: color-mix(in srgb, var(--gold) 65%, var(--sanctum-edge));
+}
+
+.thiruppugazh-page .song-list {
+  margin-top: 1.5rem;
+}
+
+.thiruppugazh-page .song-row {
+  min-height: 5.25rem;
+  padding-block: 1rem;
+  transition: background 160ms ease, padding-inline 160ms ease, border-color 160ms ease;
+}
+
+.thiruppugazh-page .song-row:hover,
+.thiruppugazh-page .song-row:focus-visible {
+  padding-inline: 0.8rem;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--gold) 9%, transparent),
+    transparent 72%
+  );
+}
+
+.thiruppugazh-page .song-row b {
+  font-size: clamp(var(--t-base), 0.95rem + 0.4vw, var(--t-md));
+  color: var(--ink);
+}
+
+/* R2.13 prayers / Namavali visual hierarchy. This layer only presents the
+   governed metadata already published by the route; it does not introduce or
+   imply canonical prayer text, audio, temple photography, or verified Namavali. */
+.prayers-page {
+  max-width: 78rem;
+}
+
+.prayers-hero {
+  display: grid;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(2rem, 7vw, 4.75rem) clamp(1.25rem, 5vw, 3.25rem);
+  border-block: 1px solid var(--sanctum-edge);
+  background:
+    radial-gradient(65% 100% at 88% 20%, color-mix(in srgb, var(--gold) 16%, transparent), transparent 68%),
+    linear-gradient(145deg, color-mix(in srgb, var(--sanctum-raised) 94%, var(--gold) 6%), var(--sanctum));
+}
+
+.prayers-hero-copy {
+  max-width: 44rem;
+}
+
+.prayers-hero .eyebrow,
+.prayers-section .eyebrow {
+  margin-bottom: 0.6rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: var(--t-xs);
+}
+
+.prayers-hero h1 {
+  max-width: 12ch;
+  color: var(--gold-soft);
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  letter-spacing: -0.025em;
+}
+
+.prayers-hero-copy > p:last-child {
+  max-width: 58ch;
+  margin-top: 1.2rem;
+  color: var(--ink-muted);
+  font-size: clamp(var(--t-base), 1rem + 0.25vw, var(--t-md));
+}
+
+.prayers-hero-art {
+  margin: 0;
+  justify-self: center;
+  max-width: 25rem;
+}
+
+.prayers-hero-art img {
+  display: block;
+  width: min(100%, 23rem);
+  height: auto;
+  margin-inline: auto;
+  filter: drop-shadow(0 1.25rem 2.5rem color-mix(in srgb, black 35%, transparent));
+}
+
+.prayers-hero-art figcaption {
+  max-width: 32ch;
+  margin: 0.8rem auto 0;
+  color: var(--ink-faint);
+  font-size: var(--t-xs);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.prayers-section {
+  margin-top: clamp(2.5rem, 7vw, 5rem);
+  padding-top: clamp(1.75rem, 4vw, 2.75rem);
+  border-top: 1px solid var(--sanctum-edge);
+}
+
+.prayers-section-head {
+  max-width: 44rem;
+  margin-bottom: 1.25rem;
+}
+
+.prayers-work-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.prayers-work-list > li {
+  border: 1px solid var(--sanctum-edge);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--sanctum-raised) 94%, var(--gold) 6%), var(--sanctum));
+}
+
+.prayers-work-list .temple-row {
+  min-height: 4.75rem;
+  padding: 1rem 1.1rem;
+}
+
+.prayers-kumarastavam {
+  padding: clamp(1.35rem, 4vw, 2.4rem);
+  border: 1px solid var(--sanctum-edge);
+  background:
+    radial-gradient(70% 140% at 100% 0%, color-mix(in srgb, var(--copper) 8%, transparent), transparent 72%),
+    var(--sanctum-raised);
+}
+
+.prayers-kumarastavam .kumarastavam-head {
+  gap: 1rem;
+}
+
+.prayers-fields {
+  margin-top: 1.25rem;
+}
+
+.prayers-rights-note,
+.prayers-namavali .empty {
+  border-inline-start: 3px solid color-mix(in srgb, var(--gold) 60%, var(--sanctum-edge));
+  background: color-mix(in srgb, var(--sanctum-raised) 92%, var(--gold) 8%);
+}
+
+/* R2.13 Songs & Sacred Works discovery pass. It uses only catalogue metadata
+   already governed by the route and makes publication state more legible. */
+.works-page {
+  max-width: 78rem;
+}
+
+.works-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(2.5rem, 7vw, 5rem) clamp(1.25rem, 5vw, 3.25rem);
+  border-block: 1px solid var(--sanctum-edge);
+  background:
+    radial-gradient(65% 110% at 92% 15%, color-mix(in srgb, var(--copper) 12%, transparent), transparent 68%),
+    radial-gradient(55% 90% at 8% 100%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 72%),
+    linear-gradient(140deg, color-mix(in srgb, var(--sanctum-raised) 95%, var(--gold) 5%), var(--sanctum));
+}
+
+.works-hero .eyebrow,
+.works-catalogue .eyebrow {
+  margin-bottom: 0.6rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: var(--t-xs);
+}
+
+.works-hero h1 {
+  max-width: 13ch;
+  color: var(--gold-soft);
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  letter-spacing: -0.025em;
+}
+
+.works-hero > p:not(.eyebrow) {
+  max-width: 60ch;
+  color: var(--ink-muted);
+  font-size: clamp(var(--t-base), 1rem + 0.25vw, var(--t-md));
+}
+
+.works-trust-note {
+  margin-top: 1.25rem;
+  padding: 0.9rem 1rem;
+  border-inline-start: 3px solid color-mix(in srgb, var(--gold) 60%, var(--sanctum-edge));
+  background: color-mix(in srgb, var(--sanctum-raised) 92%, var(--gold) 8%);
+}
+
+.works-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  border-block: 1px solid var(--sanctum-edge);
+}
+
+.works-summary div {
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.works-summary div + div {
+  border-inline-start: 1px solid var(--sanctum-edge);
+}
+
+.works-summary dt {
+  color: var(--ink-faint);
+  font-size: var(--t-xs);
+  line-height: 1.4;
+}
+
+.works-summary dd {
+  margin: 0.35rem 0 0;
+  color: var(--gold-soft);
+  font-size: clamp(var(--t-lg), 1.45rem + 0.8vw, var(--t-2xl));
+  font-weight: 700;
+}
+
+.works-catalogue {
+  margin-top: clamp(2.75rem, 7vw, 5rem);
+  padding-top: clamp(1.75rem, 4vw, 2.75rem);
+  border-top: 1px solid var(--sanctum-edge);
+}
+
+.works-catalogue-head {
+  max-width: 48rem;
+  margin-bottom: 1.35rem;
+}
+
+.works-catalogue-head > p:last-child {
+  color: var(--ink-muted);
+}
+
+.works-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.works-entry {
+  border: 1px solid var(--sanctum-edge);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--sanctum-raised) 95%, var(--gold) 5%), var(--sanctum));
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.works-entry:hover {
+  border-color: color-mix(in srgb, var(--gold) 48%, var(--sanctum-edge));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--sanctum-raised) 90%, var(--gold) 10%), var(--sanctum));
+}
+
+.works-entry-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  min-height: 5.25rem;
+  padding: 1rem 1.1rem;
+}
+
+.works-index {
+  color: var(--ink-faint);
+  font-size: var(--t-xs);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+
+.works-entry-copy {
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.works-entry-copy b {
+  color: var(--ink);
+  font-size: clamp(var(--t-base), 0.98rem + 0.3vw, var(--t-md));
+}
+
+.works-entry-copy small {
+  color: var(--ink-faint);
+}
+
+.works-entry-actions {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 31rem) {
+  .brand-text small {
+    display: none;
+  }
+
+  .language-switch-select {
+    max-width: 6.7rem;
+    padding-inline-start: 0.6rem;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .thiruppugazh-page > .page-head,
+  .prayers-hero,
+  .works-hero {
+    padding-inline: clamp(1rem, 5vw, 1.4rem);
+  }
+
+  .thiruppugazh-page .corpus-counts {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .thiruppugazh-page .corpus-counts div:nth-child(3) {
+    border-inline-start: 0;
+    border-top: 1px solid var(--sanctum-edge);
+  }
+
+  .thiruppugazh-page .corpus-counts div:nth-child(4) {
+    border-top: 1px solid var(--sanctum-edge);
+  }
+
+  .thiruppugazh-page .catalog-controls {
+    padding-inline: 1rem;
+  }
+
+  .prayers-kumarastavam {
+    padding-inline: 1rem;
+  }
+
+  .works-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .works-summary div + div {
+    border-inline-start: 0;
+    border-top: 1px solid var(--sanctum-edge);
+  }
+
+  .works-entry-row {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .works-entry-actions {
+    grid-column: 2;
+    justify-content: flex-start;
+  }
+}
+
+@media (min-width: 48rem) {
+  .prayers-hero {
+    grid-template-columns: minmax(0, 1.25fr) minmax(15rem, 0.75fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .thiruppugazh-page > .page-head {
+    min-height: 27rem;
+    display: grid;
+    align-content: center;
+  }
+
+  .thiruppugazh-page .corpus-counts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .prayers-hero {
+    min-height: 30rem;
+  }
+
+  .works-hero {
+    min-height: 26rem;
+    display: grid;
+    align-content: center;
+  }
+}
+
+@media (min-width: 72rem) {
+  .language-switch {
+    margin-inline-start: 0.2rem;
+  }
+}

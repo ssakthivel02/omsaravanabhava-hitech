@@ -1,0 +1,193 @@
+[
+  {
+    "id": "thiruppugazh-corpus-part1",
+    "titleTa": "திருப்புகழ் — முதல் பாகம்",
+    "titleEn": "Thiruppugazh — Part I",
+    "authorId": "author:arunagirinathar",
+    "workType": "THIRUPPUGAZH_CORPUS",
+    "sourceIds": [
+      "dsrc:project-madurai-thiruppugazh-part1",
+      "dsrc:archive-thiruppugazh-1921"
+    ],
+    "rightsState": "RIGHTS_UNCERTAIN_OR_METADATA_ONLY",
+    "textPublicationState": "METADATA_ONLY",
+    "canonicalTextState": "NOT_REPUBLISHED",
+    "easyTamilState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "meaningState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO"
+  },
+  {
+    "id": "kumarastavam-pamban",
+    "titleTa": "ஸ்ரீ குமாரஸ்த்தவம்",
+    "titleEn": "Sri Kumarastavam",
+    "authorId": "author:pamban-kumaraguruthasa-swami",
+    "workType": "INVOCATION_SEQUENCE",
+    "sourceIds": [
+      "dsrc:kaumaram-kumarastavam"
+    ],
+    "rightsState": "RIGHTS_UNCERTAIN_OR_METADATA_ONLY",
+    "textPublicationState": "METADATA_ONLY",
+    "canonicalTextState": "NOT_REPUBLISHED",
+    "easyTamilState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "meaningState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO"
+  },
+  {
+    "id": "pamban-pagai-kadithal",
+    "titleTa": "பகை கடிதல்",
+    "titleEn": "Pagai Kadithal",
+    "authorId": "author:pamban-kumaraguruthasa-swami",
+    "workType": "DEVOTIONAL_PATHIGAM",
+    "sourceIds": [
+      "dsrc:kaumaram-pagai-kadithal",
+      "dsrc:pamban-org-pagai-kadithal",
+      "dsrc:pamban-org-sixth-mandalam-index"
+    ],
+    "rightsState": "RIGHTS_UNCERTAIN_OR_METADATA_ONLY",
+    "textPublicationState": "METADATA_ONLY",
+    "canonicalTextState": "NOT_REPUBLISHED",
+    "easyTamilState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "meaningState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO"
+  },
+  {
+    "id": "pamban-tiruvadivaya",
+    "titleTa": "திருவடிவயா",
+    "titleEn": "Tiruvadivaya",
+    "authorId": "author:pamban-kumaraguruthasa-swami",
+    "workType": "DEVOTIONAL_PATHIGAM",
+    "sourceIds": [
+      "dsrc:pamban-org-tiruvadivaya",
+      "dsrc:pamban-org-sixth-mandalam-index"
+    ],
+    "rightsState": "RIGHTS_UNCERTAIN_OR_METADATA_ONLY",
+    "textPublicationState": "METADATA_ONLY",
+    "canonicalTextState": "NOT_REPUBLISHED",
+    "easyTamilState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "meaningState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO"
+  },
+  {
+    "id": "kandar-anubhuti",
+    "titleTa": "கந்தர் அனுபூதி",
+    "titleEn": "Kandar Anubhuti",
+    "authorId": "author:arunagirinathar",
+    "workType": "ARUNAGIRINATHAR_WORK",
+    "sourceIds": [
+      "dsrc:archive-kandar-anubhuti-1967",
+      "dsrc:project-madurai-catalogue"
+    ],
+    "rightsState": "RIGHTS_UNCERTAIN_OR_METADATA_ONLY",
+    "textPublicationState": "METADATA_ONLY",
+    "canonicalTextState": "NOT_REPUBLISHED",
+    "easyTamilState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "meaningState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO"
+  },
+  {
+    "id": "kandar-alangaram",
+    "titleTa": "கந்தர் அலங்காரம்",
+    "titleEn": "Kandar Alangaram",
+    "authorId": "author:arunagirinathar",
+    "workType": "ARUNAGIRINATHAR_WORK",
+    "sourceIds": [
+      "dsrc:archive-kandar-alangaram-1981",
+      "dsrc:project-madurai-catalogue"
+    ],
+    "rightsState": "RIGHTS_UNCERTAIN_OR_METADATA_ONLY",
+    "textPublicationState": "METADATA_ONLY",
+    "canonicalTextState": "NOT_REPUBLISHED",
+    "easyTamilState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "meaningState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO"
+  },
+  {
+    "id": "kandar-andhadhi",
+    "titleTa": "கந்தர் அந்தாதி",
+    "titleEn": "Kandar Andhadhi",
+    "authorId": null,
+    "workType": "ARUNAGIRINATHAR_WORK",
+    "sourceIds": [],
+    "rightsState": "RIGHTS_UNCERTAIN_OR_METADATA_ONLY",
+    "textPublicationState": "METADATA_ONLY",
+    "canonicalTextState": "NOT_REPUBLISHED",
+    "easyTamilState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "meaningState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO"
+  },
+  {
+    "id": "shanmuga-kavasam",
+    "titleTa": "சண்முக கவசம்",
+    "titleEn": "Shanmuga Kavacham",
+    "authorId": "author:pamban-kumaraguruthasa-swami",
+    "workType": "KAVACHAM",
+    "sourceIds": [
+      "dsrc:project-madurai-catalogue"
+    ],
+    "rightsState": "RIGHTS_UNCERTAIN_OR_METADATA_ONLY",
+    "textPublicationState": "METADATA_ONLY",
+    "canonicalTextState": "NOT_REPUBLISHED",
+    "easyTamilState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "meaningState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO"
+  },
+  {
+    "id": "kanda-sashti-kavasam",
+    "titleTa": "கந்த சஷ்டி கவசம்",
+    "titleEn": "Kanda Sashti Kavacham",
+    "authorId": "author:devaraya-swami",
+    "workType": "KAVACHAM",
+    "sourceIds": [
+      "dsrc:project-madurai-catalogue"
+    ],
+    "rightsState": "RIGHTS_UNCERTAIN_OR_METADATA_ONLY",
+    "textPublicationState": "METADATA_ONLY",
+    "canonicalTextState": "NOT_REPUBLISHED",
+    "easyTamilState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "meaningState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO"
+  },
+  {
+    "id": "skanda-guru-kavasam",
+    "titleTa": "ஸ்கந்த குரு கவசம்",
+    "titleEn": "Skanda Guru Kavacham",
+    "authorId": "author:santhananda-swami",
+    "workType": "KAVACHAM",
+    "sourceIds": [
+      "dsrc:project-madurai-catalogue"
+    ],
+    "rightsState": "RIGHTS_UNCERTAIN_OR_METADATA_ONLY",
+    "textPublicationState": "METADATA_ONLY",
+    "canonicalTextState": "NOT_REPUBLISHED",
+    "easyTamilState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "meaningState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO"
+  },
+  {
+    "id": "tirumurukarruppatai",
+    "titleTa": "திருமுருகாற்றுப்படை",
+    "titleEn": "Tirumurukarruppatai",
+    "authorId": "author:nakkirar",
+    "workType": "CLASSICAL_MURUGAN_LITERATURE",
+    "sourceIds": [
+      "dsrc:project-madurai-tirumurukarruppatai"
+    ],
+    "rightsState": "RIGHTS_UNCERTAIN_OR_METADATA_ONLY",
+    "textPublicationState": "METADATA_ONLY",
+    "canonicalTextState": "NOT_REPUBLISHED",
+    "easyTamilState": "NOT_PUBLISHED",
+    "transliterationState": "NOT_PUBLISHED",
+    "meaningState": "NOT_PUBLISHED",
+    "audioState": "NO_APPROVED_AUDIO"
+  }
+]
