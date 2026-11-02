@@ -165,9 +165,8 @@ describe('truthful content states', () => {
     expect(
       await screen.findByText(/கோயிலின் அடையாளம் குறித்த ஐயத்தைக் குறிக்காது/),
     ).toBeInTheDocument();
-    // The identity/source-confidence dimension is rendered independently of
-    // coordinate and image state (R2-CODE-005).
-    expect(screen.getAllByText(/மூல அடையாளம்/).length).toBeGreaterThan(0);
+    // Raw audit codes are no longer visitor-facing; provenance is explained plainly.
+    expect(screen.getByText(/கோயிலின் பெயர் மற்றும் கிடைக்கும் தகவல்கள்/)).toBeInTheDocument();
   });
 
   it('never publishes a Namavali collection while rights are unresolved', async () => {

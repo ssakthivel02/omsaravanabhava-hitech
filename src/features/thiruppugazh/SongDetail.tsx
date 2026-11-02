@@ -1,8 +1,11 @@
 import { useParams, Link } from 'wouter';
-import { songById } from '@/content';
+import { songById, thiruppugazh } from '@/content';
+import { neighboringSongs } from './songNavigation';
+import { canPublishCanonicalSong } from './canPublishCanonicalSong';
 import StateBadge from '@/components/StateBadge';
 import SaveControl from '@/components/SaveControl';
 import ReadAloud from '@/components/ReadAloud';
+import TamilReadingPane from '@/features/works/TamilReadingPane';
 import { useEntityMeta } from '@/lib/routeMeta';
 import { useRecentItem } from '@/lib/useRecent';
 import { useLocale, type UiLocale } from '@/lib/locale';
@@ -161,6 +164,8 @@ export default function SongDetail() {
     );
   }
 
+  const { previous, next } = neighboringSongs(thiruppugazh, song.id);
+
   return (
     <article className="page">
       <header className="page-head">
@@ -176,14 +181,28 @@ export default function SongDetail() {
           verse body — never reconstructed, never paraphrased. Browser TTS is
           only offered for that governed canonical body, never for a guessed
           reconstruction or for the placeholder message. */}
-      {song.canonicalText ? (
+      {canPublishCanonicalSong(song) ? (
         <>
-          <div className="canonical" lang="ta">{song.canonicalText}</div>
-          <ReadAloud text={song.canonicalText} labelTa="மூல உரையை வாசிக்க" labelEn="Read source text aloud" />
+          <TamilReadingPane tamilText={song.canonicalText!} ta={uiLocale === 'ta'} />
+          <ReadAloud text={song.canonicalText!} labelTa="மூல உரையை வாசிக்க" labelEn="Read source text aloud" />
         </>
       ) : (
         <p className="empty" lang={uiLocale}>{copy.canonicalMissing}</p>
       )}
+
+      <nav className="reader-sequence" aria-label={uiLocale === 'ta' ? 'திருப்புகழ் பாடல் வழிசெலுத்தல்' : 'Thiruppugazh song navigation'}>
+        {previous ? (
+          <Link href={`/thiruppugazh/${previous.id}`} lang={uiLocale}>
+            {uiLocale === 'ta' ? 'முந்தைய பாடல்' : 'Previous song'} · <span lang="ta">{previous.titleTa ?? previous.openingWords}</span>
+          </Link>
+        ) : <span />}
+        <Link href="/thiruppugazh" lang={uiLocale}>{copy.thiruppugazhList}</Link>
+        {next ? (
+          <Link href={`/thiruppugazh/${next.id}`} lang={uiLocale}>
+            {uiLocale === 'ta' ? 'அடுத்த பாடல்' : 'Next song'} · <span lang="ta">{next.titleTa ?? next.openingWords}</span>
+          </Link>
+        ) : <span />}
+      </nav>
 
       <section className="layers" aria-labelledby="layers-h">
         <h2 id="layers-h" lang={uiLocale}>{copy.layers}</h2>

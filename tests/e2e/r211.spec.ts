@@ -120,10 +120,15 @@ test.describe('R2.11 Thiruppugazh catalogue browser qualification', () => {
     await expect(page.getByText('காட்டப்படுவது 1 / 1326')).toBeVisible();
   });
 
-  test('keeps corpus-reference links external and source-labelled', async ({ page }) => {
+  test('keeps song navigation on this site without external reading links', async ({ page }) => {
     await page.goto('/thiruppugazh');
-    const firstSource = page.getByRole('link', { name: 'மூலத்தை காண்க' }).first();
-    await expect(firstSource).toHaveAttribute('target', '_blank');
-    await expect(firstSource).toHaveAttribute('href', /projectmadurai\.org/);
+    await expect(page.locator('a[href*="projectmadurai.org"]')).toHaveCount(0);
+    await expect(page.locator('a[target="_blank"]')).toHaveCount(0);
+    await page.getByLabel('திருப்புகழ் தேடல்').fill('முத்தைத்தரு');
+    const song = page.getByRole('link', { name: /முத்தைத்தரு/ });
+    await expect(song).toHaveAttribute('href', '/thiruppugazh/thiruppugazh-0006');
+    await song.click();
+    await expect(page).toHaveURL(/\/thiruppugazh\/thiruppugazh-0006$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'முத்தைத்தரு' })).toBeVisible();
   });
 });
