@@ -1,0 +1,228 @@
+name: Production release (approval-gated, disabled by default)
+
+# SAFETY MODEL
+# 1. Manual only (workflow_dispatch). No push / PR / schedule / workflow_run trigger.
+# 2. DISABLED BY DEFAULT: every job is skipped unless the repository variable
+#    PRODUCTION_RELEASE_ENABLED is exactly 'true' (owner-set, Settings > Variables).
+# 3. Typed confirmation bound to the exact SHA: DEPLOY_PRODUCTION_<first 12 of sha>.
+# 4. The SHA must be a full 40-hex commit that is an ancestor of (or equal to) main
+#    AND already has a successful push CI run.
+# 5. The deploy job targets the GitHub Environment `production`; the owner must
+#    configure required reviewers there so a human approves every run.
+# 6. Deploys ONLY the Worker `omsaravanabhava-hitech` from wrangler.production.jsonc,
+#    which has NO routes/custom domain. Root-domain cutover is a separate,
+#    owner-executed step; this workflow never touches DNS or omsaravanabhava.org.
+# See docs/PRODUCTION_RELEASE_MECHANISM_V1.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_sha:
+        description: 'Full 40-character commit SHA on main to release'
+        required: true
+        type: string
+      confirmation:
+        description: 'Type DEPLOY_PRODUCTION_ followed by the first 12 characters of release_sha'
+        required: true
+        type: string
+      rollback_sha:
+        description: 'Last known-good 40-character SHA to redeploy if needed, or FIRST_RELEASE'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: omsaravanabhava-hitech-production-release
+  cancel-in-progress: false
+
+jobs:
+  verify-request:
+    name: Verify release request (no secrets)
+    if: ${{ vars.PRODUCTION_RELEASE_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      RELEASE_SHA: ${{ inputs.release_sha }}
+      ROLLBACK_SHA: ${{ inputs.rollback_sha }}
+      DEPLOY_CONFIRMATION: ${{ inputs.confirmation }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Validate SHA formats
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::release_sha must be a full 40-hex SHA"; exit 1; }
+          if [ "$ROLLBACK_SHA" != 'FIRST_RELEASE' ]; then
+            [[ "$ROLLBACK_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::rollback_sha must be 40-hex or FIRST_RELEASE"; exit 1; }
+          fi
+
+      - name: Require exact SHA-bound confirmation
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="DEPLOY_PRODUCTION_${RELEASE_SHA:0:12}"
+          if [ "$DEPLOY_CONFIRMATION" != "$expected" ]; then
+            echo "::error::Confirmation mismatch. Expected exactly: $expected"
+            exit 1
+          fi
+
+      - name: Require SHA to be on main
+        shell: bash
+        run: |
+          set -euo pipefail
+          status=$(gh api "repos/${GITHUB_REPOSITORY}/compare/${RELEASE_SHA}...main" --jq .status)
+          case "$status" in
+            identical|ahead) echo "release_sha is on main (compare status: $status)" ;;
+            *) echo "::error::release_sha is not an ancestor of main (status: $status)"; exit 1 ;;
+          esac
+
+      - name: Require successful push CI on the exact SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          ok=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs?head_sha=${RELEASE_SHA}&event=push&per_page=50" \
+            --jq '[.workflow_runs[] | select(.name == "CI" and .conclusion == "success")] | length')
+          if [ "$ok" -lt 1 ]; then
+            echo "::error::No successful push CI run found for ${RELEASE_SHA}"
+            exit 1
+          fi
+          echo "Successful CI runs on exact SHA: $ok"
+
+  deploy-production:
+    name: Build exact SHA and deploy production Worker
+    needs: verify-request
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+    env:
+      RELEASE_SHA: ${{ inputs.release_sha }}
+      ROLLBACK_SHA: ${{ inputs.rollback_sha }}
+    steps:
+      - name: Verify Cloudflare credentials are configured
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          test -n "${CLOUDFLARE_API_TOKEN}" || { echo "::error::Missing CLOUDFLARE_API_TOKEN"; exit 1; }
+          test -n "${CLOUDFLARE_ACCOUNT_ID}" || { echo "::error::Missing CLOUDFLARE_ACCOUNT_ID"; exit 1; }
+
+      - name: Checkout the exact approved commit
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.release_sha }}
+          fetch-depth: 1
+
+      - name: Verify repository and detached exact SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REPOSITORY}" = "ssakthivel02/omsaravanabhava-hitech"
+          test "$(git rev-parse HEAD)" = "${RELEASE_SHA}"
+          test "$(git rev-parse --abbrev-ref HEAD)" = "HEAD"
+
+      - uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996
+        with:
+          version: 10.4.1
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Verify exact pnpm version
+        run: test "$(pnpm --version)" = "10.4.1"
+
+      - name: Install from frozen lockfile
+        run: pnpm install --frozen-lockfile
+
+      - name: Re-run release safety gates
+        run: |
+          pnpm run typecheck
+          pnpm run lint
+          pnpm run test
+          pnpm run scan:contamination
+
+      - name: Build production artifact from checked-out Git identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          env -u GITHUB_SHA GITHUB_REF_NAME=main DEPLOY_ENV=production pnpm run build
+
+      - name: Verify immutable production release identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const release = JSON.parse(fs.readFileSync('dist/release.json', 'utf8'));
+          const sha = process.env.RELEASE_SHA;
+          if (
+            release.commit !== sha ||
+            release.environment !== 'production' ||
+            release.repository !== 'ssakthivel02/omsaravanabhava-hitech'
+          ) {
+            console.error(JSON.stringify(release, null, 2));
+            process.exit(1);
+          }
+          console.log(`production release identity PASS: ${release.commit} / ${release.environment}`);
+          NODE
+
+      - name: Verify production robots, sitemap and headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '^Allow: /' dist/robots.txt
+          grep -q 'Sitemap: https://omsaravanabhava.org/sitemap.xml' dist/robots.txt
+          if grep -qi 'Disallow: /$' dist/robots.txt; then echo '::error::production robots blocks everything'; exit 1; fi
+          grep -q 'Content-Security-Policy:' dist/_headers
+          if grep -qi 'X-Robots-Tag: noindex' dist/_headers; then echo '::error::production headers contain noindex'; exit 1; fi
+          grep -q '<loc>' dist/sitemap.xml
+
+      - name: Verify PWA assets before upload
+        run: node scripts/check-pwa-installability.mjs
+
+      - name: Assert dist contains application assets only
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in dist/.wrangler dist/wrangler.toml dist/wrangler.preview.jsonc dist/wrangler.production.jsonc dist/app.js dist/PREVIEW_AUTHORITY.txt dist/INTEGRITY_MANIFEST_SHA256.txt; do
+            if test -e "$path"; then echo "::error::Forbidden file in static asset root: $path"; exit 1; fi
+          done
+          if ls dist/rc*.js dist/phase2*.js >/dev/null 2>&1; then echo '::error::Legacy runtime file in dist'; exit 1; fi
+          if grep -rIl 'osb-r5' dist >/dev/null 2>&1; then echo '::error::Legacy cache namespace in dist'; exit 1; fi
+
+      - name: Assert production config cannot bind the root domain
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '"name": "omsaravanabhava-hitech"' wrangler.production.jsonc
+          grep -q '"directory": "./dist"' wrangler.production.jsonc
+          if grep -q 'omsaravanabhava-hitech-preview' wrangler.production.jsonc; then echo '::error::production config names the preview Worker'; exit 1; fi
+          if grep -Ev '^[[:space:]]*//' wrangler.production.jsonc | grep -Eiq 'omsaravanabhava\.org|custom_domain|zone_id|zone_name|routes?[[:space:]]*[:=]'; then
+            echo '::error::production config contains a domain/route binding'
+            exit 1
+          fi
+
+      - name: Deploy production Worker (no custom domain)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm dlx wrangler@4.129.0 deploy --config wrangler.production.jsonc
+
+      - name: Record immutable deployment identity and rollback target
+        if: success()
+        run: |
+          {
+            echo "### OmSaravanaBhava Hi-Tech production Worker deployed (no root-domain routing)"
+            echo "- Commit: \`${RELEASE_SHA}\`"
+            echo "- Worker: \`omsaravanabhava-hitech\`"
+            echo "- Rollback target: \`${ROLLBACK_SHA}\`"
+            echo "- Root domain routing: NOT changed by this workflow"
+            echo "- Next: smoke-test the workers.dev URL, then follow runbook section 5 step 9 manually"
+          } >> "$GITHUB_STEP_SUMMARY"
