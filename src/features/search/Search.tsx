@@ -12,6 +12,7 @@ import {
 import { temples } from '@/content/temples';
 import StateBadge from '@/components/StateBadge';
 import { useLocale, type LocaleAlternates } from '@/lib/locale';
+import { languageOfText } from '@/lib/languageOfText';
 
 type Facet = 'all' | 'temple' | 'arupadai' | 'thiruppugazh' | 'work' | 'name';
 interface Hit {
@@ -522,11 +523,11 @@ export default function Search() {
                   {showEnglishFirst ? (
                     <>
                       <b lang="en">{hit.titleEn}</b>
-                      {hit.titleTa && <small lang="ta">{hit.titleTa}</small>}
+                      {hit.titleTa && <small lang={languageOfText(hit.titleTa)}>{hit.titleTa}</small>}
                     </>
                   ) : (
                     <>
-                      <b lang={hit.titleTa ? 'ta' : 'en'}>{hit.titleTa ?? hit.titleEn}</b>
+                      <b lang={hit.titleTa ? languageOfText(hit.titleTa) : 'en'}>{hit.titleTa ?? hit.titleEn}</b>
                       {hit.titleEn && <small lang="en">{hit.titleEn}</small>}
                     </>
                   )}

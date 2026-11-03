@@ -13,6 +13,7 @@ import {
   type LocalLibraryState,
 } from '@/lib/localLibrary';
 import { useLocale, type UiLocale } from '@/lib/locale';
+import { languageOfText } from '@/lib/languageOfText';
 
 interface ResolvedItem {
   key: string;
@@ -78,13 +79,13 @@ function ItemTitle({ item, locale }: { item: ResolvedItem; locale: UiLocale }) {
     return (
       <>
         <b lang="en">{item.titleEn}</b>
-        {item.titleTa && <small lang="ta">{item.titleTa}</small>}
+        {item.titleTa && <small lang={languageOfText(item.titleTa)}>{item.titleTa}</small>}
       </>
     );
   }
   return (
     <>
-      <b lang="ta">{item.titleTa}</b>
+      <b lang={languageOfText(item.titleTa)}>{item.titleTa}</b>
       {item.titleEn && <small lang="en">{item.titleEn}</small>}
     </>
   );

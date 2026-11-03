@@ -2,6 +2,7 @@ import { useMemo, useState, useId, useEffect } from 'react';
 import { Link } from 'wouter';
 import { temples } from '@/content/temples';
 import { useLocale } from '@/lib/locale';
+import { languageOfText } from '@/lib/languageOfText';
 
 const PAGE_SIZE = 200;
 const QUERY_PARAM = 'q';
@@ -308,11 +309,11 @@ export default function Temples() {
                   {showEnglishFirst ? (
                     <>
                       <b lang="en">{temple.nameEn}</b>
-                      {temple.nameTa && <small lang="ta">{temple.nameTa}</small>}
+                      {temple.nameTa && <small lang={languageOfText(temple.nameTa)}>{temple.nameTa}</small>}
                     </>
                   ) : (
                     <>
-                      <b lang={temple.nameTa ? 'ta' : 'en'}>{temple.nameTa ?? temple.nameEn}</b>
+                      <b lang={temple.nameTa ? languageOfText(temple.nameTa) : 'en'}>{temple.nameTa ?? temple.nameEn}</b>
                       <small>{temple.nameEn}</small>
                     </>
                   )}
