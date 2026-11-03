@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 /**
  * Regression: a handful of temple records keep a native-script name in the
  * `nameTa` field (Kannada, Malayalam, Telugu, Devanagari). The UI used to tag
- * every `nameTa` as `lang="ta"`, mislabelling these for screen readers
+ * every `nameTa` as lang="ta", mislabelling these for screen readers
  * (WCAG 3.1.2). The rendered lang attribute must follow the real script.
  */
 const CASES = [
