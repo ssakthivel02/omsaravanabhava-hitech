@@ -917,11 +917,15 @@
   background: var(--sanctum);
   padding: 0.9rem 0.25rem;
   display: grid;
+  /* `minmax(0, 1fr)` lets the track shrink below the longest unbreakable run
+     (e-mail addresses, phone numbers); the implicit `auto` track did not,
+     which forced horizontal scrolling at 320-390px on official-contact rows. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.25rem;
 }
 @media (min-width: 40rem) {
   .field {
-    grid-template-columns: 12rem 1fr;
+    grid-template-columns: 12rem minmax(0, 1fr);
     gap: 1.5rem;
   }
 }
@@ -932,6 +936,7 @@
 .field dd {
   margin: 0;
   color: var(--ink);
+  overflow-wrap: anywhere;
 }
 
 .state {
