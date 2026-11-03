@@ -10,6 +10,7 @@ import {
 import StateBadge from '@/components/StateBadge';
 import SaveControl from '@/components/SaveControl';
 import { useLocale } from '@/lib/locale';
+import { languageOfText } from '@/lib/languageOfText';
 
 const devotionalIds = new Set(devotionalWorks.map((w) => w.id));
 const workCatalogue = [
@@ -252,11 +253,11 @@ export default function Knowledge() {
                   {showEnglishFirst ? (
                     <>
                       <b lang="en">{temple.nameEn}</b>
-                      {temple.nameTa && <small lang="ta">{temple.nameTa}</small>}
+                      {temple.nameTa && <small lang={languageOfText(temple.nameTa)}>{temple.nameTa}</small>}
                     </>
                   ) : (
                     <>
-                      <b lang={temple.nameTa ? 'ta' : 'en'}>{temple.nameTa ?? temple.nameEn}</b>
+                      <b lang={temple.nameTa ? languageOfText(temple.nameTa) : 'en'}>{temple.nameTa ?? temple.nameEn}</b>
                       {temple.nameEn && <small>{temple.nameEn}</small>}
                     </>
                   )}

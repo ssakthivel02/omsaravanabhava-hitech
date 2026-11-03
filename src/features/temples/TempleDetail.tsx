@@ -7,6 +7,7 @@ import ReadAloud from '@/components/ReadAloud';
 import { useEntityMeta } from '@/lib/routeMeta';
 import { useRecentItem } from '@/lib/useRecent';
 import { useLocale, type UiLocale } from '@/lib/locale';
+import { languageOfText } from '@/lib/languageOfText';
 import { evaluateCoordinatePublication } from '@/lib/geographicProvenance';
 
 type TempleDetailCopy = {
@@ -352,9 +353,9 @@ export default function TempleDetail() {
           )}
         </div>
         {showEnglishFirst ? (
-          <><h1 lang="en">{temple.nameEn}</h1>{temple.nameTa && <p className="latin-name" lang="ta">{temple.nameTa}</p>}</>
+          <><h1 lang="en">{temple.nameEn}</h1>{temple.nameTa && <p className="latin-name" lang={languageOfText(temple.nameTa)}>{temple.nameTa}</p>}</>
         ) : (
-          <><h1 lang={temple.nameTa ? 'ta' : 'en'}>{temple.nameTa ?? temple.nameEn}</h1>{temple.nameEn && <p className="latin-name" lang="en">{temple.nameEn}</p>}</>
+          <><h1 lang={temple.nameTa ? languageOfText(temple.nameTa) : 'en'}>{temple.nameTa ?? temple.nameEn}</h1>{temple.nameEn && <p className="latin-name" lang="en">{temple.nameEn}</p>}</>
         )}
         {facts.length > 0 && (
           <p className="temple-facts">
