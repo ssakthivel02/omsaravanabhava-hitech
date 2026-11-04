@@ -1,0 +1,46 @@
+name: R2.14 heading audit regression
+on:
+  pull_request:
+    paths:
+      - 'scripts/audit_r214_headings.py'
+      - 'scripts/verify_r214_audit.py'
+      - 'tests/test_r214_heading_parser.py'
+      - 'tests/test_r214_audit_validator.py'
+      - '.github/workflows/r214-heading-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test audit logic without private source PDF
+        env:
+          R214_SOURCE_PDF: ''
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -m unittest discover -s tests -p 'test_r214_*.py' -v
+      - name: Verify Python syntax
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          paths = [
+              'scripts/audit_r214_headings.py',
+              'scripts/verify_r214_audit.py',
+              'tests/test_r214_heading_parser.py',
+              'tests/test_r214_audit_validator.py',
+          ]
+          for name in paths:
+              ast.parse(Path(name).read_text(encoding='utf-8'), filename=name)
+          print('Syntax check PASS:', len(paths), 'files')
+          PY
