@@ -404,7 +404,9 @@ export function describeState(
     return { label: t('படம் நிலுவையில்', 'Image pending'), tone: 'pending' };
   if (s === 'UNKNOWN')
     return { label: t('சரிபார்ப்பு நிலை பதிவு செய்யப்படவில்லை', 'Verification state not recorded'), tone: 'pending' };
-  if (s.includes('NOT_REIMPORTED'))
+  // `SOURCE_LINKED_TEXT_NOT_IMPORTED` is the state of nearly every Thiruppugazh
+  // intake record; without this it fell through and showed the raw code.
+  if (s.includes('NOT_REIMPORTED') || s.includes('TEXT_NOT_IMPORTED'))
     return {
       label: t('மூலம் இணைக்கப்பட்டது · உரை இன்னும் ஏற்றப்படவில்லை', 'Source linked · text not yet imported'),
       tone: 'pending',
