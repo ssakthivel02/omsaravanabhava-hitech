@@ -40,6 +40,8 @@ def validate(payload):
             errors.append(f"records[{i}]: invalid PDF page")
         if kind not in ("place_heading", "invocation"):
             errors.append(f"records[{i}]: unrecognized heading kind")
+        if kind == "invocation" and not 1 <= num <= 5:
+            errors.append(f"records[{i}]: invocation heading number must be 1..5")
         if not isinstance(raw, str) or not re.fullmatch(r"[0-9][0-9 \t]*", raw) or int(re.sub(r"\s+", "", raw)) != num:
             errors.append(f"records[{i}]: rawNumber disagrees with number")
         seen[num] += 1

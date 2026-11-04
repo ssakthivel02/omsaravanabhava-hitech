@@ -34,6 +34,11 @@ class TestAuditGate(unittest.TestCase):
         data = example(); data["purpose"] = "PUBLISHABLE"
         self.assertTrue(verify.validate(data))
 
+    def test_invocation_kind_must_be_first_five_songs(self):
+        data = example()
+        data["records"][1]["kind"] = "invocation"  # number 97 cannot be invocation
+        self.assertTrue(any("invocation heading" in e for e in verify.validate(data)))
+
     def test_out_of_range_page(self):
         data = example(); data["records"][1]["pdfPage"] = 9
         self.assertTrue(verify.validate(data))
