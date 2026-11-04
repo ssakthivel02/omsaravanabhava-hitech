@@ -8,6 +8,12 @@ import re
 
 EXPECTED = set(range(1, 1327))
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
+# Freeze the exact extraction rules for this audit schema. Update deliberately
+# with the scanner and its tests if a future source/parser revision is approved.
+EXPECTED_PARSER_PATTERNS = [
+    r"பாடல்[ \t]+([0-9][0-9 \t]{0,9})\s*\(",
+    r"பாடல்[ \t]+([1-5])\s+(?:--\s*)?விநாயகர்",
+]
 
 
 def validate(payload):
@@ -18,6 +24,8 @@ def validate(payload):
         errors.append("unsupported schemaVersion")
     if payload.get("purpose") != "AUDIT_ONLY_NOT_PUBLICATION":
         errors.append("audit-only purpose marker missing")
+    if payload.get("parserPatterns") != EXPECTED_PARSER_PATTERNS:
+        errors.append("parserPatterns must match the exact approved scanner patterns")
     source = payload.get("sourceSha256")
     if not isinstance(source, str) or not SHA256.fullmatch(source):
         errors.append("sourceSha256 must be lowercase SHA-256")

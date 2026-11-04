@@ -8,10 +8,17 @@ spec = importlib.util.spec_from_file_location("r214_verify", SCRIPT)
 verify = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(verify)
 
+SCANNER = SCRIPT.with_name("audit_r214_headings.py")
+scanner_spec = importlib.util.spec_from_file_location("r214_heading_scanner", SCANNER)
+scanner = importlib.util.module_from_spec(scanner_spec)
+scanner_spec.loader.exec_module(scanner)
+
 
 def example():
     return {"schemaVersion": "r214-headings-reproducible-v1", "purpose": "AUDIT_ONLY_NOT_PUBLICATION",
-            "sourceSha256": "a"*64, "pdfPages": 3, "records": [
+            "sourceSha256": "a"*64, "pdfPages": 3,
+            "parserPatterns": [scanner.STANDARD.pattern, scanner.INVOCATION.pattern],
+            "records": [
                 {"number": 1, "pdfPage": 1, "rawNumber": "1", "kind": "invocation"},
                 {"number": 97, "pdfPage": 2, "rawNumber": "9 7", "kind": "place_heading"}],
             "occurrences": 2, "uniqueNumbers": 2,
@@ -21,6 +28,25 @@ def example():
 class TestAuditGate(unittest.TestCase):
     def test_valid(self):
         self.assertEqual(verify.validate(example()), [])
+
+    def test_parser_patterns_bind_to_real_scanner(self):
+        self.assertEqual(
+            verify.EXPECTED_PARSER_PATTERNS,
+            [scanner.STANDARD.pattern, scanner.INVOCATION.pattern],
+        )
+
+    def test_reject_missing_changed_reordered_or_non_string_patterns(self):
+        original = example()["parserPatterns"]
+        for corrupted in (None, [], [original[1], original[0]],
+                          [original[0] + "x", original[1]],
+                          [original[0], 1], "not-an-array"):
+            with self.subTest(corrupted=repr(corrupted)):
+                data = example()
+                data["parserPatterns"] = corrupted
+                self.assertTrue(any("parserPatterns" in e for e in verify.validate(data)))
+        data = example()
+        del data["parserPatterns"]
+        self.assertTrue(any("parserPatterns" in e for e in verify.validate(data)))
 
     def test_count_tampering(self):
         data = example(); data["uniqueNumbers"] = 1326
