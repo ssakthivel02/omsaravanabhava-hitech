@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 
 const path = '.github/workflows/preview-manual-r214.yml';
 const source = readFileSync(path, 'utf8');
-const candidate = 'cfb39ba97fa4e1666915f578ede5229542ee3d58';
+const candidate = '0e38da6e3dc5ba3cc451ebce2eaa382b9dae5b48';
 const failures = [];
 function requireMatch(label, pattern) {
   if (!pattern.test(source)) failures.push(label);
