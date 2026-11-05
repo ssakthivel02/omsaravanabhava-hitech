@@ -8,7 +8,7 @@ Files: `.github/workflows/production-release.yml`, `wrangler.production.jsonc`, 
 
 | Does | Does NOT |
 | --- | --- |
-| Builds the exact approved SHA in production mode and deploys the Worker `omsaravanabhava-hitech` | Touch DNS, routes, custom domains, zones or `omsaravanabhava.org` |
+| Builds the exact approved SHA in production mode and uploads to Worker `omsaravanabhava-hitech` | Explicitly edit DNS, routes, custom domains or zones; **it cannot prove effective traffic isolation** |
 | Checks SHA is on `main` with a green push CI run | Reuse any preview workflow, Worker or config |
 | Verifies `/release.json`, production robots/sitemap/CSP, PWA, no legacy runtime | Run on push, PR or schedule |
 | Requires a human approval (GitHub Environment) per run | Run at all until the owner arms it |
@@ -28,7 +28,7 @@ Actions > "Production release" > Run workflow:
 - `confirmation`: `DEPLOY_PRODUCTION_` + first 12 characters of that SHA
 - `rollback_sha`: exactly `FIRST_RELEASE` for this create-only candidate. Upgrading an existing Worker or invoking a rollback requires a separately reviewed workflow and a proven recovery method.
 
-The preflight checks the Cloudflare Worker-list API (account authorization) and checks the exact named production Worker. It refuses a Worker already present and fails closed for errors or an unknown status; this reduces accidental overwrites but is not atomic, and does not establish actual routes or domains. Independently inspect Cloudflare routing and rollback before approval. A first deployment is intended to be smoke-tested on `workers.dev` before any manual domain cutover.
+The preflight checks the Cloudflare Worker-list API (account authorization) and checks the exact named production Worker. It refuses a Worker already present and fails closed for errors or an unknown status; this reduces accidental overwrites but is not atomic, and does not establish actual routes or domains. Independently inspect Cloudflare routing and rollback before approval. A first deployment is intended to be smoke-tested on `workers.dev` before any manual domain cutover. **WARNING:** an existing route/domain configuration may reference a Worker name even when no script currently exists. Creating that named Worker could potentially affect live traffic; verify actual Cloudflare route/domain bindings and the currently live origin independently BEFORE running this workflow. The script-absence check is not a route-absence check.
 
 ## After deploy (manual, per cutover runbook section 5-7)
 

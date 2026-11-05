@@ -83,6 +83,11 @@ describe('production release workflow safety gate', () => {
     expect(audit(withoutFirst, wrangler)).toContain('first-release Worker absence preflight before upload');
   });
 
+  it('rejects misleading post-deploy root isolation claims', () => {
+    const unsafe = workflow.replace('Effective root-domain routing: UNVERIFIED', 'Root domain routing: NOT changed by this workflow');
+    expect(audit(unsafe, wrangler)).toContain('deployment summary does not assert unverified root isolation');
+  });
+
   it('fails if the production config names the preview Worker or loses its name', () => {
     expect(audit(workflow, wrangler.replace('"omsaravanabhava-hitech"', '"omsaravanabhava-hitech-preview"')))
       .toContain('production config must not name the preview Worker');

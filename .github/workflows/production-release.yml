@@ -252,10 +252,10 @@ jobs:
         if: success()
         run: |
           {
-            echo "### OmSaravanaBhava Hi-Tech production Worker deployed (no root-domain routing)"
+            echo "### OmSaravanaBhava Hi-Tech Worker upload complete; effective domain routing NOT VERIFIED"
             echo "- Commit: \`${RELEASE_SHA}\`"
             echo "- Worker: \`omsaravanabhava-hitech\`"
             echo "- Rollback target: \`${ROLLBACK_SHA}\`"
-            echo "- Root domain routing: NOT changed by this workflow"
-            echo "- Next: smoke-test the workers.dev URL, then follow runbook section 5 step 9 manually"
+            echo "- Effective root-domain routing: UNVERIFIED; Cloudflare bindings must be inspected"
+            echo "- Next: check live domain bindings and smoke-test the workers.dev URL; do not cut over without independent approval"
           } >> "$GITHUB_STEP_SUMMARY"

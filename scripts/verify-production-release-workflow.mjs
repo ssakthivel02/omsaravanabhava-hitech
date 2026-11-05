@@ -61,6 +61,9 @@ export function auditProductionRelease(workflowSource, wranglerSource) {
     /worker_status" != "404"/.test(wf) &&
     /ROLLBACK_SHA" != "FIRST_RELEASE"/.test(wf) &&
     wf.indexOf('Fail closed if production Worker already exists') < wf.indexOf('wrangler@4.129.0 deploy'));
+  need('deployment summary does not assert unverified root isolation',
+    /Effective root-domain routing: UNVERIFIED/.test(wf) &&
+    !/Worker deployed \(no root-domain routing\)/.test(wf));
   need('deploy job runs tested Wrangler route guard',
     /node scripts\/verify-production-release-workflow\.mjs/.test(wf));
 
