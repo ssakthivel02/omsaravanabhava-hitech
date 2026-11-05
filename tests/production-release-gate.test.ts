@@ -20,7 +20,8 @@ describe('production release workflow safety gate', () => {
   });
 
   it('fails if the disabled-by-default kill switch is removed', () => {
-    const mutated = workflow.replace("if: ${{ vars.PRODUCTION_RELEASE_ENABLED == 'true' }}\n", '');
+    const mutated = workflow.replace("if: ${{ vars.PRODUCTION_RELEASE_ENABLED == 'true' && github.ref == 'refs/heads/main' }}\n", '');
+    expect(mutated).not.toEqual(workflow);
     expect(audit(mutated, wrangler)).toContain('disabled by default via PRODUCTION_RELEASE_ENABLED');
   });
 

@@ -22,7 +22,7 @@ export function auditProductionRelease(workflowSource, wranglerSource) {
   forbid('no automatic trigger (push/pull_request/schedule/workflow_run/workflow_call)',
     /^\s{0,4}(?:push|pull_request|pull_request_target|schedule|workflow_run|workflow_call|release|repository_dispatch):/m.test(wf));
   need('disabled by default via PRODUCTION_RELEASE_ENABLED',
-    /if:\s*\$\{\{\s*vars\.PRODUCTION_RELEASE_ENABLED == 'true'\s*\}\}/.test(wf));
+    /if:\s*\$\{\{\s*vars\.PRODUCTION_RELEASE_ENABLED == 'true'\s*&&\s*github\.ref == 'refs\/heads\/main'\s*\}\}/.test(wf));
   need('dispatch ref restricted to main',
     /github\.ref == 'refs\/heads\/main'/.test(wf) &&
     /"\$GITHUB_REF" != "refs\/heads\/main"/.test(wf));
