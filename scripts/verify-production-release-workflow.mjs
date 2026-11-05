@@ -56,6 +56,11 @@ export function auditProductionRelease(workflowSource, wranglerSource) {
   forbid('never deploys the preview Wrangler config', /--config wrangler\.preview\.jsonc/.test(wf));
   forbid('workflow must not mention DNS/zone/route commands', /\b(?:dns|zone|routes?)\s+(?:add|create|update|put)\b/i.test(wf));
   need('config check rejects domain bindings', /domain\/route binding/.test(wf));
+  need('first-release Worker absence preflight before upload',
+    /Fail closed if production Worker already exists/.test(wf) &&
+    /worker_status" != "404"/.test(wf) &&
+    /ROLLBACK_SHA" != "FIRST_RELEASE"/.test(wf) &&
+    wf.indexOf('Fail closed if production Worker already exists') < wf.indexOf('wrangler@4.129.0 deploy'));
   need('deploy job runs tested Wrangler route guard',
     /node scripts\/verify-production-release-workflow\.mjs/.test(wf));
 

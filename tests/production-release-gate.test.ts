@@ -70,6 +70,19 @@ describe('production release workflow safety gate', () => {
     expect(audit(mutated, wrangler)).toContain('deploy job runs tested Wrangler route guard');
   });
 
+  it('fails if create-only Worker collision preflight is removed', () => {
+    const mutated = workflow.replace('Fail closed if production Worker already exists', 'Skipped Worker preflight');
+    expect(mutated).not.toEqual(workflow);
+    expect(audit(mutated, wrangler)).toContain('first-release Worker absence preflight before upload');
+  });
+
+  it('fails if Worker absence status check or first-release restriction is removed', () => {
+    const withoutAbsent = workflow.replace('worker_status" != "404"', 'worker_status" != "200"');
+    expect(audit(withoutAbsent, wrangler)).toContain('first-release Worker absence preflight before upload');
+    const withoutFirst = workflow.replace('ROLLBACK_SHA" != "FIRST_RELEASE"', 'ROLLBACK_SHA" != "SOME_SHA"');
+    expect(audit(withoutFirst, wrangler)).toContain('first-release Worker absence preflight before upload');
+  });
+
   it('fails if the production config names the preview Worker or loses its name', () => {
     expect(audit(workflow, wrangler.replace('"omsaravanabhava-hitech"', '"omsaravanabhava-hitech-preview"')))
       .toContain('production config must not name the preview Worker');

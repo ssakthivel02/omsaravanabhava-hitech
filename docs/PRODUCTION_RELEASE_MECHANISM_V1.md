@@ -1,6 +1,6 @@
 # Production Release Mechanism V1 (approval-gated, disabled by default)
 
-**Status:** candidate. Production remains **HOLD**. Merging this does not deploy anything and does not change `omsaravanabhava.org`.
+**Status:** create-only candidate. Production remains **HOLD**. Merging this does not deploy anything and does not change `omsaravanabhava.org`.
 
 Files: `.github/workflows/production-release.yml`, `wrangler.production.jsonc`, `scripts/verify-production-release-workflow.mjs`, `tests/production-release-gate.test.ts`.
 
@@ -15,7 +15,7 @@ Files: `.github/workflows/production-release.yml`, `wrangler.production.jsonc`, 
 
 ## One-time arming (owner, in GitHub settings)
 
-1. Settings > Environments > create `production`; add yourself as **required reviewer**; restrict to branch `main`.
+1. Settings > Environments > create `production`; require a **different authorized reviewer**, enable **Prevent self-review**, restrict deployments to branch `main`, and check bypass controls.
 2. Add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as **environment** secrets on `production` (Workers Scripts edit only; no zone/DNS permission).
 3. Settings > Variables > repository variable `PRODUCTION_RELEASE_ENABLED` = `true`. Delete or set to anything else to disarm instantly.
 4. Enable branch protection on `main` (require PR, require CI checks, block force-push).
@@ -26,9 +26,9 @@ Actions > "Production release" > Run workflow:
 
 - `release_sha`: full 40-hex SHA on `main`
 - `confirmation`: `DEPLOY_PRODUCTION_` + first 12 characters of that SHA
-- `rollback_sha`: last known-good 40-hex SHA, or `FIRST_RELEASE`
+- `rollback_sha`: exactly `FIRST_RELEASE` for this create-only candidate. Upgrading an existing Worker or invoking a rollback requires a separately reviewed workflow and a proven recovery method.
 
-Approve the `production` environment prompt. The Worker is then live only at its `workers.dev` URL.
+The preflight checks the Cloudflare Worker-list API (account authorization) and checks the exact named production Worker. It refuses a Worker already present and fails closed for errors or an unknown status; this reduces accidental overwrites but is not atomic, and does not establish actual routes or domains. Independently inspect Cloudflare routing and rollback before approval. A first deployment is intended to be smoke-tested on `workers.dev` before any manual domain cutover.
 
 ## After deploy (manual, per cutover runbook section 5-7)
 
@@ -40,7 +40,7 @@ Approve the `production` environment prompt. The Worker is then live only at its
 ## Rollback
 
 - **Before domain attach:** nothing to roll back; the root domain never changed.
-- **After domain attach:** (a) detach the custom domain / re-point to the recorded legacy target in Cloudflare (fastest), or (b) re-run this workflow with `release_sha` = the `rollback_sha` of the failed run (rebuilds and redeploys the prior approved commit), or (c) use Cloudflare's Worker version rollback.
+- **After domain attach:** restore the recorded legacy routing target or use a separately approved Cloudflare version rollback after verifying version history. Do **not** re-run this create-only candidate against an existing Worker; it intentionally refuses that operation.
 - Any `/release.json` mismatch or legacy asset on the live domain = immediate rollback.
 
 ## Open decisions for the owner
