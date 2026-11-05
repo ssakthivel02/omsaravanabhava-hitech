@@ -56,6 +56,8 @@ export function auditProductionRelease(workflowSource, wranglerSource) {
   forbid('never deploys the preview Wrangler config', /--config wrangler\.preview\.jsonc/.test(wf));
   forbid('workflow must not mention DNS/zone/route commands', /\b(?:dns|zone|routes?)\s+(?:add|create|update|put)\b/i.test(wf));
   need('config check rejects domain bindings', /domain\/route binding/.test(wf));
+  need('deploy job runs tested Wrangler route guard',
+    /node scripts\/verify-production-release-workflow\.mjs/.test(wf));
 
   need('production Worker name', /"name":\s*"omsaravanabhava-hitech"/.test(wr));
   forbid('production config must not name the preview Worker', /omsaravanabhava-hitech-preview/.test(wr));
