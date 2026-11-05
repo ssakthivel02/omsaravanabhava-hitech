@@ -8,6 +8,7 @@
 wrangler.toml @ssakthivel02
 wrangler.json @ssakthivel02
 wrangler.jsonc @ssakthivel02
+wrangler.*.jsonc @ssakthivel02
 public/sw.js @ssakthivel02
 src/**/service-worker* @ssakthivel02
 release/ @ssakthivel02
