@@ -24,6 +24,13 @@ describe('production release workflow safety gate', () => {
     expect(audit(mutated, wrangler)).toContain('disabled by default via PRODUCTION_RELEASE_ENABLED');
   });
 
+  it('fails when the main-only dispatch guard is missing or weakened', () => {
+    const withoutJobGuard = workflow.replace(" && github.ref == 'refs/heads/main'", '');
+    expect(audit(withoutJobGuard, wrangler)).toContain('dispatch ref restricted to main');
+    const withoutShellGuard = workflow.replace('"$GITHUB_REF" != "refs/heads/main"', '"$GITHUB_REF" != "refs/heads/other"');
+    expect(audit(withoutShellGuard, wrangler)).toContain('dispatch ref restricted to main');
+  });
+
   it('fails if the protected environment is removed', () => {
     const mutated = workflow.replace('    environment: production\n', '');
     expect(audit(mutated, wrangler)).toContain('deploy uses protected GitHub Environment');

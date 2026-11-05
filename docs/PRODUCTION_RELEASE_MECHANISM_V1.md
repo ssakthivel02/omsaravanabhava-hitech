@@ -9,7 +9,7 @@ Files: `.github/workflows/production-release.yml`, `wrangler.production.jsonc`, 
 | Does | Does NOT |
 | --- | --- |
 | Builds the exact approved SHA in production mode and uploads to Worker `omsaravanabhava-hitech` | Explicitly edit DNS, routes, custom domains or zones; **it cannot prove effective traffic isolation** |
-| Checks SHA is on `main` with a green push CI run | Reuse any preview workflow, Worker or config |
+| Requires dispatch from `main`, then checks SHA ancestry and green push CI | Reuse any preview workflow, Worker or config |
 | Verifies `/release.json`, production robots/sitemap/CSP, PWA, no legacy runtime | Run on push, PR or schedule |
 | Requires a human approval (GitHub Environment) per run | Run at all until the owner arms it |
 
@@ -22,7 +22,7 @@ Files: `.github/workflows/production-release.yml`, `wrangler.production.jsonc`, 
 
 ## Running a release
 
-Actions > "Production release" > Run workflow:
+Actions > "Production release" > Run workflow: select **main** as the workflow branch. The verifier refuses a dispatch from any other ref; this is an additional guard and does **not** replace required GitHub Environment branch restrictions.
 
 - `release_sha`: full 40-hex SHA on `main`
 - `confirmation`: `DEPLOY_PRODUCTION_` + first 12 characters of that SHA

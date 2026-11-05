@@ -41,7 +41,7 @@ concurrency:
 jobs:
   verify-request:
     name: Verify release request (no secrets)
-    if: ${{ vars.PRODUCTION_RELEASE_ENABLED == 'true' }}
+    if: ${{ vars.PRODUCTION_RELEASE_ENABLED == 'true' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -50,6 +50,15 @@ jobs:
       DEPLOY_CONFIRMATION: ${{ inputs.confirmation }}
       GH_TOKEN: ${{ github.token }}
     steps:
+      - name: Require manual dispatch from main
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Production release dispatch must originate from main"
+            exit 1
+          fi
+
       - name: Validate SHA formats
         shell: bash
         run: |

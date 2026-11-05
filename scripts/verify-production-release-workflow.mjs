@@ -23,6 +23,9 @@ export function auditProductionRelease(workflowSource, wranglerSource) {
     /^\s{0,4}(?:push|pull_request|pull_request_target|schedule|workflow_run|workflow_call|release|repository_dispatch):/m.test(wf));
   need('disabled by default via PRODUCTION_RELEASE_ENABLED',
     /if:\s*\$\{\{\s*vars\.PRODUCTION_RELEASE_ENABLED == 'true'\s*\}\}/.test(wf));
+  need('dispatch ref restricted to main',
+    /github\.ref == 'refs\/heads\/main'/.test(wf) &&
+    /"\$GITHUB_REF" != "refs\/heads\/main"/.test(wf));
   need('deploy depends on verification job', /needs:\s*verify-request/.test(wf));
   need('deploy uses protected GitHub Environment', /environment:\s*production\b/.test(wf));
   need('least-privilege token permissions', /permissions:\s*\n\s+contents:\s*read\s*\n\s+actions:\s*read/.test(wf));
