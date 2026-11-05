@@ -64,6 +64,12 @@ describe('production release workflow safety gate', () => {
     }
   });
 
+  it('fails if the deploy job stops invoking the tested route checker', () => {
+    const mutated = workflow.replace('node scripts/verify-production-release-workflow.mjs', 'echo route-check-skipped');
+    expect(mutated).not.toEqual(workflow);
+    expect(audit(mutated, wrangler)).toContain('deploy job runs tested Wrangler route guard');
+  });
+
   it('fails if the production config names the preview Worker or loses its name', () => {
     expect(audit(workflow, wrangler.replace('"omsaravanabhava-hitech"', '"omsaravanabhava-hitech-preview"')))
       .toContain('production config must not name the preview Worker');
