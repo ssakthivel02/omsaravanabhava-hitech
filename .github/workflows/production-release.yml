@@ -201,6 +201,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # Reuse the tested fail-closed checker before any production upload.
+          # It detects quoted JSONC route keys the legacy grep below misses.
+          node scripts/verify-production-release-workflow.mjs
           grep -q '"name": "omsaravanabhava-hitech"' wrangler.production.jsonc
           grep -q '"directory": "./dist"' wrangler.production.jsonc
           if grep -q 'omsaravanabhava-hitech-preview' wrangler.production.jsonc; then echo '::error::production config names the preview Worker'; exit 1; fi
