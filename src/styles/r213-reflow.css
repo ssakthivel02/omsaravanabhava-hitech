@@ -117,3 +117,58 @@
     padding-inline: 0.75rem;
   }
 }
+
+
+/* 2026-11-06: Visual hierarchy hardening for laptop-width viewports.
+ * The original 72rem desktop-nav threshold exposes eight translated links
+ * alongside the brand and language selector. Keep the accessible menu until
+ * there is adequate horizontal room, rather than squeezing translated labels.
+ * No navigation routes, copy, or behaviours are changed. */
+@media (min-width: 72rem) and (max-width: 89.99rem) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+    flex: none;
+  }
+
+  .mobile-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(1.25rem, 4vw, 3rem);
+  }
+
+  .mobile-nav-trust {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 1.25rem;
+  }
+
+  .brand {
+    min-width: 0;
+  }
+}
+
+/* Give long Tamil hero titles readable room on tablets and compact laptops;
+ * prevent the Vel illustration from visually competing with the headline. */
+@media (min-width: 64rem) and (max-width: 79.99rem) {
+  .hero {
+    grid-template-columns: minmax(0, 1.15fr) minmax(12rem, 0.65fr);
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+
+  .hero h1 {
+    font-size: clamp(2.35rem, 3.6vw, 3.25rem);
+    overflow-wrap: anywhere;
+  }
+
+  .hero-stage {
+    height: clamp(18rem, 29vw, 24rem);
+  }
+
+  .hero-copy {
+    min-width: 0;
+  }
+}
