@@ -1,3 +1,4 @@
+import { isPublishablePanchangam } from './validation';
 import { useEffect, useState } from 'react';
 
 type DailyRecord = {
@@ -16,13 +17,7 @@ const labels: Record<string, string> = {
   tithi: 'திதி', nakshatra: 'நட்சத்திரம்', yoga: 'யோகம்', karana: 'கரணம்',
   rahuKalam: 'ராகு காலம்', yamagandam: 'எமகண்டம்', nallaNeram: 'நல்ல நேரம்',
 };
-const formatLocalDate = () => {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit',
-  }).formatToParts(new Date());
-  const part = (type: string) => parts.find((item) => item.type === type)?.value ?? '';
-  return `${part('year')}-${part('month')}-${part('day')}`;
-};
+
 
 export default function DailyPanchangam() {
   const [record, setRecord] = useState<DailyRecord | null>(null);
@@ -36,11 +31,7 @@ export default function DailyPanchangam() {
     return () => controller.abort();
   }, []);
 
-  const verified = !!record && record.status === 'verified' &&
-    record.date === formatLocalDate() && record.timezone === 'Asia/Kolkata' &&
-    !!record.source?.provider && !!record.source?.citation && !!record.source?.licence &&
-    !!record.calculation?.method && !!record.calculation?.verifiedAt &&
-    Object.keys(labels).every((key) => typeof record.fields?.[key] === 'string' && !!record.fields[key]?.trim());
+  const verified = isPublishablePanchangam(record);
 
   return (
     <main className="page" lang="ta" style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1rem' }}>
