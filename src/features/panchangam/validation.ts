@@ -28,10 +28,11 @@ export function isPublishablePanchangam(value: unknown, now = new Date()): value
   const nonEmpty = (x: unknown): x is string => typeof x === 'string' && x.trim().length > 0;
   if (record.schemaVersion !== '1.0' || record.status !== 'verified' ||
       record.date !== chennaiToday(now) || record.timezone !== 'Asia/Kolkata' ||
-      !nonEmpty(record.location?.name) || !nonEmpty(record.source?.provider) ||
+      record.location?.name?.trim().toLowerCase() !== 'chennai' || !nonEmpty(record.source?.provider) ||
       !nonEmpty(record.source?.citation) || !nonEmpty(record.source?.licence) ||
       !nonEmpty(record.calculation?.method) || !nonEmpty(record.calculation?.verifiedAt)) return false;
   const verifiedAt = Date.parse(record.calculation.verifiedAt);
-  if (!Number.isFinite(verifiedAt) || verifiedAt > now.getTime() + 300000) return false;
+  if (!Number.isFinite(verifiedAt) || verifiedAt > now.getTime() + 300000 ||
+      chennaiToday(new Date(verifiedAt)) !== record.date) return false;
   return PANCHANGAM_FIELDS.every((key) => nonEmpty(record.fields?.[key]));
 }
