@@ -22,6 +22,17 @@ const labels: Record<string, string> = {
 export default function DailyPanchangam() {
   const [record, setRecord] = useState<DailyRecord | null>(null);
   const [error, setError] = useState(false);
+  const [clock, setClock] = useState(() => new Date());
+  // Recheck the Chennai date while a tab stays open; never show yesterday's data.
+  useEffect(() => {
+    const refreshClock = () => setClock(new Date());
+    const interval = setInterval(refreshClock, 60_000);
+    document.addEventListener('visibilitychange', refreshClock);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', refreshClock);
+    };
+  }, []);
   useEffect(() => {
     const controller = new AbortController();
     fetch('/panchangam/today.json', { cache: 'no-store', signal: controller.signal })
@@ -32,7 +43,7 @@ export default function DailyPanchangam() {
   }, []);
 
   const pendingNotice = record?.noticeTa ?? 'சரிபார்க்கப்பட்ட தகவல் இன்னும் கிடைக்கவில்லை.';
-  const verified = isPublishablePanchangam(record);
+  const verified = isPublishablePanchangam(record, clock);
 
   return (
     <main className="page" lang="ta" style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1rem' }}>
