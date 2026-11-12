@@ -36,8 +36,6 @@ export default function DailyPanchangam() {
   const localDate = chennaiToday(clock);
   useEffect(() => {
     const controller = new AbortController();
-    setRecord(null);
-    setError(false);
     fetch('/panchangam/today.json', { cache: 'no-store', signal: controller.signal })
       .then((response) => { if (!response.ok) throw new Error('Unavailable'); return response.json(); })
       .then((value: DailyRecord) => setRecord(value))
