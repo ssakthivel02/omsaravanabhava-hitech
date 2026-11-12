@@ -5,7 +5,7 @@ const now = new Date('2026-11-12T06:00:00.000Z');
 const valid = () => ({
   schemaVersion: '1.0', date: '2026-11-12', timezone: 'Asia/Kolkata',
   location: { name: 'Chennai' }, status: 'verified',
-  source: { provider: 'Licensed provider', citation: 'source-ref', licence: 'licensed' },
+  source: { provider: 'Licensed provider', citation: 'https://example.org/panchangam/source', licence: 'licensed' },
   calculation: { method: 'declared', verifiedAt: '2026-11-12T05:00:00.000Z' },
   fields: { tithi: 'a', nakshatra: 'b', yoga: 'c', karana: 'd', rahuKalam: 'e', yamagandam: 'f', nallaNeram: 'g' },
   noticeTa: '',
@@ -22,4 +22,5 @@ describe('Panchangam publication gate', () => {
   it('rejects future verification timestamps', () => expect(isPublishablePanchangam({ ...valid(), calculation: { ...valid().calculation, verifiedAt: '2026-11-13T00:00:00Z' } }, now)).toBe(false));
   it('rejects wrong location', () => expect(isPublishablePanchangam({ ...valid(), location: { name: 'London' } }, now)).toBe(false));
   it('rejects yesterday verification despite a today label', () => expect(isPublishablePanchangam({ ...valid(), calculation: { ...valid().calculation, verifiedAt: '2026-11-11T12:00:00Z' } }, now)).toBe(false));
+  it('rejects non-auditable source citations', () => expect(isPublishablePanchangam({ ...valid(), source: { ...valid().source, citation: 'source-ref' } }, now)).toBe(false));
 });
