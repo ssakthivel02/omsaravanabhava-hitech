@@ -1,4 +1,4 @@
-import { isPublishablePanchangam } from './validation';
+import { chennaiToday, isPublishablePanchangam } from './validation';
 import { useEffect, useState } from 'react';
 
 type DailyRecord = {
@@ -33,14 +33,17 @@ export default function DailyPanchangam() {
       document.removeEventListener('visibilitychange', refreshClock);
     };
   }, []);
+  const localDate = chennaiToday(clock);
   useEffect(() => {
     const controller = new AbortController();
+    setRecord(null);
+    setError(false);
     fetch('/panchangam/today.json', { cache: 'no-store', signal: controller.signal })
       .then((response) => { if (!response.ok) throw new Error('Unavailable'); return response.json(); })
       .then((value: DailyRecord) => setRecord(value))
       .catch((err: unknown) => { if (!(err instanceof DOMException && err.name === 'AbortError')) setError(true); });
     return () => controller.abort();
-  }, []);
+  }, [localDate]);
 
   const pendingNotice = record?.noticeTa ?? 'சரிபார்க்கப்பட்ட தகவல் இன்னும் கிடைக்கவில்லை.';
   const verified = isPublishablePanchangam(record, clock);
