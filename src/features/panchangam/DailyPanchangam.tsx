@@ -16,9 +16,13 @@ const labels: Record<string, string> = {
   tithi: 'திதி', nakshatra: 'நட்சத்திரம்', yoga: 'யோகம்', karana: 'கரணம்',
   rahuKalam: 'ராகு காலம்', yamagandam: 'எமகண்டம்', nallaNeram: 'நல்ல நேரம்',
 };
-const formatLocalDate = () => new Intl.DateTimeFormat('en-CA', {
-  timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit',
-}).format(new Date());
+const formatLocalDate = () => {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(new Date());
+  const part = (type: string) => parts.find((item) => item.type === type)?.value ?? '';
+  return `${part('year')}-${part('month')}-${part('day')}`;
+};
 
 export default function DailyPanchangam() {
   const [record, setRecord] = useState<DailyRecord | null>(null);
