@@ -31,6 +31,14 @@ export function isPublishablePanchangam(value: unknown, now = new Date()): value
       record.location?.name?.trim().toLowerCase() !== 'chennai' || !nonEmpty(record.source?.provider) ||
       !nonEmpty(record.source?.citation) || !nonEmpty(record.source?.licence) ||
       !nonEmpty(record.calculation?.method) || !nonEmpty(record.calculation?.verifiedAt)) return false;
+  // A free-form "licensed" claim is not provenance. Require an auditable HTTPS source.
+  // Human review of the actual publication rights remains mandatory.
+  try {
+    const citation = new URL(record.source.citation);
+    if (citation.protocol !== 'https:' || !citation.hostname.includes('.')) return false;
+  } catch {
+    return false;
+  }
   const verifiedAt = Date.parse(record.calculation.verifiedAt);
   if (!Number.isFinite(verifiedAt) || verifiedAt > now.getTime() + 300000 ||
       chennaiToday(new Date(verifiedAt)) !== record.date) return false;
