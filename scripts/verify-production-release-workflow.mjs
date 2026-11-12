@@ -74,6 +74,7 @@ export function auditProductionRelease(workflowSource, wranglerSource) {
   forbid('production config must not name the preview Worker', /omsaravanabhava-hitech-preview/.test(wr));
   forbid('production config must not bind the root domain or routes',
     /omsaravanabhava\.org|custom_domain|zone_id|zone_name|"routes?"\s*:/i.test(wr));
+  need('workers.dev smoke-test endpoint enabled', /"workers_dev":\s*true\b/.test(wr));
   need('explicit dist directory', /"directory":\s*"\.\/dist"/.test(wr));
   need('single-page-app fallback', /"not_found_handling":\s*"single-page-application"/.test(wr));
 
