@@ -31,6 +31,7 @@ export default function DailyPanchangam() {
     return () => controller.abort();
   }, []);
 
+  const pendingNotice = record?.noticeTa ?? 'சரிபார்க்கப்பட்ட தகவல் இன்னும் கிடைக்கவில்லை.';
   const verified = isPublishablePanchangam(record);
 
   return (
@@ -40,7 +41,7 @@ export default function DailyPanchangam() {
       {!verified ? (
         <section role="status" aria-live="polite" style={{ padding: '1.5rem', border: '1px solid currentColor', borderRadius: 12 }}>
           <h2>தகவல் சரிபார்ப்பு நடைபெறுகிறது</h2>
-          <p>{error ? 'தினசரி தகவலை இப்போது பெற முடியவில்லை.' : record?.noticeTa ?? 'சரிபார்க்கப்பட்ட தகவல் இன்னும் கிடைக்கவில்லை.'}</p>
+          <p>{error ? 'தினசரி தகவலை இப்போது பெற முடியவில்லை.' : pendingNotice}</p>
           <p>உறுதிப்படுத்தப்படாத சுபநேரங்களை நாங்கள் வெளியிடுவதில்லை.</p>
         </section>
       ) : (
