@@ -103,6 +103,14 @@ describe('production release workflow safety gate', () => {
       .toContain('production Worker name');
   });
 
+  it('fails closed if the isolated workers.dev smoke-test endpoint is disabled', () => {
+    for (const replacement of ['"workers_dev": false,', '"workers_dev": null,']) {
+      const mutated = wrangler.replace('"workers_dev": true,', replacement);
+      expect(mutated).not.toEqual(wrangler);
+      expect(audit(workflow, mutated)).toContain('workers.dev smoke-test endpoint enabled');
+    }
+  });
+
   it('ignores explanatory comments that mention the domain', () => {
     // The committed config's header comments mention omsaravanabhava.org and routes.
     expect(wrangler).toMatch(/\/\/.*omsaravanabhava\.org/);
