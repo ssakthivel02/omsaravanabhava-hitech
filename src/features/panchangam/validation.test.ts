@@ -20,4 +20,6 @@ describe('Panchangam publication gate', () => {
   it('rejects missing licences', () => expect(isPublishablePanchangam({ ...valid(), source: { ...valid().source, licence: null } }, now)).toBe(false));
   it('rejects missing time fields', () => expect(isPublishablePanchangam({ ...valid(), fields: { ...valid().fields, rahuKalam: null } }, now)).toBe(false));
   it('rejects future verification timestamps', () => expect(isPublishablePanchangam({ ...valid(), calculation: { ...valid().calculation, verifiedAt: '2026-11-13T00:00:00Z' } }, now)).toBe(false));
+  it('rejects wrong location', () => expect(isPublishablePanchangam({ ...valid(), location: { name: 'London' } }, now)).toBe(false));
+  it('rejects yesterday verification despite a today label', () => expect(isPublishablePanchangam({ ...valid(), calculation: { ...valid().calculation, verifiedAt: '2026-11-11T12:00:00Z' } }, now)).toBe(false));
 });
