@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0",
+  "date": "2026-11-12",
+  "timezone": "Asia/Kolkata",
+  "location": {
+    "name": "Chennai",
+    "latitude": 13.0827,
+    "longitude": 80.2707
+  },
+  "status": "pending",
+  "source": {
+    "provider": null,
+    "citation": null,
+    "licence": null
+  },
+  "calculation": {
+    "method": null,
+    "sunrise": null,
+    "verifiedAt": null
+  },
+  "fields": {
+    "tithi": null,
+    "nakshatra": null,
+    "yoga": null,
+    "karana": null,
+    "rahuKalam": null,
+    "yamagandam": null,
+    "nallaNeram": null
+  },
+  "noticeTa": "இந்த நாளுக்கான பஞ்சாங்கத் தகவல் இன்னும் சரிபார்க்கப்படவில்லை. சுபநேர விவரங்களை உறுதிப்படுத்தப்பட்ட ஆதாரம் கிடைக்கும் வரை வெளியிடமாட்டோம்."
+}
