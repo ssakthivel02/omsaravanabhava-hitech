@@ -30,6 +30,14 @@ Actions > "Production release" > Run workflow: select **main** as the workflow b
 
 The preflight checks the Cloudflare Worker-list API (account authorization) and checks the exact named production Worker. It refuses a Worker already present and fails closed for errors or an unknown status; this reduces accidental overwrites but is not atomic, and does not establish actual routes or domains. Independently inspect Cloudflare routing and rollback before approval. A first deployment is intended to be smoke-tested on `workers.dev` before any manual domain cutover. **WARNING:** an existing route/domain configuration may reference a Worker name even when no script currently exists. Creating that named Worker could potentially affect live traffic; verify actual Cloudflare route/domain bindings and the currently live origin independently BEFORE running this workflow. The script-absence check is not a route-absence check.
 
+## Pre-cutover public indexing gate (required before first Worker upload)
+
+The candidate enables `workers_dev: true` and builds in production mode. Its generated `robots.txt` permits indexing and its canonical/sitemap refer to the live root domain. **Do not assume the staging hostname is private or excluded from search.**
+
+Before authorizing the first Worker upload, the owner and independent reviewer must agree on a concrete, tested isolation plan for the public `workers.dev` hostname (for example, a Cloudflare Access policy or a verified hostname-specific `X-Robots-Tag: noindex` response that does not affect the eventual root-domain response). Confirm with an unauthenticated HTTP request against the actual deployed hostname, including deep links and `/release.json`; a repository static check cannot establish this. If the plan cannot be verified before upload, **HOLD** the upload and change the release design under review. Do not disable the endpoint without replacing the planned smoke-test method.
+
+After any domain cutover, verify that the public root is indexable as intended and that the separate `workers.dev` hostname remains restricted or non-indexable. Record evidence and the rollback operator in the release checklist.
+
 ## After deploy (manual, per cutover runbook section 5-7)
 
 1. Open the Worker's `workers.dev` URL; `/release.json` must show `commit` = approved SHA, `environment` = `production`, `repository` = `ssakthivel02/omsaravanabhava-hitech`. (Field is `commit`; older runbook text says `commitSha`.)
