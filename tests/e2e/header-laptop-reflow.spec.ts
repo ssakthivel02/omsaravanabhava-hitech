@@ -23,9 +23,19 @@ test('laptop menu remains usable and the 1440px transition does not overflow', a
   }
 });
 
-test('200% reflow keeps menu and page inside viewport', async ({ page }) => {
-  await page.setViewportSize({ width: 640, height: 900 });
-  await page.goto('/');
-  await expect(page.locator('.menu-toggle')).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)).toBe(false);
+// Narrow CSS viewport coverage is not a substitute for real browser zoom QA.
+// Check both 320px mobile and 640px compact layouts; 200% browser zoom
+// still requires separate visual/browser acceptance evidence.
+test('320px and 640px reflow keep navigation usable without horizontal overflow', async ({ page }) => {
+  for (const width of [320, 640]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    const menu = page.locator('.menu-toggle');
+    await expect(menu).toBeVisible();
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
+    expect(overflow, `horizontal overflow at ${width}px`).toBe(false);
+    await menu.click();
+    await expect(menu).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('#mobile-nav')).toBeVisible();
+  }
 });
