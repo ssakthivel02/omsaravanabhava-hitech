@@ -23,14 +23,30 @@ export default function DailyPanchangam() {
   const [result, setResult] = useState<{ key: string; record: DailyRecord | null; error: boolean } | null>(null);
   const [retry, setRetry] = useState(0);
   const [clock, setClock] = useState(() => new Date());
-  // Recheck the Chennai date while a tab stays open; never show yesterday's data.
+  // Schedule the Chennai date boundary; resync after tab suspension or focus.
   useEffect(() => {
-    const refreshClock = () => setClock(new Date());
+    let midnightTimer: ReturnType<typeof setTimeout>;
+    const refreshClock = () => {
+      clearTimeout(midnightTimer);
+      const now = new Date();
+      setClock(now);
+      // Asia/Kolkata is UTC+05:30 with no daylight saving time.
+      const dayMs = 86_400_000;
+      const offsetMs = 19_800_000;
+      const untilMidnight = dayMs - ((now.getTime() + offsetMs) % dayMs);
+      midnightTimer = setTimeout(refreshClock, untilMidnight);
+    };
+    const now = new Date();
+    const dayMs = 86_400_000;
+    midnightTimer = setTimeout(refreshClock, dayMs - ((now.getTime() + 19_800_000) % dayMs));
     const interval = setInterval(refreshClock, 60_000);
     document.addEventListener('visibilitychange', refreshClock);
+    window.addEventListener('focus', refreshClock);
     return () => {
+      clearTimeout(midnightTimer);
       clearInterval(interval);
       document.removeEventListener('visibilitychange', refreshClock);
+      window.removeEventListener('focus', refreshClock);
     };
   }, []);
   const localDate = chennaiToday(clock);
