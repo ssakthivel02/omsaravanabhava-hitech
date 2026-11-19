@@ -64,7 +64,8 @@ export default function DailyPanchangam() {
     return () => controller.abort();
   }, [requestKey]);
 
-  const pendingNotice = (typeof record?.noticeTa === 'string' ? record.noticeTa : null) ?? 'சரிபார்க்கப்பட்ட தகவல் இன்னும் கிடைக்கவில்லை.';
+  // Never render unverified data as free-form public notice text.
+  const pendingNotice = 'சரிபார்ப்பு நிலுவையில் உள்ளது.';
   const verified = isPublishablePanchangam(record, clock);
 
   return (
