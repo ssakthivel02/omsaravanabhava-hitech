@@ -7,6 +7,7 @@ export type PanchangamRecord = {
   source: { provider: string | null; citation: string | null; licence: string | null };
   calculation: { method: string | null; verifiedAt: string | null };
   fields: Record<string, string | null>;
+  fieldEvidence?: Record<string, { value: string; citation: string; verifiedAt: string }>;
   noticeTa: string;
 };
 
@@ -44,7 +45,16 @@ export function isPublishablePanchangam(value: unknown, now = new Date(), approv
   if (!Number.isFinite(verifiedAt) || verifiedAt > now.getTime() + 300000 ||
       chennaiToday(new Date(verifiedAt)) !== record.date) return false;
   if (!matchesApprovedSource(record.source, approvals)) return false;
-  return PANCHANGAM_FIELDS.every((key) => nonEmpty(record.fields?.[key]));
+  return PANCHANGAM_FIELDS.every((key) => {
+    const field = record.fields?.[key];
+    const evidence = record.fieldEvidence?.[key];
+    if (!nonEmpty(field) || !evidence || evidence.value !== field ||
+        !nonEmpty(evidence.citation) || !nonEmpty(evidence.verifiedAt)) return false;
+    const timestamp = Date.parse(evidence.verifiedAt);
+    return Number.isFinite(timestamp) && timestamp <= verifiedAt &&
+      chennaiToday(new Date(timestamp)) === record.date &&
+      matchesApprovedSource({ ...record.source, citation: evidence.citation }, approvals);
+  });
 }
 
 /** Independently reviewed publication approval; never populate from daily JSON. */

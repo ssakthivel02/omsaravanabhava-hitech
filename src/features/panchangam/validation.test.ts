@@ -8,6 +8,7 @@ const valid = () => ({
   source: { provider: 'Licensed provider', citation: 'https://example.org/panchangam/source', licence: 'licensed' },
   calculation: { method: 'declared', verifiedAt: '2026-11-12T05:00:00.000Z' },
   fields: { tithi: 'a', nakshatra: 'b', yoga: 'c', karana: 'd', rahuKalam: 'e', yamagandam: 'f', nallaNeram: 'g' },
+  fieldEvidence: Object.fromEntries(Object.entries({ tithi: 'a', nakshatra: 'b', yoga: 'c', karana: 'd', rahuKalam: 'e', yamagandam: 'f', nallaNeram: 'g' }).map(([key, value]) => [key, { value, citation: 'https://example.org/panchangam/source', verifiedAt: '2026-11-12T05:00:00.000Z' }])),
   noticeTa: '',
 });
 const testApprovals = [{ provider: 'Licensed provider', origin: 'https://example.org', licence: 'licensed', rightsEvidence: 'synthetic test evidence only' }];
@@ -66,5 +67,26 @@ describe('Reviewed Panchangam source registry', () => {
   });
   it('rejects missing documentary evidence', () => {
     expect(matchesApprovedSource(valid().source, [{ ...approval, rightsEvidence: ' ' }])).toBe(false);
+  });
+});
+
+describe('Field-level publication evidence', () => {
+  it('rejects missing evidence for each required field', () => {
+    for (const key of Object.keys(valid().fields)) {
+      const record = valid();
+      delete record.fieldEvidence[key];
+      expect(isPublishablePanchangam(record, now, testApprovals)).toBe(false);
+    }
+  });
+  it('rejects mismatched values, unapproved sources and invalid verification times', () => {
+    for (const override of [
+      { value: 'different' }, { citation: 'https://other.example/source' },
+      { verifiedAt: 'invalid' }, { verifiedAt: '2026-11-11T05:00:00Z' },
+      { verifiedAt: '2026-11-12T05:01:00Z' },
+    ]) {
+      const record = valid();
+      record.fieldEvidence.tithi = { ...record.fieldEvidence.tithi, ...override };
+      expect(isPublishablePanchangam(record, now, testApprovals)).toBe(false);
+    }
   });
 });
