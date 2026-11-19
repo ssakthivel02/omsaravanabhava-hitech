@@ -23,4 +23,9 @@ describe('Panchangam publication gate', () => {
   it('rejects wrong location', () => expect(isPublishablePanchangam({ ...valid(), location: { name: 'London' } }, now)).toBe(false));
   it('rejects yesterday verification despite a today label', () => expect(isPublishablePanchangam({ ...valid(), calculation: { ...valid().calculation, verifiedAt: '2026-11-11T12:00:00Z' } }, now)).toBe(false));
   it('rejects non-auditable source citations', () => expect(isPublishablePanchangam({ ...valid(), source: { ...valid().source, citation: 'source-ref' } }, now)).toBe(false));
+  it('rejects malformed location names without throwing', () => {
+    for (const name of [123, true, {}, [], null, undefined]) {
+      expect(isPublishablePanchangam({ ...valid(), location: { name } }, now)).toBe(false);
+    }
+  });
 });
