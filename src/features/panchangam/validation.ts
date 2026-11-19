@@ -35,7 +35,8 @@ export function isPublishablePanchangam(value: unknown, now = new Date()): value
   // Human review of the actual publication rights remains mandatory.
   try {
     const citation = new URL(record.source.citation);
-    if (citation.protocol !== 'https:' || !citation.hostname.includes('.')) return false;
+    if (citation.protocol !== 'https:' || !citation.hostname.includes('.') ||
+        citation.username || citation.password || citation.port) return false;
   } catch {
     return false;
   }
