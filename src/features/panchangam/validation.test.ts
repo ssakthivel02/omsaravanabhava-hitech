@@ -28,4 +28,16 @@ describe('Panchangam publication gate', () => {
       expect(isPublishablePanchangam({ ...valid(), location: { name } }, now)).toBe(false);
     }
   });
+
+  it('rejects credential-bearing and non-default-port source citations', () => {
+    for (const citation of [
+      'https://user@example.org/source',
+      'https://user:password@example.org/source',
+      'https://example.org:8443/source',
+      'http://example.org/source',
+      'https://localhost/source',
+    ]) {
+      expect(isPublishablePanchangam({ ...valid(), source: { ...valid().source, citation } }, now)).toBe(false);
+    }
+  });
 });
