@@ -20,8 +20,7 @@ const labels: Record<string, string> = {
 
 
 export default function DailyPanchangam() {
-  const [record, setRecord] = useState<DailyRecord | null>(null);
-  const [error, setError] = useState(false);
+  const [result, setResult] = useState<{ key: string; record: DailyRecord | null; error: boolean } | null>(null);
   const [retry, setRetry] = useState(0);
   const [clock, setClock] = useState(() => new Date());
   // Recheck the Chennai date while a tab stays open; never show yesterday's data.
@@ -35,18 +34,19 @@ export default function DailyPanchangam() {
     };
   }, []);
   const localDate = chennaiToday(clock);
+  const requestKey = `${localDate}:${retry}`;
+  const record = result?.key === requestKey ? result.record : null;
+  const error = result?.key === requestKey && result.error;
   useEffect(() => {
     const controller = new AbortController();
-    setError(false);
-    setRecord(null);
     fetch('/panchangam/today.json', { cache: 'no-store', signal: controller.signal })
       .then((response) => { if (!response.ok) throw new Error('Unavailable'); return response.json(); })
       .then((value: DailyRecord) => {
-        if (!controller.signal.aborted) { setRecord(value); setError(false); }
+        if (!controller.signal.aborted) setResult({ key: requestKey, record: value, error: false });
       })
-      .catch(() => { if (!controller.signal.aborted) { setRecord(null); setError(true); } });
+      .catch(() => { if (!controller.signal.aborted) setResult({ key: requestKey, record: null, error: true }); });
     return () => controller.abort();
-  }, [localDate, retry]);
+  }, [requestKey]);
 
   const pendingNotice = (typeof record?.noticeTa === 'string' ? record.noticeTa : null) ?? 'சரிபார்க்கப்பட்ட தகவல் இன்னும் கிடைக்கவில்லை.';
   const verified = isPublishablePanchangam(record, clock);
