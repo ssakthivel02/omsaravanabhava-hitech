@@ -45,3 +45,36 @@ export function isPublishablePanchangam(value: unknown, now = new Date()): value
       chennaiToday(new Date(verifiedAt)) !== record.date) return false;
   return PANCHANGAM_FIELDS.every((key) => nonEmpty(record.fields?.[key]));
 }
+
+/** Independently reviewed publication approval; never populate from daily JSON. */
+export type ApprovedPanchangamSource = Readonly<{
+  provider: string;
+  origin: string;
+  licence: string;
+  rightsEvidence: string;
+}>;
+
+// Empty until documentary publication rights have been reviewed.
+export const APPROVED_PANCHANGAM_SOURCES: readonly ApprovedPanchangamSource[] = Object.freeze([]);
+
+/** Staged policy helper: wire into publication only with coordinated regression updates. */
+export function matchesApprovedSource(
+  source: unknown,
+  approvals: readonly ApprovedPanchangamSource[] = APPROVED_PANCHANGAM_SOURCES,
+): boolean {
+  if (!source || typeof source !== 'object') return false;
+  const candidate = source as Partial<PanchangamRecord['source']>;
+  if (typeof candidate.provider !== 'string' || typeof candidate.licence !== 'string' ||
+      typeof candidate.citation !== 'string') return false;
+  try {
+    const url = new URL(candidate.citation);
+    if (url.protocol !== 'https:' || url.username || url.password || url.port) return false;
+    return approvals.some((approval) =>
+      approval.provider === candidate.provider &&
+      approval.licence === candidate.licence &&
+      approval.origin === url.origin &&
+      approval.rightsEvidence.trim().length > 0);
+  } catch {
+    return false;
+  }
+}
