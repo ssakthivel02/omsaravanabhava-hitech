@@ -38,3 +38,27 @@ test('Panchangam recovers from HTTP failure without publishing unverified values
   await expect(page.getByRole('region', { name: 'சரிபார்க்கப்பட்ட பஞ்சாங்கம்' })).toHaveCount(0);
   expect(requests).toBe(2);
 });
+
+test('Panchangam refreshes at Chennai midnight and rejects yesterday’s record', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-11-19T18:29:50Z') });
+  let requests = 0;
+  // Synthetic test data only; never use this fixture as a publication source.
+  const fixture = {
+    schemaVersion: '1.0', date: '2026-11-19', timezone: 'Asia/Kolkata',
+    location: { name: 'Chennai' }, status: 'verified',
+    source: { provider: 'Test fixture', citation: 'https://example.org/test', licence: 'test-only' },
+    calculation: { method: 'Synthetic', verifiedAt: '2026-11-19T18:00:00Z' },
+    fields: { tithi: 'a', nakshatra: 'b', yoga: 'c', karana: 'd', rahuKalam: 'e', yamagandam: 'f', nallaNeram: 'g' },
+  };
+  await page.route('**/panchangam/today.json', async (route) => {
+    requests += 1;
+    await route.fulfill({ json: fixture });
+  });
+  await page.goto('/daily-panchangam');
+  const verified = page.getByRole('region', { name: 'சரிபார்க்கப்பட்ட பஞ்சாங்கம்' });
+  await expect(verified).toContainText('2026-11-19');
+  await page.clock.runFor(11_000);
+  await expect.poll(() => requests).toBe(2);
+  await expect(verified).toHaveCount(0);
+  await expect(page.getByRole('status')).toContainText('தகவல் சரிபார்ப்பு நடைபெறுகிறது');
+});
