@@ -22,6 +22,7 @@ const labels: Record<string, string> = {
 export default function DailyPanchangam() {
   const [record, setRecord] = useState<DailyRecord | null>(null);
   const [error, setError] = useState(false);
+  const [retry, setRetry] = useState(0);
   const [clock, setClock] = useState(() => new Date());
   // Recheck the Chennai date while a tab stays open; never show yesterday's data.
   useEffect(() => {
@@ -36,14 +37,18 @@ export default function DailyPanchangam() {
   const localDate = chennaiToday(clock);
   useEffect(() => {
     const controller = new AbortController();
+    setError(false);
+    setRecord(null);
     fetch('/panchangam/today.json', { cache: 'no-store', signal: controller.signal })
       .then((response) => { if (!response.ok) throw new Error('Unavailable'); return response.json(); })
-      .then((value: DailyRecord) => setRecord(value))
-      .catch((err: unknown) => { if (!(err instanceof DOMException && err.name === 'AbortError')) setError(true); });
+      .then((value: DailyRecord) => {
+        if (!controller.signal.aborted) { setRecord(value); setError(false); }
+      })
+      .catch(() => { if (!controller.signal.aborted) { setRecord(null); setError(true); } });
     return () => controller.abort();
-  }, [localDate]);
+  }, [localDate, retry]);
 
-  const pendingNotice = record?.noticeTa ?? 'சரிபார்க்கப்பட்ட தகவல் இன்னும் கிடைக்கவில்லை.';
+  const pendingNotice = (typeof record?.noticeTa === 'string' ? record.noticeTa : null) ?? 'சரிபார்க்கப்பட்ட தகவல் இன்னும் கிடைக்கவில்லை.';
   const verified = isPublishablePanchangam(record, clock);
 
   return (
@@ -55,6 +60,7 @@ export default function DailyPanchangam() {
           <h2>தகவல் சரிபார்ப்பு நடைபெறுகிறது</h2>
           <p>{error ? 'தினசரி தகவலை இப்போது பெற முடியவில்லை.' : pendingNotice}</p>
           <p>உறுதிப்படுத்தப்படாத சுபநேரங்களை நாங்கள் வெளியிடுவதில்லை.</p>
+          {error && <button type="button" onClick={() => setRetry((value) => value + 1)}>மீண்டும் முயற்சிக்கவும்</button>}
         </section>
       ) : (
         <section aria-label="சரிபார்க்கப்பட்ட பஞ்சாங்கம்">
