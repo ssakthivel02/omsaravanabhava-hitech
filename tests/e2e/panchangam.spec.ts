@@ -62,3 +62,21 @@ test('Panchangam refreshes at Chennai midnight and rejects yesterday’s record'
   await expect(verified).toHaveCount(0);
   await expect(page.getByRole('status')).toContainText('தகவல் சரிபார்ப்பு நடைபெறுகிறது');
 });
+
+test('Panchangam never renders unverified remote notice content', async ({ page }) => {
+  const marker = 'UNVERIFIED_NOTICE_SENTINEL';
+  let served = false;
+  await page.route('**/panchangam/today.json', async (route) => {
+    await route.fulfill({ json: {
+      status: 'pending',
+      noticeTa: marker,
+      fields: { nallaNeram: marker },
+    } });
+    served = true;
+  });
+  await page.goto('/daily-panchangam');
+  await expect.poll(() => served).toBe(true);
+  await expect(page.getByRole('status')).toContainText('சரிபார்ப்பு நிலுவையில் உள்ளது.');
+  await expect(page.getByText(marker, { exact: false })).toHaveCount(0);
+  await expect(page.getByRole('region', { name: 'சரிபார்க்கப்பட்ட பஞ்சாங்கம்' })).toHaveCount(0);
+});
