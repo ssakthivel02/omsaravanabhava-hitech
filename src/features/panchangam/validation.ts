@@ -28,7 +28,7 @@ export function isPublishablePanchangam(value: unknown, now = new Date()): value
   const nonEmpty = (x: unknown): x is string => typeof x === 'string' && x.trim().length > 0;
   if (record.schemaVersion !== '1.0' || record.status !== 'verified' ||
       record.date !== chennaiToday(now) || record.timezone !== 'Asia/Kolkata' ||
-      record.location?.name?.trim().toLowerCase() !== 'chennai' || !nonEmpty(record.source?.provider) ||
+      !nonEmpty(record.location?.name) || record.location.name.trim().toLowerCase() !== 'chennai' || !nonEmpty(record.source?.provider) ||
       !nonEmpty(record.source?.citation) || !nonEmpty(record.source?.licence) ||
       !nonEmpty(record.calculation?.method) || !nonEmpty(record.calculation?.verifiedAt)) return false;
   // A free-form "licensed" claim is not provenance. Require an auditable HTTPS source.
