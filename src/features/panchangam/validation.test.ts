@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { chennaiToday, isPublishablePanchangam } from './validation';
+import { chennaiToday, isPublishablePanchangam, matchesApprovedSource } from './validation';
 
 const now = new Date('2026-11-12T06:00:00.000Z');
 const valid = () => ({
@@ -39,5 +39,29 @@ describe('Panchangam publication gate', () => {
     ]) {
       expect(isPublishablePanchangam({ ...valid(), source: { ...valid().source, citation } }, now)).toBe(false);
     }
+  });
+});
+
+describe('Reviewed Panchangam source registry', () => {
+  const approval = { provider: 'Licensed provider', origin: 'https://example.org', licence: 'licensed', rightsEvidence: 'synthetic test evidence only' };
+  it('rejects all providers by default', () => {
+    expect(matchesApprovedSource(valid().source)).toBe(false);
+  });
+  it('accepts exact matches against an explicitly injected test approval', () => {
+    expect(matchesApprovedSource(valid().source, [approval])).toBe(true);
+  });
+  it('rejects mismatched identity, origin, licence and unsafe URLs', () => {
+    for (const source of [
+      { ...valid().source, provider: 'Unknown' },
+      { ...valid().source, licence: 'other' },
+      { ...valid().source, citation: 'https://example.org.evil.test/source' },
+      { ...valid().source, citation: 'https://user@example.org/source' },
+      { ...valid().source, citation: 'https://example.org:8443/source' },
+      { ...valid().source, citation: 'http://example.org/source' },
+      null, {}, { provider: 123 },
+    ]) expect(matchesApprovedSource(source, [approval])).toBe(false);
+  });
+  it('rejects missing documentary evidence', () => {
+    expect(matchesApprovedSource(valid().source, [{ ...approval, rightsEvidence: ' ' }])).toBe(false);
   });
 });
