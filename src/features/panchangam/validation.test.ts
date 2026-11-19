@@ -85,7 +85,7 @@ describe('Field-level publication evidence', () => {
       { verifiedAt: '2026-11-12T05:01:00Z' },
     ]) {
       const record = valid();
-      record.fieldEvidence.tithi = { ...record.fieldEvidence.tithi, ...override };
+      record.fieldEvidence.tithi = { value: 'a', citation: 'https://example.org/panchangam/source', verifiedAt: '2026-11-12T05:00:00.000Z', ...override };
       expect(isPublishablePanchangam(record, now, testApprovals)).toBe(false);
     }
   });
