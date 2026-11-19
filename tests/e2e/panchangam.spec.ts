@@ -39,7 +39,7 @@ test('Panchangam recovers from HTTP failure without publishing unverified values
   expect(requests).toBe(2);
 });
 
-test('Panchangam refreshes at Chennai midnight and rejects yesterday’s record', async ({ page }) => {
+test('Panchangam refreshes at Chennai midnight without publishing unapproved records', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-19T18:29:50Z') });
   let requests = 0;
   // Synthetic test data only; never use this fixture as a publication source.
@@ -56,7 +56,8 @@ test('Panchangam refreshes at Chennai midnight and rejects yesterday’s record'
   });
   await page.goto('/daily-panchangam');
   const verified = page.getByRole('region', { name: 'சரிபார்க்கப்பட்ட பஞ்சாங்கம்' });
-  await expect(verified).toContainText('2026-11-19');
+  await expect.poll(() => requests).toBe(1);
+  await expect(verified).toHaveCount(0);
   await page.clock.runFor(11_000);
   await expect.poll(() => requests).toBe(2);
   await expect(verified).toHaveCount(0);

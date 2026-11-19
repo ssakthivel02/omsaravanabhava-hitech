@@ -22,7 +22,7 @@ export function chennaiToday(now = new Date()): string {
   return `${part('year')}-${part('month')}-${part('day')}`;
 }
 
-export function isPublishablePanchangam(value: unknown, now = new Date()): value is PanchangamRecord {
+export function isPublishablePanchangam(value: unknown, now = new Date(), approvals: readonly ApprovedPanchangamSource[] = APPROVED_PANCHANGAM_SOURCES): value is PanchangamRecord {
   if (!value || typeof value !== 'object') return false;
   const record = value as Partial<PanchangamRecord>;
   const nonEmpty = (x: unknown): x is string => typeof x === 'string' && x.trim().length > 0;
@@ -43,6 +43,7 @@ export function isPublishablePanchangam(value: unknown, now = new Date()): value
   const verifiedAt = Date.parse(record.calculation.verifiedAt);
   if (!Number.isFinite(verifiedAt) || verifiedAt > now.getTime() + 300000 ||
       chennaiToday(new Date(verifiedAt)) !== record.date) return false;
+  if (!matchesApprovedSource(record.source, approvals)) return false;
   return PANCHANGAM_FIELDS.every((key) => nonEmpty(record.fields?.[key]));
 }
 
@@ -57,7 +58,7 @@ export type ApprovedPanchangamSource = Readonly<{
 // Empty until documentary publication rights have been reviewed.
 export const APPROVED_PANCHANGAM_SOURCES: readonly ApprovedPanchangamSource[] = Object.freeze([]);
 
-/** Staged policy helper: wire into publication only with coordinated regression updates. */
+/** Match independently approved publication sources. */
 export function matchesApprovedSource(
   source: unknown,
   approvals: readonly ApprovedPanchangamSource[] = APPROVED_PANCHANGAM_SOURCES,

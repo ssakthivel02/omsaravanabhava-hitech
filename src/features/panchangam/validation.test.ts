@@ -10,22 +10,25 @@ const valid = () => ({
   fields: { tithi: 'a', nakshatra: 'b', yoga: 'c', karana: 'd', rahuKalam: 'e', yamagandam: 'f', nallaNeram: 'g' },
   noticeTa: '',
 });
+const testApprovals = [{ provider: 'Licensed provider', origin: 'https://example.org', licence: 'licensed', rightsEvidence: 'synthetic test evidence only' }];
+
 describe('Panchangam publication gate', () => {
   it('uses Chennai calendar date across UTC boundary', () => {
     expect(chennaiToday(new Date('2026-11-11T20:00:00.000Z'))).toBe('2026-11-12');
   });
-  it('accepts a complete, sourced same-day record', () => expect(isPublishablePanchangam(valid(), now)).toBe(true));
-  it('rejects stale records', () => expect(isPublishablePanchangam({ ...valid(), date: '2026-11-11' }, now)).toBe(false));
-  it('rejects pending records', () => expect(isPublishablePanchangam({ ...valid(), status: 'pending' }, now)).toBe(false));
-  it('rejects missing licences', () => expect(isPublishablePanchangam({ ...valid(), source: { ...valid().source, licence: null } }, now)).toBe(false));
-  it('rejects missing time fields', () => expect(isPublishablePanchangam({ ...valid(), fields: { ...valid().fields, rahuKalam: null } }, now)).toBe(false));
-  it('rejects future verification timestamps', () => expect(isPublishablePanchangam({ ...valid(), calculation: { ...valid().calculation, verifiedAt: '2026-11-13T00:00:00Z' } }, now)).toBe(false));
-  it('rejects wrong location', () => expect(isPublishablePanchangam({ ...valid(), location: { name: 'London' } }, now)).toBe(false));
-  it('rejects yesterday verification despite a today label', () => expect(isPublishablePanchangam({ ...valid(), calculation: { ...valid().calculation, verifiedAt: '2026-11-11T12:00:00Z' } }, now)).toBe(false));
-  it('rejects non-auditable source citations', () => expect(isPublishablePanchangam({ ...valid(), source: { ...valid().source, citation: 'source-ref' } }, now)).toBe(false));
+  it('accepts a complete, sourced same-day record', () => expect(isPublishablePanchangam(valid(), now, testApprovals)).toBe(true));
+  it('denies structurally valid records without production approval', () => expect(isPublishablePanchangam(valid(), now)).toBe(false));
+  it('rejects stale records', () => expect(isPublishablePanchangam({ ...valid(), date: '2026-11-11' }, now, testApprovals)).toBe(false));
+  it('rejects pending records', () => expect(isPublishablePanchangam({ ...valid(), status: 'pending' }, now, testApprovals)).toBe(false));
+  it('rejects missing licences', () => expect(isPublishablePanchangam({ ...valid(), source: { ...valid().source, licence: null } }, now, testApprovals)).toBe(false));
+  it('rejects missing time fields', () => expect(isPublishablePanchangam({ ...valid(), fields: { ...valid().fields, rahuKalam: null } }, now, testApprovals)).toBe(false));
+  it('rejects future verification timestamps', () => expect(isPublishablePanchangam({ ...valid(), calculation: { ...valid().calculation, verifiedAt: '2026-11-13T00:00:00Z' } }, now, testApprovals)).toBe(false));
+  it('rejects wrong location', () => expect(isPublishablePanchangam({ ...valid(), location: { name: 'London' } }, now, testApprovals)).toBe(false));
+  it('rejects yesterday verification despite a today label', () => expect(isPublishablePanchangam({ ...valid(), calculation: { ...valid().calculation, verifiedAt: '2026-11-11T12:00:00Z' } }, now, testApprovals)).toBe(false));
+  it('rejects non-auditable source citations', () => expect(isPublishablePanchangam({ ...valid(), source: { ...valid().source, citation: 'source-ref' } }, now, testApprovals)).toBe(false));
   it('rejects malformed location names without throwing', () => {
     for (const name of [123, true, {}, [], null, undefined]) {
-      expect(isPublishablePanchangam({ ...valid(), location: { name } }, now)).toBe(false);
+      expect(isPublishablePanchangam({ ...valid(), location: { name } }, now, testApprovals)).toBe(false);
     }
   });
 
@@ -37,7 +40,7 @@ describe('Panchangam publication gate', () => {
       'http://example.org/source',
       'https://localhost/source',
     ]) {
-      expect(isPublishablePanchangam({ ...valid(), source: { ...valid().source, citation } }, now)).toBe(false);
+      expect(isPublishablePanchangam({ ...valid(), source: { ...valid().source, citation } }, now, testApprovals)).toBe(false);
     }
   });
 });
