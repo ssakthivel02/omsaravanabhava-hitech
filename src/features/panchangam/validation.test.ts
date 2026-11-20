@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { chennaiToday, isPublishablePanchangam, matchesApprovedSource } from './validation';
+import { chennaiToday, isPublishablePanchangam, matchesApprovedSource, prepareDailyPanchangam, PANCHANGAM_FIELDS } from './validation';
 
 const now = new Date('2026-11-12T06:00:00.000Z');
 const valid = () => ({
@@ -88,5 +88,23 @@ describe('Field-level publication evidence', () => {
       record.fieldEvidence.tithi = { value: 'a', citation: 'https://example.org/panchangam/source', verifiedAt: '2026-11-12T05:00:00.000Z', ...override };
       expect(isPublishablePanchangam(record, now, testApprovals)).toBe(false);
     }
+  });
+});
+
+describe('Daily candidate preparation', () => {
+  it('replaces unapproved and malformed candidates with a clean pending record', () => {
+    for (const candidate of [valid(), null, {}, { noticeTa: 'untrusted', fields: { tithi: 'untrusted' } }]) {
+      const result = prepareDailyPanchangam(candidate, now);
+      expect(result.status).toBe('pending');
+      expect(result.date).toBe('2026-11-12');
+      expect(result.source).toEqual({ provider: null, citation: null, licence: null });
+      expect(result.fieldEvidence).toEqual({});
+      expect(result.fields).toEqual(Object.fromEntries(PANCHANGAM_FIELDS.map((key) => [key, null])));
+      expect(result.noticeTa).toBe('சரிபார்ப்பு நிலுவையில் உள்ளது.');
+      expect(isPublishablePanchangam(result, now)).toBe(false);
+    }
+  });
+  it('uses the Chennai date rather than the UTC date for fallback', () => {
+    expect(prepareDailyPanchangam(null, new Date('2026-11-12T19:00:00Z')).date).toBe('2026-11-13');
   });
 });

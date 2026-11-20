@@ -89,3 +89,20 @@ export function matchesApprovedSource(
     return false;
   }
 }
+
+/** Prepare a publication candidate without I/O or implicit source approval. */
+export function prepareDailyPanchangam(candidate: unknown, now = new Date()): PanchangamRecord {
+  if (isPublishablePanchangam(candidate, now)) return candidate;
+  return {
+    schemaVersion: '1.0',
+    date: chennaiToday(now),
+    timezone: 'Asia/Kolkata',
+    location: { name: 'Chennai' },
+    status: 'pending',
+    source: { provider: null, citation: null, licence: null },
+    calculation: { method: null, verifiedAt: null },
+    fields: Object.fromEntries(PANCHANGAM_FIELDS.map((key) => [key, null])),
+    fieldEvidence: {},
+    noticeTa: 'சரிபார்ப்பு நிலுவையில் உள்ளது.',
+  };
+}
