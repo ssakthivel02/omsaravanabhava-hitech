@@ -31,12 +31,18 @@ export function validateEngineEvaluation(value: unknown, expectedDate: string): 
   const limb = (x: Limb | undefined, max: number) => !!x && Number.isInteger(x.index) &&
     x.index >= 1 && x.index <= max && finite(x.endTimeUtc) &&
     x.endTimeUtc > rise && x.endTimeUtc <= rise + 40 * 3600000;
-  const period = (x: Interval | undefined) => !!x && finite(x.startUtc) && finite(x.endUtc) &&
+  // Evaluation convention from the pinned candidate engine; Sunday = 0.
+  const weekday = new Date(expectedDate + 'T00:00:00Z').getUTCDay();
+  const rahuSegments = [7, 1, 6, 4, 5, 3, 2];
+  const yamaSegments = [4, 6, 3, 1, 2, 0, 7];
+  const daylightSegment = (set - rise) / 8;
+  const period = (x: Interval | undefined, segment: number) => !!x && finite(x.startUtc) && finite(x.endUtc) &&
     x.startUtc >= rise && x.endUtc <= set && x.endUtc > x.startUtc &&
-    Math.abs(x.endUtc - x.startUtc - (set - rise) / 8) <= 1;
+    Math.abs(x.startUtc - (rise + segment * daylightSegment)) <= 1 &&
+    Math.abs(x.endUtc - (rise + (segment + 1) * daylightSegment)) <= 1;
   const rahu = v.periods?.rahuKalam;
   const yama = v.periods?.yamaganda;
   return limb(v.tithi, 30) && limb(v.nakshatra, 27) && limb(v.yoga, 27) && limb(v.karana, 60) &&
-    period(rahu) && period(yama) && !!rahu && !!yama &&
+    period(rahu, rahuSegments[weekday]) && period(yama, yamaSegments[weekday]) && !!rahu && !!yama &&
     (rahu.endUtc <= yama.startUtc || yama.endUtc <= rahu.startUtc);
 }
