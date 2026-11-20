@@ -20,7 +20,8 @@
     "test:e2e": "playwright test",
     "report:content": "node scripts/content-gap-report.mjs",
     "verify:contamination": "node scripts/scan-contamination.mjs",
-    "scan:contamination": "node scripts/scan-contamination.mjs"
+    "scan:contamination": "node scripts/scan-contamination.mjs",
+    "prepare:panchangam": "node --experimental-strip-types scripts/prepare-panchangam.mjs"
   },
   "dependencies": {
     "react": "^19.2.0",
