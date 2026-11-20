@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { chennaiToday, isPublishablePanchangam, matchesApprovedSource, prepareDailyPanchangam, PANCHANGAM_FIELDS } from './validation';
+import { chennaiToday, isPublishablePanchangam, matchesApprovedSource, prepareDailyPanchangam, PANCHANGAM_FIELDS } from '../src/features/panchangam/validation';
 
 const now = new Date('2026-11-12T06:00:00.000Z');
 const valid = () => ({
