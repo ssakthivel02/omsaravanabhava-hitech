@@ -42,7 +42,10 @@ export function validateEngineEvaluation(value: unknown, expectedDate: string): 
     Math.abs(x.endUtc - (rise + (segment + 1) * daylightSegment)) <= 1;
   const rahu = v.periods?.rahuKalam;
   const yama = v.periods?.yamaganda;
+  const rahuSegment = rahuSegments[weekday];
+  const yamaSegment = yamaSegments[weekday];
+  if (rahuSegment === undefined || yamaSegment === undefined) return false;
   return limb(v.tithi, 30) && limb(v.nakshatra, 27) && limb(v.yoga, 27) && limb(v.karana, 60) &&
-    period(rahu, rahuSegments[weekday]) && period(yama, yamaSegments[weekday]) && !!rahu && !!yama &&
+    period(rahu, rahuSegment) && period(yama, yamaSegment) && !!rahu && !!yama &&
     (rahu.endUtc <= yama.startUtc || yama.endUtc <= rahu.startUtc);
 }
