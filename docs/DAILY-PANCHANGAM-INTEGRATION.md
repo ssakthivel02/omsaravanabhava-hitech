@@ -29,6 +29,18 @@ The pending fixture deliberately has null field values and an empty evidence obj
 
 The production approval registry is intentionally empty. Adding an entry requires independent review of provider identity, origin, licence and documentary publication rights. Test-only approval entries must never enter the production registry.
 
-Any future generator must validate the complete candidate against the same publication rules before publishing it atomically. On provider failure, preserve fail-closed behavior; never relabel yesterday's data or invent values. No scheduled generation is enabled by this contract.
+The local generator validates the complete candidate against the same publication rules before writing it atomically. On provider failure, preserve fail-closed behavior; never relabel yesterday's data or invent values. No scheduled generation is enabled by this contract.
 
 Structural validation does not independently authenticate the source, establish astronomical accuracy or prove that competing calculations agree. Those remain reviewer responsibilities, along with Tamil copy and preview acceptance.
+
+## Local generation runbook
+
+Use Node.js 22 with the repository's pinned pnpm version. From the repository root:
+
+```sh
+pnpm run prepare:panchangam ./candidate.json ./prepared-panchangam.json
+```
+
+Use distinct input and output paths in an existing writable directory. This command does not fetch data, deploy a website or enable a scheduled job. A missing, malformed or unapproved candidate produces a fresh pending record for Chennai with null values and no evidence. A nonzero exit indicates a filesystem or invocation failure; do not deploy that output. Inspect the generated status, date and provenance before any separately approved publication. The temporary file is created beside the destination and renamed on success. Do not run concurrent writers against the same destination.
+
+Run `pnpm exec vitest run tests/panchangam-validation.test.ts tests/panchangam-generator.test.ts` to exercise the validator and actual subprocess/filesystem paths. Production source approval, accuracy review and independent release acceptance remain mandatory.
