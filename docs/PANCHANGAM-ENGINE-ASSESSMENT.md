@@ -17,3 +17,19 @@ Evaluate all seven weekdays, new/full moon proximity, dates with multiple limb t
 
 ## Release gates
 Pin package and transitive dependency with integrity, verify licence/NOTICE and table provenance, execute reproducible benchmarks and dependency audit, obtain Tamil review, then implement the isolated adapter. Keep all seven production fields pending until the existing approval and field-evidence contract is satisfied. No scheduled job, provider approval or production change authorized by this assessment.
+
+
+## Exact dependency and licence verification — 2026-11-21
+Reviewed the exact upstream commit `3e24263f3d5e4d2c8be8d015bc555d146435c408` again at package/lockfile level.
+
+- Core package: `@tattvasphere/tattva-astro-core` version `1.0.0`, declared `Apache-2.0`.
+- Runtime dependency count in upstream package metadata: exactly one — `astronomy-engine` with range `^2.1.19`.
+- Upstream `package-lock.json` resolves that runtime dependency to **`astronomy-engine@2.1.19`** from the public npm registry with integrity:
+  `sha512-8yWKNf7UeNbH458h3sAJ6ZgAjE5jTXp/mNNRFoC20j2SHwZIjAQeEsBB2Q3uCFRaTCCJRv33K2XhkhZQMXoX6w==`.
+- The lockfile records `astronomy-engine` as **MIT**. The upstream NOTICE attributes it to Don Cross and the upstream LICENSE is Apache-2.0.
+- If this package is ever redistributed or vendored, retain the Apache-2.0 licence and applicable NOTICE attribution. Linking/importing it does not waive those obligations.
+
+### Still unresolved
+This verification establishes the dependency version/integrity recorded by the reviewed upstream source commit; it does **not** independently prove npm publisher provenance for the core package tarball, nor does it validate the copyright/provenance assertion for the digitized Kannada Padaka table. The table remains a separate rights/provenance HOLD. Do not import or redistribute that table unless its source edition/digitization rights are independently established or the integration is narrowed to calculation-only code that excludes it.
+
+This evidence also does not establish Panchangam accuracy for Chennai or approve a Tamil tradition. Reproducible benchmark comparison, Nalla Neram methodology, Tamil review, and publication approval remain required.
