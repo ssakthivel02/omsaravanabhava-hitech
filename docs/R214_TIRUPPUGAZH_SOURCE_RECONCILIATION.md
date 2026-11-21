@@ -8,7 +8,7 @@ Owner-supplied source: `697840-அருணகிரிநாதர்-அரு
 - Part I, songs 1–330: https://www.projectmadurai.org/pm_etexts/utf8/pmuni0180.html
 - Part IV, songs 1001–1326: https://www.projectmadurai.org/pm_etexts/utf8/pmuni0191.html
 
-The Project Madurai Part I page attributes electronic text preparation to A.S. Maniam and conversion/web work to named contributors. It states redistribution of the file is permitted if its header page remains intact. Do not assume that this permits removal of the header and unrestricted republication of an adapted electronic transcription. Preserve the full original attribution/header in any redistribution of that electronic edition; get rights review before public bulk import. Original devotional compositions and an electronic edition are distinct rights layers.
+The Project Madurai Part I page attributes electronic text preparation to A.S. Maniam and conversion/web work to named contributors. Project Madurai's current site says third-party distribution of its etext collections is permitted when the Project logo/header and credit acknowledgements remain intact, and it explicitly asks third parties to contact the Project Coordinators before online distribution. Do not treat a publicly readable Project Madurai page as blanket permission to strip the header or republish an adapted transcription inside another site. Preserve the original attribution/header for any permitted redistribution of that electronic edition, contact Project Madurai before online distribution, and complete rights review before public bulk import. Original devotional compositions and a Project Madurai electronic edition are distinct rights layers.
 
 ## Exception review
 
