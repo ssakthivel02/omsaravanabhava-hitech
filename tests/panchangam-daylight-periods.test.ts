@@ -25,7 +25,7 @@ describe('Daylight period calculation', () => {
     for (const date of ['2026-02-30', '2026-13-01', '2026-11-27T00:00', 'invalid']) {
       expect(calculateDaylightPeriods(date, rise, rise + 43200000)).toBeNull();
     }
-    for (const [start, end] of [[NaN, rise], [rise, Infinity], [rise, rise], [rise, rise - 1], [rise, rise + 86400000]]) {
+    for (const [start, end] of ([[NaN, rise], [rise, Infinity], [rise, rise], [rise, rise - 1], [rise, rise + 86400000]] as [number, number][])) {
       expect(calculateDaylightPeriods('2026-11-27', start, end)).toBeNull();
     }
   });
