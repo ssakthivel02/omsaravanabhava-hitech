@@ -8,7 +8,11 @@ export type BenchmarkReference = {
   referenceUrl: string;
   independentlyReviewed: boolean;
   location: 'Chennai';
+  latitude: 13.0827;
+  longitude: 80.2707;
+  timezone: 'Asia/Kolkata';
   ayanamsa: 'lahiri';
+  monthSystem: 'amanta';
   sunriseUtc: number;
   sunsetUtc: number;
   tithi: Limb;
@@ -20,12 +24,24 @@ export type BenchmarkReference = {
 };
 type Candidate = { sunriseUtc: number; sunsetUtc: number; tithi: Limb; nakshatra: Limb;
   yoga: Limb; karana: Limb; periods: { rahuKalam: Interval; yamaganda: Interval } };
+function validReferenceUrl(value: unknown): boolean {
+  if (typeof value !== 'string') return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !!url.hostname && !url.username && !url.password &&
+      !url.port && !url.hash && url.hostname !== 'localhost' &&
+      !url.hostname.endsWith('.localhost');
+  } catch { return false; }
+}
+
 /** Benchmark evaluation only. This does not approve a source or publish any Panchangam field. */
 export function benchmarkEngine(candidate: unknown, reference: BenchmarkReference, toleranceMs = 120000): string[] {
   const failures: string[] = [];
   if (!reference || !reference.independentlyReviewed || reference.location !== 'Chennai' ||
+      reference.latitude !== 13.0827 || reference.longitude !== 80.2707 ||
+      reference.timezone !== 'Asia/Kolkata' || reference.monthSystem !== 'amanta' ||
       reference.ayanamsa !== 'lahiri' || !reference.referenceId?.trim() ||
-      !/^https:\/\//.test(reference.referenceUrl ?? '')) failures.push('reference-provenance');
+      !validReferenceUrl(reference.referenceUrl)) failures.push('reference-provenance');
   if (!Number.isFinite(toleranceMs) || toleranceMs < 0 || toleranceMs > 120000) failures.push('tolerance');
   if (!reference || !validateEngineEvaluation(candidate, reference.dateLocal)) {
     failures.push('candidate-validation');
