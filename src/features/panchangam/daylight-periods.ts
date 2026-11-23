@@ -14,6 +14,11 @@ export function calculateDaylightPeriods(
       sunsetUtc <= sunriseUtc || sunsetUtc - sunriseUtc >= 86400000) return null;
   const date = new Date(dateLocal + 'T00:00:00Z');
   if (Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== dateLocal) return null;
+  // The caller must provide solar events for the requested Chennai civil date.
+  const chennaiDate = (timestamp: number): string => new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).format(new Date(timestamp));
+  if (chennaiDate(sunriseUtc) !== dateLocal || chennaiDate(sunsetUtc) !== dateLocal) return null;
   const weekday = date.getUTCDay();
   // Sunday=0. These are zero-based daylight eighths for the evaluated convention.
   const rahuSegments = [7, 1, 6, 4, 5, 3, 2];

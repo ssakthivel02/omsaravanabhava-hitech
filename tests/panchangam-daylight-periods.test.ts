@@ -20,6 +20,12 @@ describe('Daylight period calculation', () => {
     const result = calculateDaylightPeriods('2026-11-27', rise, rise + 43199999);
     expect(result?.rahuKalam.startUtc).toBe(rise + 3 * 43199999 / 8);
   });
+  it('rejects solar events from another Chennai calendar date', () => {
+    const rise = Date.parse('2026-11-27T01:00:00Z');
+    expect(calculateDaylightPeriods('2026-11-26', rise, rise + 43200000)).toBeNull();
+    expect(calculateDaylightPeriods('2026-11-27', rise - 86400000, rise - 43200000)).toBeNull();
+    expect(calculateDaylightPeriods('2026-11-27', rise, rise + 72000000)).toBeNull();
+  });
   it('rejects invalid calendar dates and solar intervals', () => {
     const rise = Date.parse('2026-11-27T01:00:00Z');
     for (const date of ['2026-02-30', '2026-13-01', '2026-11-27T00:00', 'invalid']) {
