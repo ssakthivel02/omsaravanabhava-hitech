@@ -1,4 +1,5 @@
 import { chennaiToday } from './validation';
+import { calculateDaylightPeriods } from './daylight-periods';
 
 type Interval = { startUtc: number; endUtc: number };
 type Limb = { index: number; endTimeUtc: number };
@@ -31,21 +32,16 @@ export function validateEngineEvaluation(value: unknown, expectedDate: string): 
   const limb = (x: Limb | undefined, max: number) => !!x && Number.isInteger(x.index) &&
     x.index >= 1 && x.index <= max && finite(x.endTimeUtc) &&
     x.endTimeUtc > rise && x.endTimeUtc <= rise + 40 * 3600000;
-  // Evaluation convention from the pinned candidate engine; Sunday = 0.
-  const weekday = new Date(expectedDate + 'T00:00:00Z').getUTCDay();
-  const rahuSegments = [7, 1, 6, 4, 5, 3, 2];
-  const yamaSegments = [4, 6, 3, 1, 2, 0, 7];
-  const daylightSegment = (set - rise) / 8;
-  const period = (x: Interval | undefined, segment: number) => !!x && finite(x.startUtc) && finite(x.endUtc) &&
+  const expected = calculateDaylightPeriods(expectedDate, rise, set);
+  if (!expected) return false;
+  const period = (x: Interval | undefined, target: Interval) => !!x &&
+    finite(x.startUtc) && finite(x.endUtc) &&
     x.startUtc >= rise && x.endUtc <= set && x.endUtc > x.startUtc &&
-    Math.abs(x.startUtc - (rise + segment * daylightSegment)) <= 1 &&
-    Math.abs(x.endUtc - (rise + (segment + 1) * daylightSegment)) <= 1;
+    Math.abs(x.startUtc - target.startUtc) <= 1 &&
+    Math.abs(x.endUtc - target.endUtc) <= 1;
   const rahu = v.periods?.rahuKalam;
   const yama = v.periods?.yamaganda;
-  const rahuSegment = rahuSegments[weekday];
-  const yamaSegment = yamaSegments[weekday];
-  if (rahuSegment === undefined || yamaSegment === undefined) return false;
   return limb(v.tithi, 30) && limb(v.nakshatra, 27) && limb(v.yoga, 27) && limb(v.karana, 60) &&
-    period(rahu, rahuSegment) && period(yama, yamaSegment) && !!rahu && !!yama &&
+    period(rahu, expected.rahuKalam) && period(yama, expected.yamaganda) && !!rahu && !!yama &&
     (rahu.endUtc <= yama.startUtc || yama.endUtc <= rahu.startUtc);
 }
