@@ -32,7 +32,7 @@ export function evaluateBenchmarkSuite(cases: readonly BenchmarkCase[]): Benchma
         weekdays.add(date.getUTCDay());
     }
   }
-  const missing = required.filter(x => !present.has(x));
+  const missing: string[] = required.filter(x => !present.has(x));
   for (let day = 0; day < 7; day++) if (!weekdays.has(day)) missing.push('weekday-' + day);
   return { passed: missing.length === 0 && failures.length === 0, missing, failures };
 }
