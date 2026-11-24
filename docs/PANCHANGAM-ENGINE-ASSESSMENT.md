@@ -3,7 +3,7 @@
 Decision: evaluation only; no dependency installation or publication approval.
 
 ## Evidence
-Reviewed upstream revision [3e24263](https://github.com/Tattvasphere/tattva-astro-core/tree/3e24263f3d5e4d2c8be8d015bc555d146435c408): package.json, LICENSE, NOTICE, docs/LICENSING.md, src/index.ts, src/types.ts and src/core/panchanga.ts. Version declared 1.0.0, Apache-2.0; sole declared runtime dependency astronomy-engine ^2.1.19 (MIT per upstream notice). Registry tarball, exact resolved dependency and integrity not yet checked. Preserve applicable licence and notices on redistribution.
+Reviewed upstream revision [3e24263](https://github.com/Tattvasphere/tattva-astro-core/tree/3e24263f3d5e4d2c8be8d015bc555d146435c408): package.json, package-lock.json, LICENSE, NOTICE, docs/LICENSING.md, src/index.ts, src/types.ts and src/core/panchanga.ts. Version declared 1.0.0 under Apache-2.0. The source lockfile resolves the sole runtime dependency to `astronomy-engine@2.1.19` from `https://registry.npmjs.org/astronomy-engine/-/astronomy-engine-2.1.19.tgz` with npm integrity `sha512-8yWKNf7UeNbH458h3sAJ6ZgAjE5jTXp/mNNRFoC20j2SHwZIjAQeEsBB2Q3uCFRaTCCJRv33K2XhkhZQMXoX6w==`; upstream NOTICE identifies Astronomy Engine as MIT-licensed. This verifies source-lock dependency identity/integrity, not the publication integrity of a future `@tattvasphere/tattva-astro-core` registry tarball. Preserve Apache-2.0 copyright/licence/NOTICE obligations on any redistribution.
 
 The root entrypoint also exports a digitized Kannada compatibility table. Upstream asserts traditional-data rights, but the original edition and digitization provenance are not independently established. Do not import or redistribute the full package until this is resolved or a narrowly scoped calculation-only distribution is reviewed.
 
@@ -33,3 +33,11 @@ Reviewed the exact upstream commit `3e24263f3d5e4d2c8be8d015bc555d146435c408` ag
 This verification establishes the dependency version/integrity recorded by the reviewed upstream source commit; it does **not** independently prove npm publisher provenance for the core package tarball, nor does it validate the copyright/provenance assertion for the digitized Kannada Padaka table. The table remains a separate rights/provenance HOLD. Do not import or redistribute that table unless its source edition/digitization rights are independently established or the integration is narrowed to calculation-only code that excludes it.
 
 This evidence also does not establish Panchangam accuracy for Chennai or approve a Tamil tradition. Reproducible benchmark comparison, Nalla Neram methodology, Tamil review, and publication approval remain required.
+
+
+## 24 Nov 2026 provenance checkpoint
+- Upstream source revision: `3e24263f3d5e4d2c8be8d015bc555d146435c408`.
+- Package identity: `@tattvasphere/tattva-astro-core@1.0.0`, Apache-2.0.
+- Source package-lock runtime resolution: `astronomy-engine@2.1.19`, MIT, registry URL and integrity recorded above.
+- Upstream NOTICE explicitly attributes Astronomy Engine to Don Cross and its MIT licence.
+- **Still unresolved:** independently verify any future core-package registry tarball before installation; preserve LICENSE/NOTICE; independently adjudicate provenance/redistribution rights for the digitized Kannada compatibility table and any traditional-data payloads. Do not treat the repository author's licensing assertions about that table as independent provenance evidence.
