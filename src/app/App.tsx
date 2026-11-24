@@ -22,6 +22,7 @@ const Library = lazy(() => import('@/features/library/Library'));
 const Completeness = lazy(() => import('@/features/trust/Completeness'));
 const Sources = lazy(() => import('@/features/trust/Sources'));
 const NotFound = lazy(() => import('@/features/trust/NotFound'));
+const DailyPanchangam = lazy(() => import('@/features/panchangam/DailyPanchangam'));
 
 // Legal/public-information pages are valid direct routes but are rarely part
 // of a first Home visit. Keep the shared Doc implementation in one module and
@@ -65,6 +66,7 @@ export default function App() {
           <Route path="/practice" component={Practice} />
           <Route path="/search" component={Search} />
           <Route path="/sources" component={Sources} />
+          <Route path="/daily-panchangam" component={DailyPanchangam} />
           <Route path="/content-completeness" component={Completeness} />
           <Route path="/about" component={About} />
           <Route path="/privacy" component={Privacy} />
