@@ -8,7 +8,7 @@ const candidate = () => ({ dateLocal: '2026-11-20', sunriseUtc: rise, sunsetUtc:
   sunriseFallback: false, sunsetFallback: false,
   tithi: { index: 1, endTimeUtc: set }, nakshatra: { index: 2, endTimeUtc: set },
   yoga: { index: 3, endTimeUtc: set }, karana: { index: 4, endTimeUtc: set },
-  periods: { rahuKalam: interval(3), yamaganda: interval(0) },
+  periods: { rahuKalam: interval(3), yamaganda: interval(6) },
   engine: { ayanamsa: 'lahiri', version: '1.0.0' } });
 const reference = (): BenchmarkReference => {
   const c = candidate();

@@ -41,3 +41,11 @@ This evidence also does not establish Panchangam accuracy for Chennai or approve
 - Source package-lock runtime resolution: `astronomy-engine@2.1.19`, MIT, registry URL and integrity recorded above.
 - Upstream NOTICE explicitly attributes Astronomy Engine to Don Cross and its MIT licence.
 - **Still unresolved:** independently verify any future core-package registry tarball before installation; preserve LICENSE/NOTICE; independently adjudicate provenance/redistribution rights for the digitized Kannada compatibility table and any traditional-data payloads. Do not treat the repository author's licensing assertions about that table as independent provenance evidence.
+
+
+## 24 Nov 2026 independent daylight-period benchmark
+Independent benchmark evidence now includes the Government of India / India Meteorological Department Positional Astronomy Centre Rashtriya Panchang station table for Chennai. For 24 November 2026 it gives sunrise 06:12 and sunset 17:40 IST. Dividing that daylight interval into the established weekday eighths yields Tuesday Yamaganda 09:04–10:30 and Rahu Kalam 14:48–16:14.
+
+This check exposed a real evaluation defect inherited from the candidate engine: the previous Yamaganda weekday table used Tuesday segment 3 instead of segment 2 (and several other weekdays were likewise shifted). The local evaluation helper now uses the conventional zero-based sequence Sunday→Saturday `[4, 3, 2, 1, 0, 6, 5]`, while Rahu remains `[7, 1, 6, 4, 5, 3, 2]`. A regression locks the 24 Nov 2026 Chennai result to the government sunrise/sunset values.
+
+This correction is an evaluation-layer finding, not publication approval of the upstream engine. Full tithi/nakshatra/yoga/karana transition benchmarking, Nalla Neram methodology, Tamil editorial review and source/publication approval remain mandatory.

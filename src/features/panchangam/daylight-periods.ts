@@ -22,7 +22,7 @@ export function calculateDaylightPeriods(
   const weekday = date.getUTCDay();
   // Sunday=0. These are zero-based daylight eighths for the evaluated convention.
   const rahuSegments = [7, 1, 6, 4, 5, 3, 2];
-  const yamaSegments = [4, 6, 3, 1, 2, 0, 7];
+  const yamaSegments = [4, 3, 2, 1, 0, 6, 5];
   const rahu = rahuSegments[weekday];
   const yama = yamaSegments[weekday];
   if (rahu === undefined || yama === undefined) return null;

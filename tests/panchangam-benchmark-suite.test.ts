@@ -7,7 +7,7 @@ const make = (dateLocal: string, scenario: BenchmarkCase['scenario']): Benchmark
   const set = rise + 43200000;
   const weekday = new Date(dateLocal + 'T00:00:00Z').getUTCDay();
   const rahu = [7,1,6,4,5,3,2][weekday]!;
-  const yama = [4,6,3,1,2,0,7][weekday]!;
+  const yama = [4,3,2,1,0,6,5][weekday]!;
   const interval = (n: number) => ({ startUtc: rise + n * 5400000, endUtc: rise + (n + 1) * 5400000 });
   const limb = (index: number) => ({ index, endTimeUtc: set });
   const candidate = { dateLocal, sunriseUtc: rise, sunsetUtc: set,
