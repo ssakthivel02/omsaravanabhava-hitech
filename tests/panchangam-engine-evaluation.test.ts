@@ -10,7 +10,7 @@ const valid = () => ({
   sunriseFallback: false, sunsetFallback: false,
   tithi: { index: 30, endTimeUtc: set }, nakshatra: { index: 27, endTimeUtc: set },
   yoga: { index: 27, endTimeUtc: set }, karana: { index: 60, endTimeUtc: set },
-  periods: { rahuKalam: segment(3), yamaganda: segment(0) },
+  periods: { rahuKalam: segment(3), yamaganda: segment(6) },
   engine: { ayanamsa: 'lahiri', version: '1.0.0' },
 });
 const check = (x: unknown) => validateEngineEvaluation(x, '2026-11-20');
@@ -43,7 +43,7 @@ describe('Unapproved calculation output boundary', () => {
 });
 
 describe('Weekday-specific evaluation convention', () => {
-  it.each([[22,7,4],[23,1,6],[24,6,3],[25,4,1],[26,5,2],[27,3,0],[28,2,7]])(
+  it.each([[22,7,4],[23,1,3],[24,6,2],[25,4,1],[26,5,0],[27,3,6],[28,2,5]])(
     'checks November %i daylight segment allocation', (day, rahu, yama) => {
       const dateLocal = '2026-11-' + day;
       const offset = Date.parse(dateLocal + 'T01:00:00Z') - rise;
